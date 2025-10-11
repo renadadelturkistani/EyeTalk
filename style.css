@@ -835,3 +835,44 @@ header .logo img {
   }
 }
 
+/* =========================================================
+   📱 تحسين عرض الأيقونات في الجوال بحيث تظهر كلها بدون Scroll
+========================================================= */
+@media (max-width: 600px) {
+  #iconsContainer {
+    grid-template-columns: repeat(2, 1fr); /* يخليها صفين بدل عمود واحد */
+    gap: 12px;
+    margin: 12px auto;
+    padding: 0 8px;
+  }
+
+  .icon {
+    height: 110px; /* تصغير الكرت */
+    padding: 6px 8px;
+    border-radius: 14px;
+  }
+
+  .icon-emoji {
+    font-size: 1.4rem; /* تصغير الإيموجي */
+    margin-bottom: 6px;
+  }
+
+  .icon-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+
+  header {
+    height: 90px;
+  }
+
+  header h1 {
+    font-size: 1.2rem;
+  }
+
+  .card {
+    margin: 10px;
+    padding: 14px;
+  }
+}
+
