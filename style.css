@@ -751,3 +751,87 @@ header .logo img {
       box-shadow: 0 6px 18px rgba(90, 93, 240, 0.3);
     }
 
+
+/* =========================================================
+   📱 تحسين الرسبونسف للجوال بدون كسر التصميم
+========================================================= */
+
+/* الجوالات الكبيرة (أقل من 900px) */
+@media (max-width: 900px) {
+  :root {
+    --header-h: 120px;
+    --header-title-size: 28px;
+    --icon-height: 140px;
+  }
+
+  header .logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  header .logo img {
+    width: 100px;
+  }
+
+  .icon {
+    height: 150px;
+    padding: 8px;
+  }
+
+  .icon-label {
+    font-size: 1rem;
+  }
+}
+
+/* الجوالات الصغيرة (أقل من 600px) */
+@media (max-width: 600px) {
+  :root {
+    --header-h: 100px;
+    --header-title-size: 22px;
+    --icon-height: 120px;
+    --emoji-size: 24px;
+  }
+
+  header h1 {
+    font-size: var(--header-title-size);
+  }
+
+  header .logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  header .logo img {
+    width: 80px;
+  }
+
+  .icon {
+    height: 130px;
+  }
+
+  .icon-emoji {
+    font-size: 1.5rem;
+  }
+
+  .icon-label {
+    font-size: 0.95rem;
+  }
+
+  /* تصغير الزرين السفليين (eye-control) */
+  .eye-control {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    bottom: 20px;
+  }
+
+  /* تحسين الكاردات والهوامش */
+  .card {
+    margin: 10px;
+    padding: 14px;
+  }
+
+  .page-wrap {
+    padding: 0 10px;
+  }
+}
+
