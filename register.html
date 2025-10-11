@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إنشاء حساب - EyeTalk</title>
+  <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+
+  <!-- EmailJS (للترحيب) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function () {
+      emailjs.init("R7ZqqOZXPYYhwhpRd"); /* EmailJS Public Key */
+    })();
+  </script>
+</head>
+<body>
+
+  <div class="login-page" id="registerPage">
+    <div class="login-container">
+      <div class="login-logo">
+        <img src="logo.png" alt="logo" />
+      </div>
+
+      <h2>إنشاء حساب جديد</h2>
+
+      <form id="registerForm">
+        <!-- بيانات المريض (بدون بريد) -->
+        <input type="text" id="fullName" placeholder="اسم المريض" required />
+
+        <!-- بيانات الدخول (بريد المساعد + كلمة المرور) -->
+        <input type="email" id="assistantEmail" placeholder="بريد المساعد (لتسجيل الدخول)" required />
+        <input type="password" id="regPassword" placeholder="كلمة المرور" required />
+
+        <!-- بيانات المساعد -->
+        <input type="text" id="assistantName" placeholder="اسم المساعد" required />
+
+        <button type="submit">إنشاء الحساب</button>
+      </form>
+
+      <p class="register-text">
+        لديك حساب؟ <a href="login.html">تسجيل دخول</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    /* Firebase SDK v9 */
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getFirestore, setDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    /* إعداد Firebase لمشروعك */
+    const firebaseConfig = {
+      apiKey: "AIzaSyCBGtwVSod4bZ13hH7ZJLAOW0xPbKmzJEw",
+      authDomain: "eyetalk-96125.firebaseapp.com",
+      projectId: "eyetalk-96125",
+      storageBucket: "eyetalk-96125.appspot.com",
+      messagingSenderId: "663319806538",
+      appId: "1:663319806538:web:e93e47829d0cb4eba4dcb3"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    /* إنشاء حساب + تخزين البيانات + إرسال ترحيب + دخول تلقائي + تحويل */
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const fullName       = document.getElementById("fullName").value.trim();
+      const assistantEmail = document.getElementById("assistantEmail").value.trim();
+      const password       = document.getElementById("regPassword").value;
+      const assistantName  = document.getElementById("assistantName").value.trim();
+
+      try {
+        // 1) إنشاء حساب للمساعد
+        const { user } = await createUserWithEmailAndPassword(auth, assistantEmail, password);
+
+        // 2) تخزين بيانات المريض/المساعد في Firestore على uid
+        await setDoc(doc(db, "patients", user.uid), {
+          fullName,              
+          assistantName,         
+          assistantEmail,        
+          createdAt: serverTimestamp()
+        });
+
+        // 3) إرسال رسالة ترحيب للمساعد (EmailJS)
+        try {
+          await emailjs.send("service_b5uzkwh", "template_vrmacam", {
+            name: assistantName,
+            email: assistantEmail
+          });
+          console.log("تم إرسال الترحيب للمساعد");
+        } catch (err) {
+          console.warn("تعذّر إرسال الترحيب (لا يؤثر على التسجيل):", err);
+        }
+
+        // 4) دخول تلقائي باستخدام بريد المساعد ثم حفظ بيانات أساسية محليًا
+        await signInWithEmailAndPassword(auth, assistantEmail, password);
+        localStorage.setItem("patientName",   fullName);
+        localStorage.setItem("assistantName", assistantName);
+        localStorage.setItem("assistantEmail",assistantEmail);
+
+        // 5) تحويل مباشرة للواجهة الرئيسية
+        window.location.href = "index.html";
+
+      } catch (error) {
+        alert("حدث خطأ: " + (error?.message || error));
+      }
+    });
+  </script>
+
+
+
+</body>
+</html>

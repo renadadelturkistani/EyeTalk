@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تعديل الأيقونات - EyeTalk</title>
+  <link rel="stylesheet" href="style.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+  <header>
+    <span class="menu-toggle" aria-label="فتح القائمة">☰</span>
+    <h1 class="app-title">تعديل الأيقونات</h1>
+  <div class="logo">
+    <img src="logo.png" alt="شعار الموقع" />
+  </div>
+
+
+  </header>
+
+
+  <!-- ✅ الشريط الجانبي -->
+  <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
+    <h2>القائمة</h2>
+    <nav>
+      <a href="home.html">الرئيسية</a>
+      <a href="icons-edit.html">تعديل الأيقونات</a>
+      <a href="settings.html">الإعدادات</a>
+      <a href="profile.html">الملف الشخصي</a>
+      <a href="about.html">عن التطبيق</a>
+      <a href="contact.html">تواصل</a>
+    </nav>
+
+    <hr style="opacity:.15;margin:14px 0">
+    <a class="danger-link" href="logout.html">تسجيل خروج</a>
+  </aside>
+
+  <div id="overlay"></div>
+
+  <main class="page-wrap">
+    <section class="card">
+      <h2 class="card-title">قائمة الأيقونات</h2>
+      <p class="muted">يمكنك تخصيص الأيقونات والنصوص، وسيتم حفظ التغييرات وتحديث الشاشة الرئيسية تلقائيًا</p>
+      <div id="editor" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grid-gap)"></div>
+      <div style="margin-top:14px">
+        <button id="addIcon"> إضافة أيقونة</button>
+        <button id="resetIcons" class="danger" style="margin-inline-start:8px"> الوضع الافتراضي</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Firebase + EmailJS -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script>
+    const editor = document.getElementById('editor');
+    const defaults = [
+      { emoji: "🚨", label: "حالة طارئة" },
+      { emoji: "💧",  label: "أريد الماء" },
+      { emoji: "🍽️", label: "أريد الطعام" },
+      { emoji: "💊",  label: "أريد الدواء" },
+      { emoji: "🚶‍♀️", label: "أريد المشي" },
+      { emoji: "🚻",  label: "أريد الحمام" }
+    ];
+    const load =()=> JSON.parse(localStorage.getItem('customIcons')) || defaults;
+    const save =(l)=> localStorage.setItem('customIcons', JSON.stringify(l));
+    function render(){
+      const list = load();
+      editor.innerHTML = '';
+      list.forEach((it,i)=>{
+        const c = document.createElement('div');
+        c.className='card'; c.style.textAlign='center';
+        c.innerHTML = `
+          <div class="icon-emoji" style="margin:0 auto">${it.emoji}</div>
+          <div class="icon-label" style="margin:.4rem 0 0">${it.label}</div>
+          <div class="range-wrap" style="margin-top:.6rem">
+            <input data-i="${i}" data-k="emoji" type="text" value="${it.emoji}" placeholder="إيموجي">
+            <input data-i="${i}" data-k="label" type="text" value="${it.label}" placeholder="نص">
+            <button data-i="${i}" data-act="del" class="danger" style="margin-top:.5rem">حذف</button>
+          </div>`;
+        editor.appendChild(c);
+      });
+    }
+    editor.addEventListener('input',(e)=>{
+      const i=+e.target.dataset.i, k=e.target.dataset.k; if(Number.isNaN(i)||!k) return;
+      const list=load(); list[i][k]=e.target.value; save(list);
+    });
+    editor.addEventListener('click',(e)=>{
+      if(e.target.dataset.act==='del'){ const i=+e.target.dataset.i; const list=load(); list.splice(i,1); save(list); render(); }
+    });
+    document.getElementById('addIcon').onclick=()=>{ const l=load(); l.push({emoji:"🙂",label:"نص جديد"}); save(l); render(); };
+    document.getElementById('resetIcons').onclick=()=>{ save(defaults); render(); };
+    render();
+  </script>
+
+  <script src="script.js"></script>
+    <footer style="text-align:center; color:#94a3b8; margin:20px 0">© Renad Turkistani © kholod alghtani </footer>
+
+</body>
+</html>

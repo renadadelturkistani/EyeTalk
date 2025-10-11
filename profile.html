@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>الملف الشخصي</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  
+</head>
+<body class="theme-dark">
+
+  <header>
+    <span class="menu-toggle" id="menuToggle">☰</span>
+    <h1>الملف الشخصي</h1>
+      <div class="logo">
+    <img src="logo.png" alt="شعار الموقع" />
+  </div>
+
+  </header>
+
+
+
+  <!-- ✅ الشريط الجانبي -->
+  <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
+    <h2>القائمة</h2>
+    <nav>
+      <a href="home.html">الرئيسية</a>
+      <a href="icons-edit.html">تعديل الأيقونات</a>
+      <a href="settings.html">الإعدادات</a>
+      <a href="profile.html">الملف الشخصي</a>
+      <a href="about.html">عن التطبيق</a>
+      <a href="contact.html">تواصل</a>
+    </nav>
+
+    <hr style="opacity:.15;margin:14px 0">
+    <a class="danger-link" href="logout.html">تسجيل خروج</a>
+  </aside>
+
+  <div id="overlay"></div>
+
+  <div class="page-wrap">
+    <!-- بيانات الحساب (قراءة فقط) -->
+    <section class="card">
+      <h3 class="card-title">بيانات الحساب</h3>
+<div class="fields">
+
+        <label>
+          الاسم الكامل
+          <input id="uName" type="text" value="" readonly />
+        </label>
+
+        <label>
+          البريد الإلكتروني
+          <input id="uEmail" type="email" value="" readonly />
+        </label>
+
+        <label>
+          رقم الجوال
+          <input id="uPhone" type="tel" value="" readonly />
+        </label>
+
+      </div>
+    </section>
+
+    <!-- تغيير كلمة المرور -->
+  <section class="card">
+  <h3 class="card-title">تغيير كلمة المرور</h3>
+
+  <form id="pwdForm">
+    <div class="field">
+      <label for="curPwd">كلمة المرور الحالية</label>
+      <input id="curPwd" type="password" autocomplete="current-password" required />
+    </div>
+
+    <div class="field">
+      <label for="newPwd">كلمة المرور الجديدة</label>
+<input id="newPwd" type="password" placeholder="يجب أن تتضمن كلمة المرور أحرفاً كبيرة وصغيرة وأرقاماً ورموز" required />    </div>
+
+    <div class="field">
+      <label for="newPwd2">تأكيد كلمة المرور الجديدة</label>
+      <input id="newPwd2" type="password" autocomplete="new-password" required />
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" type="submit">حفظ التغيير</button>
+      <button class="btn" type="button" id="togglePwd">إظهار/إخفاء</button>
+    </div>
+
+  </form>
+</section>
+
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>

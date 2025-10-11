@@ -1,0 +1,753 @@
+/* =========================================================
+   🎨 الثيم والمتغيّرات العامة
+   (تدرج موفي/أزرق جديد)
+========================================================= */
+:root{
+  /* ألوان افتراضية (داكن - تدرج موفي/أزرق) */
+  --bg: #294b68; /* خلفية داكنة (ليلي) */
+  --card: #243f56; /* بطاقة داكنة (أزرق غامق) */
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+
+  --primary: #196b8f; /* أرجواني/أزرق فاتح (Indigo 400) */
+  --primary-600: #446a8a; /* أرجواني/أزرق متوسط (Indigo 600) */
+  --primary-700: #9fc5d8; /* أرجواني/أزرق داكن (Indigo 700) */
+  --accent: #38a8f2; /* أرجواني فاتح / لمسة (Violet 400) */
+
+  --danger:#ef4444;
+  --warn:#ffcc00;
+  --ok:#10b981;
+
+  --radius:16px;
+  --shadow-1:0 6px 16px rgba(210, 211, 220, 0.15);
+  --shadow-2:0 10px 25px rgba(151, 172, 216, 0.22);
+
+  /* 👇 حجم الأساس (يتغير من الإعدادات بنسبة %) */
+  --base-font:100%;
+
+  /* الهيدر */
+  --header-h:150px;
+  --header-title-size:36px;
+  --header-title-color:#ffffff;
+
+  /* شبكة الأيقونات (تم تكبيرها) */
+  --icon-height:160px;
+  --icon-font:1.1rem;
+  --emoji-size:32px;
+  --icon-gap:10px;
+  --grid-gap:26px;
+}
+
+/* وضع فاتح للتبديل من الإعدادات */
+.theme-light{
+  --bg: #f4f9fc;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+
+  --primary: #5091dc;
+  --primary-600: #ffffff;
+  --primary-700: #2790e0;
+  --accent: #5ea3f2; /* أغمق قليلاً في الوضع الفاتح */
+
+  --header-title-color: #ffffff;
+}
+
+/* وضع داكن */
+.theme-dark{
+  --bg: #0f3a5d;
+  --card: #124772;
+  --text: #e5e7eb;
+  --muted: #e1e8f2;
+
+  --primary: #58b7ff;
+  --primary-600: #77b6e4;
+  --primary-700: hsl(207, 73%, 68%);
+  --accent: #55c1e5;
+
+  --header-title-color: #fff;
+}
+
+/* =========================================================
+   🧱 الأساسيات
+========================================================= */
+/* الخط العام للمشروع (كايرو) */
+* {
+  font-family: 'Cairo', sans-serif !important;
+  box-sizing:border-box;
+}
+html{ font-size: var(--base-font); }
+body{
+  margin:0;
+  background:var(--bg); color:var(--text); direction:rtl; text-align:center; line-height:1.7;
+}
+a{ color:inherit }
+
+/* =========================================================
+   🧭 الهيدر
+========================================================= */
+header{
+  /* استخدام التدرج الموفي الجديد */
+  background:linear-gradient(90deg,var(--primary-700),var(--primary));
+  height:var(--header-h); color:#fff; padding:0 18px;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 3px 12px rgba(0,0,0,.25);
+  border-bottom-left-radius:12px; border-bottom-right-radius:12px; position:relative;
+}
+
+header h1 {
+  margin: 0;
+  font-weight: 800; /* ✅ جعل العنوان بولد */
+  line-height: 1;
+  color: var(--header-title-color);
+  font-size: var(--header-title-size);
+}
+
+
+
+
+.menu-toggle {
+  position: absolute;
+  inset-inline-start: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 32px; /* ✅ تم تكبير الحجم */
+  cursor: pointer;
+  font-weight: 900;
+  color: #fff;
+}
+
+
+/* زر رجوع للرئيسية */
+.back-fab{
+  position:fixed; inset-block-start:calc(var(--header-h) + 12px); inset-inline-start:12px;
+  display:flex; align-items:center; justify-content:center;
+  width:44px; height:44px; border-radius:50%;
+  /* استخدام التدرج الموفي الجديد */
+  background:linear-gradient(135deg,var(--primary),var(--primary-700));
+  color:#fff; text-decoration:none; font-weight:900; font-size:20px; box-shadow:var(--shadow-2); z-index:1200;
+}
+
+
+/* =========================================================
+   🧩 عناصر عامة
+========================================================= */
+
+.page-wrap {
+  max-width: 1100px;
+  margin: 24px auto 48px;
+  padding: 0 16px;
+  text-align: center; /* ✅ تم التوسيط */
+}
+
+
+
+.card{
+  background:var(--card); border-radius:18px; padding:18px 16px; box-shadow:var(--shadow-1);
+  /* تحديث لون إطار البطاقة ليتناسب مع الثيم الموفي */
+  border:2px solid rgba(187, 193, 244, 0.25); margin:14px 0;
+}
+/* تحديث ألوان العناوين والأبطال */
+.card-title{ margin:0 0 8px; color:var(--accent); font-weight:900 }
+.hero{ margin:12px 0 18px; color:var(--accent); font-weight:900; font-size:1.6rem }
+.muted{ color:var(--muted); margin:6px 0 0; }
+
+/* أزرار وفورمات */
+button, .btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-700));
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  padding: .7rem 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+  margin: 0 6px; /* ✅ مسافة 6px يمين ويسار */
+}
+
+button:hover,.btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-2) }
+button:active,.btn:active{ transform:scale(.98) }
+button.danger{ background:#ef4444 }
+a.danger-link{ color:#ef4444; font-weight:800; text-decoration:none }
+
+input, textarea, select{
+  width:100%; padding:.75rem .9rem; border:2px solid #b0caed; border-radius:12px; font-size:1rem;
+  outline:none; transition:.2s;
+  background:var(--card);
+  color:var(--text);
+}
+/* تحديث تركيز المدخلات للون الموفي */
+input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shadow:0 0 0 3px rgba(167, 139, 250, .25) }
+
+
+
+
+.fields {
+  display: grid;
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto; /* ✅ يوسّط المجموعة في الكرت */
+}
+
+/* كل صف (ليبل + إدخال) */
+.fields label {
+  display: flex;
+  justify-content: space-between; /* ✅ الليبل على اليمين والإدخال على اليسار */
+  align-items: center;
+  gap: 16px; /* ✅ مسافة متساوية بين النص والمربع */
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+
+/* مربع الإدخال */
+.fields input {
+  flex: 1; /* ✅ يخلي جميع الحقول بنفس العرض تلقائيًا */
+  max-width: 480px;
+  border: 1.8px solid #334155;
+  border-radius: 12px;
+  font-size: 1rem;
+  padding: .75rem .9rem;
+  background: var(--card);
+  color: var(--text);
+  outline: none;
+  text-align: center; /* ✅ النص داخل المربع في المنتصف */
+  transition: border-color .2s, box-shadow .2s;
+}
+
+/* عند التركيز */
+.fields input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, .25);
+}
+
+
+
+
+#pwdForm {
+  display: grid;
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+#pwdForm .field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+#pwdForm label {
+  font-weight: 700;
+  color: var(--text);
+  min-width: 200px; /* يخلي الليبل بمساحة ثابتة */
+  text-align: right;
+}
+
+#pwdForm input {
+  flex: 1;
+  max-width: 480px;
+  border-radius: 12px;
+  padding: .75rem .9rem;
+  font-size: 1rem;
+  text-align: center;
+  background: var(--card);
+  color: var(--text);
+  outline: none;
+}
+
+#pwdHint {
+  display: block;
+  margin: 20px 0; /* ✅ مسافة فوق وتحت */
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.8;
+  text-align: center; /* يعطي توازن لو الصفحة كلها بالوسط */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* تخصيص للوضع الفاتح */
+.theme-light input,
+.theme-light textarea,
+.theme-light select {
+  background:#fff;
+  color:#1f2937;
+  border-color:#d1d5db;
+}
+.theme-light input:focus,
+.theme-light textarea:focus,
+.theme-light select:focus {
+  /* استخدام لون الأكسنت للوضع الفاتح */
+  border-color:var(--accent); box-shadow:0 0 0 3px rgba(99, 102, 241, .25)
+}
+
+
+
+/* =========================================================
+   👁️ شبكة الآيقونات (الصفحة الرئيسية)
+========================================================= */
+#iconsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* ✅ يتكيف مع حجم الشاشة */
+  gap: 24px; /* زيادة المسافة بين الكروت */
+  max-width: 1100px;
+  margin: 32px auto 20px;
+  padding: 0 18px;
+}
+
+.icon {
+  height: 180px; /* ✅ زيادة ارتفاع الكرت */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #5dbdea, #8e97e9); /* ✅ تدرج لون الكروت- */
+  border: none; /* ✅ إزالة الإطار القديم */
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25); /* ظل خارجي ناعم */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
+  padding: 10px 16px;
+  user-select: none;
+}
+
+.icon:hover,
+.icon.active {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 26px rgba(75, 198, 232, 0.3);
+}
+
+.icon-emoji {
+  font-size: 2rem; /* تكبير الإيموجي */
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.icon-label {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+/* حالة الطوارئ - يمكن إبقاؤها أو تخصيصها */
+.icon.emergency {
+  background: linear-gradient(135deg, #ef4444, #b91c1c); /* تدرج أحمر للطوارئ */
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+.icon.emergency:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 26px rgba(220, 38, 38, 0.5);
+}
+
+/* رسبونسف */
+@media (max-width:900px){ #iconsContainer{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:520px){
+  #iconsContainer{ grid-template-columns:1fr }
+  /* تم تكبير أحجام الكروت على الجوال أيضاً */
+  :root{ --icon-height:140px; --emoji-size:28px }
+}
+
+/* مؤشر النظر */
+#cursorDot {
+  position: fixed;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #e3e4e6; /* ❗️لون أحمر */
+  box-shadow: 0 0 8px rgba(9, 69, 137, 0.6); /* ظل أحمر */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+
+/* زر إيقاف الطوارئ */
+#stopAlarm{
+  position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+  background:#ef4444; font-weight:800; color:#fff; padding:.9rem 1.4rem; font-size:1.1rem;
+  border-radius:14px; display:none; z-index:9999; box-shadow:var(--shadow-2);
+}
+
+/* =========================================================
+   ⚙️ صفحة الإعدادات
+========================================================= */
+.settings-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin:12px 0 }
+.range-wrap{ display:grid; gap:8px }
+.range-wrap input[type="range"]{ width:200px }
+
+/* سويتش on/off */
+.switch{ position:relative; display:inline-flex; align-items:center; gap:10px; cursor:pointer }
+.switch input{ appearance:none; width:0; height:0; position:absolute; opacity:0 }
+.slider{
+  width:56px; height:32px; background:#334155; border-radius:999px; position:relative; transition:.25s;
+  box-shadow:inset 0 0 0 2px rgba(0,0,0,.15);
+}
+.slider::after{
+  content:""; position:absolute; top:3px; left:3px; width:26px; height:26px;
+  background:#fff; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,.35); transition:.25s;
+}
+/* استخدام التدرج الموفي الجديد عند التفعيل */
+.switch input:checked + .slider{ background:linear-gradient(135deg,var(--primary),var(--primary-700)) }
+.switch input:checked + .slider::after{ transform:translateX(24px) }
+.switch .switch-text{ min-width:34px; text-align:center; color:var(--muted); font-weight:800 }
+
+/* سلايدر حجم النص */
+.range-wrap input[type="range"]{
+  appearance:none; height:6px; border-radius:6px; background:#22314d; outline:none;
+}
+/* استخدام التدرج الموفي الجديد للمقبض */
+.range-wrap input[type="range"]::-webkit-slider-thumb{
+  appearance:none; width:18px; height:18px; border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--primary-700));
+  box-shadow:0 2px 6px rgba(0,0,0,.35); cursor:pointer;
+}
+.range-wrap input[type="range"]::-moz-range-thumb{
+  width:18px; height:18px; border-radius:50%; border:0;
+  background:linear-gradient(135deg,var(--primary),var(--primary-700));
+  box-shadow:0 2px 6px rgba(0,0,0,.35); cursor:pointer;
+}
+
+/* =========================================================
+   🔐 صفحات الدخول/التسجيل
+========================================================= */
+.login-page, .register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, var(--primary), var(--primary-700));
+}
+
+.login-container {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 30px;
+  width: 100%;
+  max-width: 420px;
+  color: var(--text);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, .35);
+  text-align: center;
+}
+
+/* ✅ اللوقو داخل دائرة بيضاء */
+.login-logo {
+  background: #fff;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-logo img {
+  width: 140px;
+  height: auto;
+}
+
+/* عنوان تسجيل الدخول */
+.login-container h2 {
+  margin: 20px 0 30px;
+  font-size: 1.3rem;
+  color: var(--accent);
+  font-weight: 900;
+}
+
+/* ✅ الحقول البيضاء */
+.login-container input {
+  border: 1.8px solid #d1d5db;
+  background: #ffffff; /* ✅ لون أبيض */
+  color: #1f2937; /* ✅ لون نص غامق */
+  width: 100%;
+  padding: .75rem .9rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  margin-bottom: 14px; /* ✅ مسافة بين الحقول */
+  outline: none;
+  transition: all .25s ease;
+}
+
+/* ✅ تركيز الحقول */
+.login-container input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, .25);
+}
+
+/* زر الدخول */
+.login-container button[type="submit"] {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-700));
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: .8rem 1rem;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.login-container button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+}
+
+.login-container button[type="submit"]:active {
+  transform: scale(.98);
+}
+
+/* ✅ نص الأسفل */
+.login-container small {
+  display: block;
+  margin-top: 18px;
+  color: var(--muted);
+}
+
+
+/* =========================================================
+   📱 السايدبار (للجوال)
+========================================================= */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 260px;
+  height: 100%;
+  background: rgba(31, 41, 55, 0.55); /* ✅ تقليل الشفافية */
+  color: var(--text);
+  box-shadow: -4px 0 18px rgba(0, 0, 0, .35);
+  transition: right .3s ease;
+  z-index: 1500;
+  padding: 28px 20px;
+  text-align: initial;
+  backdrop-filter: blur(10px); /* ✅ تأثير ضبابي */
+}
+
+.sidebar.active{ right:0 }
+/* تحديث لون عنوان السايدبار ليتناسب مع الأكسنت الموفي */
+.sidebar h2{ font-size:1.1rem; font-weight:900; margin-bottom:24px; color:var(--accent); text-align:center }
+.sidebar nav a, .sidebar .side-btn{
+  display:flex; align-items:center; gap:12px; font-size:.98rem; font-weight:700; color:#e5e7eb;
+  text-decoration:none; padding:12px 14px; border-radius:12px; margin-bottom:12px;
+  background:transparent; border:0; width:100%; text-align:right; cursor:pointer;
+}
+/* تحديث لون النص عند التحويم ليتناسب مع الأكسنت الموفي */
+.sidebar nav a:hover, .sidebar .side-btn:hover{ background:#2f3a4b; color:var(--accent) }
+.sidebar nav a.danger-link{ color:#fca5a5 }
+.sidebar nav a.danger-link:hover{ background:#3f1b1b }
+.sidebar nav a span{ font-size:20px }
+
+
+
+
+#overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25); /* تعتيم خفيف */
+  backdrop-filter: blur(4px); /* ضبابية للخلفية */
+  display: none;
+  z-index: 1400;
+}
+#overlay.active {
+  display: block;
+}
+
+
+
+
+
+
+/* =========================================================
+   👤 صفحة الملف الشخصي
+========================================================= */
+.profile-card{
+  background:var(--card);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:var(--shadow-1);
+  /* تحديث لون إطار البطاقة ليتناسب مع الثيم الموفي */
+  border:2px solid rgba(129, 140, 248, .25);
+  max-width:600px;
+  margin:20px auto;
+}
+
+/* تحديث لون عنوان البطاقة ليتناسب مع الأكسنت الموفي */
+.profile-card h3{
+  margin-top:0;
+  margin-bottom:16px;
+  color:var(--accent);
+  font-weight:900;
+}
+
+.profile-info{
+  display:grid;
+  gap:14px;
+}
+
+.profile-info label{
+  font-weight:700;
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+/* استخدام لون خلفية أغمق للقراءة فقط */
+.profile-info input[readonly]{
+  background:rgba(255,255,255,.05);
+  color:#cbd5e1;
+  cursor:not-allowed;
+}
+
+#pwdForm{
+  display:grid;
+  gap:14px;
+  margin-top:10px;
+}
+
+#pwdForm input{
+  background:var(--card);
+  color:var(--text);
+}
+
+#pwdForm button{
+  justify-self:start;
+}
+
+#pwdForm small{
+  font-size:.85rem;
+}
+
+
+
+
+header .logo {
+  position: absolute;
+  inset-inline-end: 16px; /* في الجهة اليمنى بالوضع العربي */
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+header .logo img {
+  width: 130px;
+  height: auto;
+  border-radius: 50%;
+}
+
+/* متابعة وايقاف التتبع*/
+.eye-control {
+  position: fixed;
+  bottom: 40px; /* مسافة عن أسفل الصفحة */
+  padding: 30px 50px;
+  border-radius: 1000px;
+  font-weight: 1000;
+  font-size: 1rem;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(0,0,0,.25);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+  z-index: 999;
+}
+
+/* 🟥 كرت إيقاف تتبع النظر */
+.eye-control.left {
+  left: 40px;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+}
+
+/* 🟩 كرت متابعة تتبع النظر */
+.eye-control.right {
+  right: 40px;
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+/* تفاعل عند التحويم */
+.eye-control:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+}
+
+/* موبايل */
+@media (max-width:600px){
+  .eye-control {
+    padding: 10px 18px;
+    font-size: .9rem;
+  }
+  .eye-control.left { left: 14px; }
+  .eye-control.right { right: 14px; }
+}
+
+
+
+
+
+
+/* حركة دخول الكارد من الأسفل */
+.card {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 1.2s ease forwards;
+}
+
+/* حركة تدريجية للنصوص داخل الكارد */
+.card-title {
+  opacity: 0;
+  transform: translateY(-15px);
+  animation: fadeIn 1s ease forwards;
+  animation-delay: 0.3s;
+}
+
+.card p {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 1.2s ease forwards;
+  animation-delay: 0.6s;
+}
+
+/* تعريف الحركات */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* تأثير بسيط عند مرور الفأرة */
+.card:hover {
+  transform: translateY(-6px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+
+   .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(90, 93, 240, 0.3);
+    }
+

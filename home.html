@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الرئيسية - EyeTalk</title>
+
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+</head>
+
+<body class="theme-dark">
+
+  <!-- الهيدر -->
+  <header>
+    <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
+    <h1 class="app-title">الصفحة الرئيسية</h1>
+
+    <!-- ✅ اللوقو -->
+    <div class="logo">
+      <img src="logo.png" alt="شعار الموقع" />
+    </div>
+  </header>
+
+  <!-- ✅ الشريط الجانبي -->
+  <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
+    <h2>القائمة</h2>
+    <nav>
+      <a href="home.html">الرئيسية</a>
+      <a href="icons-edit.html">تعديل الأيقونات</a>
+      <a href="settings.html">الإعدادات</a>
+      <a href="profile.html">الملف الشخصي</a>
+      <a href="about.html">عن التطبيق</a>
+      <a href="contact.html">تواصل</a>
+    </nav>
+
+    <hr style="opacity:.15;margin:14px 0">
+    <a class="danger-link" href="logout.html">تسجيل خروج</a>
+  </aside>
+
+  <div id="overlay"></div>
+
+  <!-- ✅ المحتوى الرئيسي -->
+  <main class="page-wrap">
+<h2 class="hero"> عبر عن احتياجك بنظرة</h2>
+
+    <!-- شبكة الأيقونات -->
+    <section id="iconsContainer"></section>
+  </main>
+
+  <!-- ✅ مؤشر النظر -->
+  <div id="cursorDot"></div>
+
+  <!-- ✅ زر الطوارئ -->
+  <button id="stopAlarm" type="button">إيقاف الطوارئ</button>
+
+  <!-- ✅ كرتي التحكم بتتبع النظر -->
+  <div class="eye-control left" id="stopTracking">
+    🛑 إيقاف تتبّع النظر
+  </div>
+
+  <div class="eye-control right" id="startTracking">
+    👁️ متابعة تتبّع النظر
+  </div>
+
+  <!-- ✅ مكتبات -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <!-- ✅ سكربت -->
+  <script src="script.js"></script>
+
+</body>
+</html>
