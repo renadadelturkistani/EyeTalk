@@ -466,36 +466,6 @@ function sanitizeText(text) {
   return t.replace(/\s+/g, " ").trim();
 }
 
-/* ---------------------------------------------------------
-   دالة نطق النص مرة واحدة
---------------------------------------------------------- */
-function speak(text) {
-  const onlyText = sanitizeText(text);
-  if (!onlyText) return;
-  try {
-    const msg = new SpeechSynthesisUtterance(onlyText);
-    msg.lang = "ar-SA";
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(msg);
-  } catch (e) {
-    console.warn("Speech synthesis error:", e);
-  }
-}
-
-/* ---------------------------------------------------------
-   دالة لتكرار النطق n مرات بفاصل زمني محدد
---------------------------------------------------------- */
-function repeatSpeak(text, repeatCount = 3, delayMs = 500) {
-  let count = 0;
-  const interval = setInterval(() => {
-    if (count >= repeatCount) {
-      clearInterval(interval);
-      return;
-    }
-    speak(text);
-    count++;
-  }, delayMs);
-}
 
 /* =========================================================
    8. دالة التنقيح (Debug Helper)
@@ -544,3 +514,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+
+
+function speak(text) {
+  if (!text) return;
+
+  // إنشاء كائن الصوت
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ar-SA"; // ✅ صوت عربي سعودي
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  speechSynthesis.cancel(); // يوقف أي كلام سابق
+  speechSynthesis.speak(utterance);
+}
