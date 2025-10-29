@@ -3,23 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
   <title>عن التطبيق - EyeTalk</title>
-  <link rel="stylesheet" href="style.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
+  <!-- ✅ الخط والتصميم -->
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+  <!-- ✅ الهيدر -->
   <header>
-    <div class="top-bar">
-      <span class="menu-toggle" aria-label="فتح القائمة">☰</span>
-      <h1 class="app-title">عن التطبيق</h1>
-
-        <div class="logo">
-    <img src="logo.png" alt="شعار الموقع" />
-  </div>
-
+    <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
+    <h1 class="app-title">عن التطبيق</h1>
+    <div class="logo">
+      <img src="logo.png" alt="شعار الموقع" />
     </div>
   </header>
 
@@ -31,7 +29,7 @@
       <a href="icons-edit.html">تعديل الأيقونات</a>
       <a href="settings.html">الإعدادات</a>
       <a href="profile.html">الملف الشخصي</a>
-      <a href="about.html">عن التطبيق</a>
+      <a href="about.html" class="active">عن التطبيق</a>
       <a href="contact.html">تواصل</a>
     </nav>
 
@@ -41,22 +39,68 @@
 
   <div id="overlay"></div>
 
+  <!-- ✅ المحتوى الرئيسي -->
+  <main class="page-wrap">
+    <section class="card">
+      <h2 class="card-title">EyeTalk</h2>
+<p>
+   <strong>EyeTalk</strong> هو أداة ذكية ومبتكرة تُسهِّل عملية التواصل للأشخاص ذوي الاحتياجات الخاصة 
+  أو لمن يواجهون صعوبة في النطق<br>
+ عبر واجهة عربية بسيطة تعتمد على تتبّع حركة العين واستخدام أيقونات 
+  معبّرة تمثل كلمات وعبارات تُستخدم في الحياة اليومية.
+</p>
 
-<main class="page-wrap">
-  <section class="card">
-    <h2 class="card-title">EyeTalk</h2>
-    <p>
-      تطبيق EyeTalk هو أداة مبتكرة تهدف إلى تسهيل التواصل لذوي الاحتياجات الخاصة أو من يواجهون صعوبة في النطق، 
-      من خلال واجهة بسيطة تعتمد على تتبع حركة العين واستخدام أيقونات مخصصة تمثل كلمات وعبارات يومية. 
-      يتيح التطبيق للمستخدم اختيار الأيقونات بالنظر إليها، ليتم نطقها صوتيًا بالعربية، 
-      مما يساهم في تمكين التواصل الفعّال والمستقل بطريقة إنسانية وسهلة الاستخدام.
-    </p>
-  </section>
-</main>
+<p>
+  <strong>يتيح  للمستخدم</strong> 
+ التواصل من خلال النظر إلى الأيقونة المطلوبة ليتم نطقها صوتيًا بالعربية   
+  <br>
+  مما يوفّر تجربة تواصل فعّالة ومستقلة، ويجمع بين التقنية والإنسانية بطريقة سهلة ومريحة.
+</p>
+
+    </section>
+  </main>
+
+  
+  <!-- ✅ الفوتر -->
+  <footer style="text-align:center; color:#94a3b8; margin:20px 0">
+    © Renad Turkistani © Kholod Alghtani
+  </footer>
+
+  <!-- ✅ منطق الثيم وحجم الخط -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    const savedFont = localStorage.getItem("fontSize") || "100";
+
+    document.body.classList.remove("theme-dark", "theme-light");
+    document.body.classList.add(`theme-${savedTheme}`);
+    document.body.style.fontSize = savedFont + "%";
+  });
+  </script>
 
 
+ <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+
+      if (menuToggle && sidebar && overlay) {
+        menuToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+          overlay.classList.toggle("active");
+        });
+
+        overlay.addEventListener("click", () => {
+          sidebar.classList.remove("active");
+          overlay.classList.remove("active");
+        });
+      }
+    });
+  </script>
+
+  <!-- ✅ سكربت المشترك (السايد بار وغيره) -->
   <script src="script.js"></script>
-    <footer style="text-align:center; color:#94a3b8; margin:20px 0">© Renad Turkistani © kholod alghtani </footer>
 
 </body>
 </html>

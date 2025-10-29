@@ -4,15 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تواصل معنا - EyeTalk</title>
-  <link rel="stylesheet" href="style.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
+  <!-- ✅ الخط والتصميم -->
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
+  <!-- ✅ الهيدر -->
   <header>
-    <span class="menu-toggle" aria-label="فتح القائمة">☰</span>
+    <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
     <h1 class="app-title">تواصل معنا</h1>
+    <div class="logo">
+      <img src="logo.png" alt="شعار الموقع" />
+    </div>
   </header>
 
   <!-- ✅ الشريط الجانبي -->
@@ -24,7 +30,7 @@
       <a href="settings.html">الإعدادات</a>
       <a href="profile.html">الملف الشخصي</a>
       <a href="about.html">عن التطبيق</a>
-      <a href="contact.html">تواصل</a>
+      <a href="contact.html" class="active">تواصل</a>
     </nav>
 
     <hr style="opacity:.15;margin:14px 0">
@@ -33,23 +39,60 @@
 
   <div id="overlay"></div>
 
-
+  <!-- ✅ المحتوى الرئيسي -->
   <main class="page-wrap">
     <section class="card">
       <h2 class="card-title">راسلنا</h2>
-      <p class="muted">يمكنك التواصل معنا  على البريد التالي :</p>
-      <p style="font-weight:800"><a href="mailto:support@yourdomain.com">support@yourdomain.com</a></p>
-
- 
+      <p class="muted">يمكنك التواصل معنا على البريد التالي:</p>
+      <p style="font-weight:800">
+        <a href="mailto:support@yourdomain.com">eyetalk0@gmail.com</a>
+      </p>
     </section>
   </main>
 
-  <!-- Firebase + EmailJS -->
+  <!-- ✅ مكتبات Firebase + EmailJS -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
+  <!-- ✅ منطق تطبيق الإعدادات العامة (الثيم + حجم الخط) -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    const savedFont = localStorage.getItem("fontSize") || "100";
+
+    document.body.classList.remove("theme-dark", "theme-light");
+    document.body.classList.add(`theme-${savedTheme}`);
+    document.body.style.fontSize = savedFont + "%";
+  });
+  </script>
+
+ <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
+
+      if (menuToggle && sidebar && overlay) {
+        menuToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+          overlay.classList.toggle("active");
+        });
+
+        overlay.addEventListener("click", () => {
+          sidebar.classList.remove("active");
+          overlay.classList.remove("active");
+        });
+      }
+    });
+  </script>
+
+
+
+
+  <!-- ✅ السكربت المشترك (يحتوي منطق السايد بار وغيره) -->
   <script src="script.js"></script>
+
 
 </body>
 </html>

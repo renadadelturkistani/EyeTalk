@@ -5,45 +5,35 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>الإعدادات</title>
 
-  <!-- ربط ملف التنسيقات -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- خط كايرو -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- التنسيقات -->
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
 </head>
 <body class="theme-dark">
 
-  <!-- الهيدر -->
+  <!-- ✅ الهيدر -->
   <header>
     <span class="menu-toggle" id="menuToggle">☰</span>
     <h1>الإعدادات</h1>
-      <div class="logo">
-    <img src="logo.png" alt="شعار الموقع" />
-  </div>
-
+    <div class="logo">
+      <img src="logo.png" alt="شعار الموقع" />
+    </div>
   </header>
 
-  <!-- زر رجوع -->
-  <a href="home.html" class="back-fab">⟵</a>
 
-  <!-- سايدبار -->
-
-
-  <div id="overlay"></div>
-
-  <!-- المحتوى -->
-  <div class="page-wrap">
-
+  <!-- ✅ محتوى الصفحة -->
+  <main class="page-wrap">
     <section class="card">
       <h3 class="card-title">المظهر والقراءة</h3>
 
+      <!-- الوضع الليلي -->
       <div class="settings-row">
         <div>
           <strong>الوضع الليلي</strong><br>
-          <small class="muted">تفعيل/إيقاف الوضع الداكن</small>
+          <small class="muted">تفعيل / إيقاف الوضع الداكن</small>
         </div>
         <label class="switch">
-          <input type="checkbox" id="darkModeToggle" checked />
+          <input type="checkbox" id="darkModeToggle" />
           <span class="slider"></span>
           <span class="switch-text" id="darkLabel">On</span>
         </label>
@@ -51,24 +41,19 @@
 
       <hr style="opacity:.15">
 
+      <!-- حجم النص -->
       <div class="settings-row">
         <div>
           <strong>حجم النص</strong><br>
           <small class="muted">ينطبق على كل الصفحات</small>
         </div>
         <div class="range-wrap">
-          <input type="range" id="fontSizeRange" min="85" max="125" step="5" />
+          <input type="range" id="fontSizeRange" min="75" max="150" step="5" />
           <small id="fontValue">100%</small>
         </div>
       </div>
     </section>
-
-  
-  </div>
-
-
-
-
+  </main>
 
   <!-- ✅ الشريط الجانبي -->
   <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
@@ -76,7 +61,7 @@
     <nav>
       <a href="home.html">الرئيسية</a>
       <a href="icons-edit.html">تعديل الأيقونات</a>
-      <a href="settings.html">الإعدادات</a>
+      <a href="settings.html" class="active">الإعدادات</a>
       <a href="profile.html">الملف الشخصي</a>
       <a href="about.html">عن التطبيق</a>
       <a href="contact.html">تواصل</a>
@@ -88,9 +73,74 @@
 
   <div id="overlay"></div>
 
+  <!-- ✅ سكربت -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    const darkLabel = document.getElementById("darkLabel");
+    const fontSizeRange = document.getElementById("fontSizeRange");
+    const fontValue = document.getElementById("fontValue");
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
 
+    // =====================================================
+    // 🎨 تطبيق الإعدادات المحفوظة
+    // =====================================================
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    const savedFont = localStorage.getItem("fontSize") || "100";
 
-  <!-- ربط سكربت -->
-  <script src="script.js"></script>
+    document.body.classList.remove("theme-dark", "theme-light");
+    document.body.classList.add(`theme-${savedTheme}`);
+    document.body.style.fontSize = savedFont + "%";
+
+    // =====================================================
+    // 🌙 الوضع الليلي
+    // =====================================================
+    if (darkModeToggle && darkLabel) {
+      darkModeToggle.checked = savedTheme === "dark";
+      darkLabel.textContent = savedTheme === "dark" ? "On" : "Off";
+
+      darkModeToggle.addEventListener("change", () => {
+        const theme = darkModeToggle.checked ? "dark" : "light";
+        document.body.classList.remove("theme-dark", "theme-light");
+        document.body.classList.add(`theme-${theme}`);
+        localStorage.setItem("theme", theme);
+        darkLabel.textContent = theme === "dark" ? "On" : "Off";
+      });
+    }
+
+    // =====================================================
+    // 🔤 التحكم في حجم النص
+    // =====================================================
+    if (fontSizeRange && fontValue) {
+      fontSizeRange.value = savedFont;
+      fontValue.textContent = savedFont + "%";
+
+      fontSizeRange.addEventListener("input", () => {
+        const size = fontSizeRange.value;
+        document.body.style.fontSize = size + "%";
+        fontValue.textContent = size + "%";
+        localStorage.setItem("fontSize", size);
+      });
+    }
+
+    // =====================================================
+    // 📂 منطق السايد بار
+    // =====================================================
+    if (menuToggle && sidebar && overlay) {
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("show");
+      });
+
+      overlay.addEventListener("click", () => {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("show");
+      });
+    }
+  });
+  </script>
+
 </body>
 </html>

@@ -5,19 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>الرئيسية - EyeTalk</title>
 
+  <!-- ✅ الخطوط والتصميم -->
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-<script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+
+  <!-- ✅ مكتبة تتبع النظر -->
+  <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+
+  <!-- ✅ مكتبات Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+  <!-- ✅ مكتبة البريد -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 
 <body class="theme-dark">
 
-  <!-- الهيدر -->
+  <!-- ✅ الهيدر -->
   <header>
     <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
     <h1 class="app-title">الصفحة الرئيسية</h1>
-
-    <!-- ✅ اللوقو -->
     <div class="logo">
       <img src="logo.png" alt="شعار الموقع" />
     </div>
@@ -43,11 +53,15 @@
 
   <!-- ✅ المحتوى الرئيسي -->
   <main class="page-wrap">
-<h2 class="hero"> عبر عن احتياجك بنظرة</h2>
-
-    <!-- شبكة الأيقونات -->
+    <h2 class="hero">عبر عن احتياجك بنظرة</h2>
     <section id="iconsContainer"></section>
   </main>
+
+  <!-- ✅ أدوات التحكم الجانبية للصوت -->
+  <div id="sideControls">
+    <div class="side-icon" data-action="mute">🔇</div>
+    <div class="side-icon" data-action="unmute">🔊</div>
+  </div>
 
   <!-- ✅ مؤشر النظر -->
   <div id="cursorDot"></div>
@@ -55,21 +69,40 @@
   <!-- ✅ زر الطوارئ -->
   <button id="stopAlarm" type="button">إيقاف الطوارئ</button>
 
-  <!-- ✅ كرتي التحكم بتتبع النظر -->
-  <div class="eye-control left" id="stopTracking">
-    🛑 إيقاف تتبّع النظر
-  </div>
+  <!-- ✅ تهيئة الثيم -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    const savedFont = localStorage.getItem("fontSize") || "100";
 
-  <div class="eye-control right" id="startTracking">
-    👁️ متابعة تتبّع النظر
-  </div>
+    document.body.classList.remove("theme-dark", "theme-light");
+    document.body.classList.add(`theme-${savedTheme}`);
+    document.body.style.fontSize = savedFont + "%";
+  });
+  </script>
 
-  <!-- ✅ مكتبات -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <!-- ✅ السايدبار -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("overlay");
 
-  <!-- ✅ سكربت -->
+    if (menuToggle && sidebar && overlay) {
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+        overlay.classList.toggle("active");
+      });
+
+      overlay.addEventListener("click", () => {
+        sidebar.classList.remove("active");
+        overlay.classList.remove("active");
+      });
+    }
+  });
+  </script>
+
+  <!-- ✅ سكربت التطبيق -->
   <script src="script.js"></script>
 
 </body>

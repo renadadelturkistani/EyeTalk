@@ -4,24 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تعديل الأيقونات - EyeTalk</title>
-  <link rel="stylesheet" href="style.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
+  <!--  الهيدر -->
   <header>
-    <span class="menu-toggle" aria-label="فتح القائمة">☰</span>
+    <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
     <h1 class="app-title">تعديل الأيقونات</h1>
-  <div class="logo">
-    <img src="logo.png" alt="شعار الموقع" />
-  </div>
-
-
+    <div class="logo">
+      <img src="logo.png" alt="شعار الموقع" />
+    </div>
   </header>
 
-
-  <!-- ✅ الشريط الجانبي -->
+  <!--  الشريط الجانبي -->
   <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
     <h2>القائمة</h2>
     <nav>
@@ -39,66 +37,153 @@
 
   <div id="overlay"></div>
 
+  <!-- المحتوى الرئيسي -->
   <main class="page-wrap">
     <section class="card">
       <h2 class="card-title">قائمة الأيقونات</h2>
-      <p class="muted">يمكنك تخصيص الأيقونات والنصوص، وسيتم حفظ التغييرات وتحديث الشاشة الرئيسية تلقائيًا</p>
+      <p class="muted">
+    يمكنك تخصيص واجهة التطبيق من خلال تعديل النصوص، وإضافة الأيقونات الجديدة، أو حذف غير الضرورية، ثم حفظ التغييرات لتحديث الصفحة الرئيسية.
+      </p>
+
       <div id="editor" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grid-gap)"></div>
-      <div style="margin-top:14px">
-        <button id="addIcon"> إضافة أيقونة</button>
+
+      <div style="margin-top:14px;text-align:center">
+        <button id="addIcon">إضافة أيقونة جديدة</button>
+        <button id="saveChanges" style="margin-inline-start:8px"> حفظ التغييرات</button>
         <button id="resetIcons" class="danger" style="margin-inline-start:8px"> الوضع الافتراضي</button>
       </div>
     </section>
   </main>
 
-  <!-- Firebase + EmailJS -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <footer style="text-align:center; color:#94a3b8; margin:20px 0">
+    © Renad Turkistani © Kholod AlGhtani
+  </footer>
 
+  <!--  سكربت الصفحة -->
   <script>
     const editor = document.getElementById('editor');
+
+    // القيم الافتراضية (حالة الطوارئ دائمًا أول وحدة)
     const defaults = [
-      { emoji: "🚨", label: "حالة طارئة" },
-      { emoji: "💧",  label: "أريد الماء" },
+      { emoji: "🚨", label: "حالة طارئة", fixed: true },
+      { emoji: "💧", label: "أريد الماء" },
       { emoji: "🍽️", label: "أريد الطعام" },
-      { emoji: "💊",  label: "أريد الدواء" },
+      { emoji: "💊", label: "أريد الدواء" },
       { emoji: "🚶‍♀️", label: "أريد المشي" },
-      { emoji: "🚻",  label: "أريد الحمام" }
+      { emoji: "🚻", label: "أريد الحمام" }
     ];
-    const load =()=> JSON.parse(localStorage.getItem('customIcons')) || defaults;
-    const save =(l)=> localStorage.setItem('customIcons', JSON.stringify(l));
-    function render(){
+
+    // تحميل وحفظ الأيقونات من localStorage
+    const load = () => JSON.parse(localStorage.getItem('customIcons')) || defaults;
+    const save = (l) => localStorage.setItem('customIcons', JSON.stringify(l));
+
+    // رسم واجهة التعديل
+    function render() {
       const list = load();
       editor.innerHTML = '';
-      list.forEach((it,i)=>{
+      list.forEach((it, i) => {
         const c = document.createElement('div');
-        c.className='card'; c.style.textAlign='center';
+        c.className = 'card';
+        c.style.textAlign = 'center';
+
         c.innerHTML = `
-          <div class="icon-emoji" style="margin:0 auto">${it.emoji}</div>
-          <div class="icon-label" style="margin:.4rem 0 0">${it.label}</div>
-          <div class="range-wrap" style="margin-top:.6rem">
-            <input data-i="${i}" data-k="emoji" type="text" value="${it.emoji}" placeholder="إيموجي">
-            <input data-i="${i}" data-k="label" type="text" value="${it.label}" placeholder="نص">
-            <button data-i="${i}" data-act="del" class="danger" style="margin-top:.5rem">حذف</button>
+          <div class="icon-emoji" style="margin:0 auto;font-size:2rem">${it.emoji}</div>
+          <div class="icon-label" style="margin:.4rem 0 0;font-weight:600">${it.label}</div>
+          <div style="margin-top:.6rem">
+            <input data-i="${i}" data-k="emoji" type="text" value="${it.emoji}" placeholder="إيموجي" ${it.fixed ? 'disabled' : ''}>
+            <input data-i="${i}" data-k="label" type="text" value="${it.label}" placeholder="النص">
+            ${it.fixed ? '<button disabled class="danger" style="opacity:0.5">غير قابل للحذف</button>' :
+            `<button data-i="${i}" data-act="del" class="danger" style="margin-top:.5rem">حذف</button>`}
           </div>`;
         editor.appendChild(c);
       });
     }
-    editor.addEventListener('input',(e)=>{
-      const i=+e.target.dataset.i, k=e.target.dataset.k; if(Number.isNaN(i)||!k) return;
-      const list=load(); list[i][k]=e.target.value; save(list);
+
+    // تعديل القيم داخل الواجهة
+    editor.addEventListener('input', (e) => {
+      const i = +e.target.dataset.i, k = e.target.dataset.k;
+      if (Number.isNaN(i) || !k) return;
+      const list = load();
+      list[i][k] = e.target.value;
+      save(list);
     });
-    editor.addEventListener('click',(e)=>{
-      if(e.target.dataset.act==='del'){ const i=+e.target.dataset.i; const list=load(); list.splice(i,1); save(list); render(); }
+
+    // حذف أيقونة (إلا الطوارئ)
+    editor.addEventListener('click', (e) => {
+      if (e.target.dataset.act === 'del') {
+        const i = +e.target.dataset.i;
+        const list = load();
+        if (list[i]?.fixed) return alert("لا يمكن حذف أيقونة الطوارئ 🚨");
+        list.splice(i, 1);
+        save(list);
+        render();
+      }
     });
-    document.getElementById('addIcon').onclick=()=>{ const l=load(); l.push({emoji:"🙂",label:"نص جديد"}); save(l); render(); };
-    document.getElementById('resetIcons').onclick=()=>{ save(defaults); render(); };
+
+    // إضافة أيقونة جديدة
+    document.getElementById('addIcon').onclick = () => {
+      const l = load();
+      l.push({ emoji: "🙂", label: "نص جديد" });
+      save(l);
+      render();
+    };
+
+    // حفظ التغييرات يدويًا
+    document.getElementById('saveChanges').onclick = () => {
+      alert("تم حفظ التغييرات بنجاح ✅");
+    };
+
+    // إعادة الوضع الافتراضي
+    document.getElementById('resetIcons').onclick = () => {
+      if (confirm("هل تريد بالتأكيد إعادة الوضع الافتراضي؟")) {
+        save(defaults);
+        render();
+      }
+    };
+
+    // أول تحميل
     render();
   </script>
 
-  <script src="script.js"></script>
-    <footer style="text-align:center; color:#94a3b8; margin:20px 0">© Renad Turkistani © kholod alghtani </footer>
+  <!--  سكربت السايدبار (يعمل في كل الصفحات) -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuToggle = document.getElementById("menuToggle");
+      const sidebar = document.getElementById("sidebar");
+      const overlay = document.getElementById("overlay");
 
+      if (menuToggle && sidebar && overlay) {
+        menuToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+          overlay.classList.toggle("active");
+        });
+
+        overlay.addEventListener("click", () => {
+          sidebar.classList.remove("active");
+          overlay.classList.remove("active");
+        });
+      }
+    });
+  </script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  const savedFont = localStorage.getItem("fontSize") || "100";
+
+  document.body.classList.remove("theme-dark", "theme-light");
+  document.body.classList.add(`theme-${savedTheme}`);
+  document.body.style.fontSize = savedFont + "%";
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme") || "dark";
+  const savedFont = localStorage.getItem("fontSize") || "100";
+
+  document.body.classList.remove("theme-dark", "theme-light");
+  document.body.classList.add(`theme-${savedTheme}`);
+  document.body.style.fontSize = savedFont + "%";
+});
+</script>
 </body>
 </html>
