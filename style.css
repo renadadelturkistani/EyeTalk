@@ -106,8 +106,6 @@ body {
   text-align: center;
   line-height: 1.7;
   transition: background 0.4s ease, color 0.4s ease;
-    overflow: hidden; /* يمنع السكروول */
-
 }
 
 /* الروابط */
@@ -122,8 +120,7 @@ a {
 ========================================================= */
 header {
   background: linear-gradient(90deg, var(--primary-700), var(--primary));
-    height: 120px; /* تصغير الهيدر شوي */
-
+  height: var(--header-h);
   color: #fff;
   padding: 0 18px;
   display: flex;
@@ -443,16 +440,16 @@ select:focus {
 ========================================================= */
 #iconsContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 0 12px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 32px auto 20px;
+  padding: 0 18px;
 }
 
 /* تصميم الكرت الخاص بكل أيقونة */
 .icon {
-  height: 150px;
+  height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
