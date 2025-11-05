@@ -5,17 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>تسجيل دخول المساعد - EyeTalk</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-
-<!-- تحميل مكتبة Firebase الكاملة -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 </head>
-
 <body>
+
   <div class="login-page" id="loginPage">
     <div class="login-container">
       <div class="login-logo">
@@ -30,25 +24,81 @@
         <button type="submit">تسجيل الدخول</button>
       </form>
 
-      <div id="debug" style="margin-top:10px; color:#34c917; font-weight:700;"></div>
+      <div id="debug" style="margin-top:10px; color:#b91c1c; font-weight:700;"></div>
 
-      <p class="register-text">
-        ليس لديك حساب؟ <a href="register.html">إنشاء حساب</a>
-      </p>
+      <p class="register-text">ليس لديك حساب؟ <a href="register.html">إنشاء حساب</a></p>
     </div>
   </div>
 
-  <!-- ربط السكربت المركزي -->
-  <script src="script.js"></script>
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  const savedFont = localStorage.getItem("fontSize") || "100";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-  document.body.classList.remove("theme-dark", "theme-light");
-  document.body.classList.add(`theme-${savedTheme}`);
-  document.body.style.fontSize = savedFont + "%";
-});
-</script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCBGtwVSod4bZ13hH7ZJLAOW0xPbKmzJEw",
+      authDomain: "eyetalk-96125.firebaseapp.com",
+      projectId: "eyetalk-96125",
+      storageBucket: "eyetalk-96125.appspot.com",
+      messagingSenderId: "663319806538",
+      appId: "1:663319806538:web:e93e47829d0cb4eba4dcb3"
+    };
+
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db   = getFirestore(app);
+
+    const debug = (msg)=> {
+      console.log(msg);
+      const el = document.getElementById('debug');
+      if (el) el.textContent = typeof msg === 'string' ? msg : (msg?.message || JSON.stringify(msg));
+    };
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email    = document.getElementById("assistantEmail").value.trim();
+      const password = document.getElementById("password").value;
+
+      try {
+        // 1) تسجيل الدخول بحساب المساعد
+        const { user } = await signInWithEmailAndPassword(auth, email, password);
+        debug(" تم تسجيل الدخول: " + user.uid);
+
+        // 2) محاولة جلب الوثيقة من Firestore
+        let patientName   = "المريض";
+        let assistantName = "المساعد";
+        let assistantEmail= email;
+
+        try {
+          const ref  = doc(db, "patients", user.uid);
+          const snap = await getDoc(ref);
+          if (snap.exists()) {
+            const data = snap.data();
+            patientName    = data.fullName       || patientName;
+            assistantName  = data.assistantName  || assistantName;
+            assistantEmail = data.assistantEmail || assistantEmail;
+            debug(" تم جلب بيانات Firestore");
+          } else {
+            debug(" لم تُعثر وثيقة للمستخدم في Firestore — سنكمل بالافتراضي");
+          }
+        } catch (fireErr) {
+          debug(" خطأ أثناء قراءة Firestore: " + (fireErr?.message || fireErr));
+        }
+
+        // 3) تخزين محليًا ثم التحويل دائمًا
+        localStorage.setItem("patientName",   patientName);
+        localStorage.setItem("assistantName", assistantName);
+        localStorage.setItem("assistantEmail",assistantEmail);
+
+        window.location.href = "home.html";
+
+      } catch (error) {
+        debug(" فشل تسجيل الدخول: " + (error?.message || error));
+        alert("فشل تسجيل الدخول: " + (error?.message || error));
+      }
+    });
+  </script>
+
 </body>
 </html>

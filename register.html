@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -9,7 +8,6 @@
   <!-- الخط -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
 
-
   <!-- ملف التنسيق -->
   <link rel="stylesheet" href="style.css" />
 
@@ -17,7 +15,8 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     (function () {
-      emailjs.init("R7ZqqOZXPYYhwhpRd");
+      emailjs.init("DX_7hfu4mvcCyCf9B"); // ✅ المفتاح العام الصحيح من الكود الأول
+      console.log("✅ EmailJS جاهز للعمل");
     })();
   </script>
 </head>
@@ -78,8 +77,10 @@
       const password       = document.getElementById("regPassword").value;
 
       try {
+        // ✅ إنشاء الحساب في Firebase
         const { user } = await createUserWithEmailAndPassword(auth, assistantEmail, password);
 
+        // ✅ حفظ بيانات المستخدم في Firestore
         await setDoc(doc(db, "patients", user.uid), {
           fullName,
           assistantName,
@@ -87,22 +88,30 @@
           createdAt: serverTimestamp()
         });
 
+        // ✅ إرسال رسالة الترحيب عبر EmailJS (من الكود الأول)
         try {
-          await emailjs.send("service_b5uzkwh", "template_vrmacam", {
-            name: assistantName,
-            email: assistantEmail
-          });
-          console.log("✅ تم إرسال الترحيب");
+          const params = {
+            assistant_name: assistantName,
+            email: assistantEmail,
+            date: new Date().toLocaleString()
+          };
+
+          await emailjs.send("service_efegnl1", "template_8vngicw", params);
+          console.log("✅ تم إرسال رسالة الترحيب بنجاح");
         } catch (err) {
-          console.warn("⚠️ تعذّر إرسال الترحيب:", err);
+          console.warn("⚠️ فشل إرسال الترحيب:", err);
         }
 
+        // ✅ تسجيل الدخول مباشرة بعد التسجيل
         await signInWithEmailAndPassword(auth, assistantEmail, password);
 
+        // ✅ حفظ البيانات محلياً
         localStorage.setItem("patientName", fullName);
         localStorage.setItem("assistantName", assistantName);
         localStorage.setItem("assistantEmail", assistantEmail);
 
+        // ✅ تحويل المستخدم للصفحة الرئيسية
+        alert("تم إنشاء الحساب وإرسال رسالة الترحيب بنجاح!");
         window.location.href = "index.html";
       } catch (error) {
         alert("حدث خطأ: " + (error?.message || error));
@@ -111,20 +120,17 @@
   </script>
 
   <!-- زر إظهار/إخفاء كلمة المرور -->
-<script>
-  const toggle = document.getElementById("toggleRegPwd");
-  const passwordInput = document.getElementById("regPassword");
+  <script>
+    const toggle = document.getElementById("toggleRegPwd");
+    const passwordInput = document.getElementById("regPassword");
 
-  toggle.addEventListener("click", () => {
-    const isVisible = passwordInput.type === "text";
-    passwordInput.type = isVisible ? "password" : "text";
-
-    // استبدال الكلاس بالأيقونة المناسبة
-    toggle.classList.toggle("fa-eye");
-    toggle.classList.toggle("fa-eye-slash");
-  });
-</script>
-
+    toggle.addEventListener("click", () => {
+      const isVisible = passwordInput.type === "text";
+      passwordInput.type = isVisible ? "password" : "text";
+      toggle.classList.toggle("fa-eye");
+      toggle.classList.toggle("fa-eye-slash");
+    });
+  </script>
 
 </body>
 </html>

@@ -4,102 +4,116 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تعديل الأيقونات - EyeTalk</title>
-
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
-  <!--  الهيدر -->
   <header>
-    <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
+    <span class="menu-toggle" aria-label="فتح القائمة">☰</span>
     <h1 class="app-title">تعديل الأيقونات</h1>
     <div class="logo">
       <img src="logo.png" alt="شعار الموقع" />
     </div>
   </header>
 
-  <!--  الشريط الجانبي -->
+  <!-- ✅ الشريط الجانبي -->
   <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
     <h2>القائمة</h2>
     <nav>
       <a href="home.html">الرئيسية</a>
-      <a href="icons-edit.html">تعديل الأيقونات</a>
+      <a href="icons-edit.html" class="active">تعديل الأيقونات</a>
       <a href="settings.html">الإعدادات</a>
       <a href="profile.html">الملف الشخصي</a>
       <a href="about.html">عن التطبيق</a>
       <a href="contact.html">تواصل</a>
     </nav>
-
     <hr style="opacity:.15;margin:14px 0">
     <a class="danger-link" href="logout.html">تسجيل خروج</a>
   </aside>
 
   <div id="overlay"></div>
 
-  <!-- المحتوى الرئيسي -->
   <main class="page-wrap">
     <section class="card">
       <h2 class="card-title">قائمة الأيقونات</h2>
-      <p class="muted">
-    يمكنك تخصيص واجهة التطبيق من خلال تعديل النصوص، وإضافة الأيقونات الجديدة، أو حذف غير الضرورية، ثم حفظ التغييرات لتحديث الصفحة الرئيسية.
-      </p>
+      <p class="muted">يمكنك تخصيص الأيقونات والنصوص، وسيتم حفظ التغييرات وتحديث الشاشة الرئيسية تلقائيًا</p>
 
       <div id="editor" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--grid-gap)"></div>
 
-      <div style="margin-top:14px;text-align:center">
-        <button id="addIcon">إضافة أيقونة جديدة</button>
-        <button id="saveChanges" style="margin-inline-start:8px"> حفظ التغييرات</button>
-        <button id="resetIcons" class="danger" style="margin-inline-start:8px"> الوضع الافتراضي</button>
-      </div>
-    </section>
-  </main>
+      <!-- ✅ أزرار التحكم -->
+<div style="
+  margin-top:20px; 
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  gap:12px; 
+  flex-wrap:wrap;
+">
+  <button id="addIcon">➕ إضافة أيقونة</button>
+  <button id="resetIcons" class="danger">↩️ الوضع الافتراضي</button>
+  <button id="saveChanges" 
+    style="background-color:#1e40af; color:#fff; border:none; padding:10px 16px; border-radius:6px; font-weight:bold; cursor:pointer;">
+    💾 حفظ التغييرات
+  </button>
+</div>
 
-  <footer style="text-align:center; color:#94a3b8; margin:20px 0">
-    © Renad Turkistani © Kholod AlGhtani
-  </footer>
 
-  <!--  سكربت الصفحة -->
+  <!-- Firebase + EmailJS -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
   <script>
     const editor = document.getElementById('editor');
-
-    // القيم الافتراضية (حالة الطوارئ دائمًا أول وحدة)
     const defaults = [
-      { emoji: "🚨", label: "حالة طارئة", fixed: true },
-      { emoji: "💧", label: "أريد الماء" },
+      { emoji: "🚨", label: "حالة طارئة", fixed: true }, // 🔒 غير قابلة للحذف
+      { emoji: "💧",  label: "أريد الماء" },
       { emoji: "🍽️", label: "أريد الطعام" },
-      { emoji: "💊", label: "أريد الدواء" },
+      { emoji: "💊",  label: "أريد الدواء" },
       { emoji: "🚶‍♀️", label: "أريد المشي" },
-      { emoji: "🚻", label: "أريد الحمام" }
+      { emoji: "🚻",  label: "أريد الحمام" }
     ];
 
-    // تحميل وحفظ الأيقونات من localStorage
     const load = () => JSON.parse(localStorage.getItem('customIcons')) || defaults;
     const save = (l) => localStorage.setItem('customIcons', JSON.stringify(l));
 
-    // رسم واجهة التعديل
     function render() {
       const list = load();
       editor.innerHTML = '';
+
       list.forEach((it, i) => {
         const c = document.createElement('div');
         c.className = 'card';
         c.style.textAlign = 'center';
+        c.style.padding = '20px';
+        c.style.borderRadius = '12px';
 
+        // 🔹 بناء محتوى الأيقونة
         c.innerHTML = `
-          <div class="icon-emoji" style="margin:0 auto;font-size:2rem">${it.emoji}</div>
-          <div class="icon-label" style="margin:.4rem 0 0;font-weight:600">${it.label}</div>
-          <div style="margin-top:.6rem">
-            <input data-i="${i}" data-k="emoji" type="text" value="${it.emoji}" placeholder="إيموجي" ${it.fixed ? 'disabled' : ''}>
-            <input data-i="${i}" data-k="label" type="text" value="${it.label}" placeholder="النص">
-            ${it.fixed ? '<button disabled class="danger" style="opacity:0.5">غير قابل للحذف</button>' :
-            `<button data-i="${i}" data-act="del" class="danger" style="margin-top:.5rem">حذف</button>`}
-          </div>`;
+          <div class="icon-emoji" style="font-size:40px; margin:0 auto">${it.emoji}</div>
+          <div class="icon-label" style="margin:.4rem 0 0; font-weight:bold">${it.label}</div>
+
+          <label style="display:block; text-align:right; font-weight:600; color:#cbd5e1; margin:6px 0 4px;">أيقونة</label>
+          <input data-i="${i}" data-k="emoji" type="text" value="${it.emoji}" placeholder="إيموجي"
+            style="width:100%; padding:10px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; text-align:center; font-size:18px;"/>
+
+          <label style="display:block; text-align:right; font-weight:600; color:#cbd5e1; margin:8px 0 4px;">النص</label>
+          <input data-i="${i}" data-k="label" type="text" value="${it.label}" placeholder="نص"
+            style="width:100%; padding:10px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; text-align:center; font-size:16px;"/>
+
+          ${
+            it.fixed
+              ? `<button disabled style="margin-top:.7rem; background:#b91c1c; color:#fff; opacity:.6; border:none; border-radius:6px; padding:8px 14px;">غير قابل للحذف</button>`
+              : `<button data-i="${i}" data-act="del" class="danger" style="margin-top:.7rem;">حذف</button>`
+          }
+        `;
         editor.appendChild(c);
       });
     }
 
-    // تعديل القيم داخل الواجهة
+    // 🔹 تحديث فوري عند تعديل النص أو الإيموجي
     editor.addEventListener('input', (e) => {
       const i = +e.target.dataset.i, k = e.target.dataset.k;
       if (Number.isNaN(i) || !k) return;
@@ -108,19 +122,19 @@
       save(list);
     });
 
-    // حذف أيقونة (إلا الطوارئ)
+    // 🔹 منع حذف أيقونة الطوارئ
     editor.addEventListener('click', (e) => {
       if (e.target.dataset.act === 'del') {
         const i = +e.target.dataset.i;
         const list = load();
-        if (list[i]?.fixed) return alert("لا يمكن حذف أيقونة الطوارئ 🚨");
+        if (list[i].fixed) return; // 🚫 ممنوع حذف الطوارئ
         list.splice(i, 1);
         save(list);
         render();
       }
     });
 
-    // إضافة أيقونة جديدة
+    // 🔹 إضافة أيقونة جديدة
     document.getElementById('addIcon').onclick = () => {
       const l = load();
       l.push({ emoji: "🙂", label: "نص جديد" });
@@ -128,62 +142,22 @@
       render();
     };
 
-    // حفظ التغييرات يدويًا
-    document.getElementById('saveChanges').onclick = () => {
-      alert("تم حفظ التغييرات بنجاح ✅");
-    };
-
-    // إعادة الوضع الافتراضي
+    // 🔹 إعادة الوضع الافتراضي
     document.getElementById('resetIcons').onclick = () => {
-      if (confirm("هل تريد بالتأكيد إعادة الوضع الافتراضي؟")) {
-        save(defaults);
-        render();
-      }
+      save(defaults);
+      render();
     };
 
-    // أول تحميل
+    // 🔹 زر حفظ التغييرات
+    document.getElementById('saveChanges').onclick = () => {
+      alert("✅ تم حفظ التغييرات بنجاح!");
+    };
+
     render();
   </script>
 
-  <!--  سكربت السايدبار (يعمل في كل الصفحات) -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const menuToggle = document.getElementById("menuToggle");
-      const sidebar = document.getElementById("sidebar");
-      const overlay = document.getElementById("overlay");
-
-      if (menuToggle && sidebar && overlay) {
-        menuToggle.addEventListener("click", () => {
-          sidebar.classList.toggle("active");
-          overlay.classList.toggle("active");
-        });
-
-        overlay.addEventListener("click", () => {
-          sidebar.classList.remove("active");
-          overlay.classList.remove("active");
-        });
-      }
-    });
-  </script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  const savedFont = localStorage.getItem("fontSize") || "100";
-
-  document.body.classList.remove("theme-dark", "theme-light");
-  document.body.classList.add(`theme-${savedTheme}`);
-  document.body.style.fontSize = savedFont + "%";
-});
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  const savedFont = localStorage.getItem("fontSize") || "100";
-
-  document.body.classList.remove("theme-dark", "theme-light");
-  document.body.classList.add(`theme-${savedTheme}`);
-  document.body.style.fontSize = savedFont + "%";
-});
-</script>
+  <script src="script.js"></script>
 </body>
+
+
 </html>
