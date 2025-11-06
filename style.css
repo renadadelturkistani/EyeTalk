@@ -3,16 +3,16 @@
    (تدرج موفي/أزرق جديد)
 ========================================================= */
 :root{
-  /* ألوان افتراضية (داكن - تدرج موفي/أزرق) */
-  --bg: #294b68; /* خلفية داكنة (ليلي) */
-  --card: #243f56; /* بطاقة داكنة (أزرق غامق) */
+  /* الألوان الأساسية */
+  --bg: #294b68;
+  --card: #243f56;
   --text: #e5e7eb;
   --muted: #94a3b8;
 
-  --primary: #196b8f; /* أرجواني/أزرق فاتح (Indigo 400) */
-  --primary-600: #446a8a; /* أرجواني/أزرق متوسط (Indigo 600) */
-  --primary-700: #9fc5d8; /* أرجواني/أزرق داكن (Indigo 700) */
-  --accent: #38a8f2; /* أرجواني فاتح / لمسة (Violet 400) */
+  --primary: #196b8f;
+  --primary-600: #446a8a;
+  --primary-700: #9fc5d8;
+  --accent: #38a8f2;
 
   --danger:#ef4444;
   --warn:#ffcc00;
@@ -22,7 +22,7 @@
   --shadow-1:0 6px 16px rgba(210, 211, 220, 0.15);
   --shadow-2:0 10px 25px rgba(151, 172, 216, 0.22);
 
-  /* 👇 حجم الأساس (يتغير من الإعدادات بنسبة %) */
+  /* 👇 الخط */
   --base-font:100%;
 
   /* الهيدر */
@@ -30,7 +30,7 @@
   --header-title-size:36px;
   --header-title-color:#ffffff;
 
-  /* شبكة الأيقونات (تم تكبيرها) */
+  /* شبكة الأيقونات */
   --icon-height:160px;
   --icon-font:1.1rem;
   --emoji-size:32px;
@@ -38,125 +38,253 @@
   --grid-gap:26px;
 }
 
-
-
-
-
-/* وضع فاتح للتبديل من الإعدادات */
+/* =========================================================
+   🌗 وضع فاتح & داكن
+========================================================= */
 .theme-light{
   --bg: #f4f9fc;
   --card: #ffffff;
   --text: #1f2937;
   --muted: #6b7280;
-
   --primary: #5091dc;
   --primary-600: #ffffff;
   --primary-700: #2790e0;
-  --accent: #5ea3f2; /* أغمق قليلاً في الوضع الفاتح */
-
+  --accent: #5ea3f2;
   --header-title-color: #ffffff;
 }
 
-/* وضع داكن */
 .theme-dark{
   --bg: #0f3a5d;
   --card: #124772;
   --text: #e5e7eb;
   --muted: #e1e8f2;
-
   --primary: #58b7ff;
   --primary-600: #77b6e4;
   --primary-700: hsl(207, 73%, 68%);
   --accent: #55c1e5;
-
   --header-title-color: #fff;
 }
 
 /* =========================================================
    🧱 الأساسيات
 ========================================================= */
-/* الخط العام للمشروع (كايرو) */
 * {
   font-family: 'Cairo', sans-serif !important;
-  box-sizing:border-box;
+  box-sizing: border-box;
 }
 html{ font-size: var(--base-font); }
 body{
   margin:0;
-  background:var(--bg); color:var(--text); direction:rtl; text-align:center; line-height:1.7;
+  background:var(--bg);
+  color:var(--text);
+  direction:rtl;
+  text-align:center;
+  line-height:1.7;
 }
-a{ color:inherit }
+a{ color:inherit; text-decoration:none; }
 
 /* =========================================================
-   🧭 الهيدر
+   🧭 الهيدر (متجاوب)
 ========================================================= */
-header{
-  /* استخدام التدرج الموفي الجديد */
-  background:linear-gradient(90deg,var(--primary-700),var(--primary));
-  height:var(--header-h); color:#fff; padding:0 18px;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 3px 12px rgba(0,0,0,.25);
-  border-bottom-left-radius:12px; border-bottom-right-radius:12px; position:relative;
+header {
+  background: linear-gradient(90deg, var(--primary-700), var(--primary));
+  height: var(--header-h);
+  color: #fff;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,.25);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  position: relative;
 }
 
 header h1 {
   margin: 0;
-  font-weight: 800; /* ✅ جعل العنوان بولد */
+  font-weight: 800;
   line-height: 1;
   color: var(--header-title-color);
   font-size: var(--header-title-size);
 }
 
-
-
-
+/* زر القائمة (الهامبرغر) */
 .menu-toggle {
   position: absolute;
   inset-inline-start: 16px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 32px; /* ✅ تم تكبير الحجم */
+  font-size: 32px;
   cursor: pointer;
   font-weight: 900;
   color: #fff;
 }
 
-
-/* زر رجوع للرئيسية */
-.back-fab{
-  position:fixed; inset-block-start:calc(var(--header-h) + 12px); inset-inline-start:12px;
-  display:flex; align-items:center; justify-content:center;
-  width:44px; height:44px; border-radius:50%;
-  /* استخدام التدرج الموفي الجديد */
-  background:linear-gradient(135deg,var(--primary),var(--primary-700));
-  color:#fff; text-decoration:none; font-weight:900; font-size:20px; box-shadow:var(--shadow-2); z-index:1200;
+/* اللوقو داخل الهيدر */
+header .logo {
+  position: absolute;
+  inset-inline-end: 16px; /* في الجهة اليمنى بالوضع العربي */
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+header .logo img {
+  width: 130px;
+  height: auto;
+  border-radius: 50%;
+}
 
 /* =========================================================
-   🧩 عناصر عامة
+   📱🎨 الهيدر واللوقو المتجاوب (جميع المقاسات)
+========================================================= */
+
+/* 🖥️ الأجهزة الكبيرة (ديسكتوب) */
+@media (min-width: 1025px) {
+  :root {
+    --header-h: 150px;
+    --header-title-size: 36px;
+  }
+
+  header .logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  header .logo img {
+    width: 130px;
+  }
+}
+
+/* 💻 التابلت */
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root {
+    --header-h: 110px;
+    --header-title-size: 28px;
+  }
+
+  header {
+    padding: 8px 16px;
+  }
+
+  header .logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  header .logo img {
+    width: 100px;
+  }
+}
+
+/* 📱 الجوال */
+@media (max-width: 768px) {
+  :root {
+    --header-h: 85px;
+    --header-title-size: 22px;
+  }
+
+  header {
+    padding: 6px 12px;
+  }
+
+  .menu-toggle {
+    font-size: 26px;
+    inset-inline-start: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  header .logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  header .logo img {
+    width: 70px;
+  }
+}
+
+/* 📱 الجوال الصغير جدًا */
+@media (max-width: 480px) {
+  :root {
+    --header-h: 75px;
+    --header-title-size: 18px;
+  }
+
+  header {
+    padding: 4px 10px;
+  }
+
+  .menu-toggle {
+    font-size: 22px;
+  }
+
+  header .logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  header .logo img {
+    width: 60px;
+  }
+}
+/* =========================================================
+   🧩 عناصر عامة + الكروت
 ========================================================= */
 
 .page-wrap {
   max-width: 1100px;
   margin: 24px auto 48px;
   padding: 0 16px;
-  text-align: center; /* ✅ تم التوسيط */
+  text-align: center;
 }
 
-
-
-.card{
-  background:var(--card); border-radius:18px; padding:18px 16px; box-shadow:var(--shadow-1);
-  /* تحديث لون إطار البطاقة ليتناسب مع الثيم الموفي */
-  border:2px solid rgba(187, 193, 244, 0.25); margin:14px 0;
+.card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 18px 16px;
+  box-shadow: var(--shadow-1);
+  border: 2px solid rgba(187, 193, 244, 0.25);
+  margin: 14px 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-/* تحديث ألوان العناوين والأبطال */
-.card-title{ margin:0 0 8px; color:var(--accent); font-weight:900 }
-.hero{ margin:12px 0 18px; color:var(--accent); font-weight:900; font-size:1.6rem }
-.muted{ color:var(--muted); margin:6px 0 0; }
 
-/* أزرار وفورمات */
+/* حركة بسيطة للكرت */
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* عناوين داخل الكروت */
+.card-title {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.hero {
+  margin: 12px 0 18px;
+  color: var(--accent);
+  font-weight: 900;
+  font-size: 1.6rem;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+
+/* =========================================================
+   🔘 الأزرار
+========================================================= */
 button, .btn {
   background: linear-gradient(135deg, var(--primary), var(--primary-700));
   color: #fff;
@@ -166,47 +294,64 @@ button, .btn {
   font-weight: 800;
   cursor: pointer;
   transition: transform .2s ease, box-shadow .2s ease;
-  margin: 0 6px; /* ✅ مسافة 6px يمين ويسار */
+  margin: 0 6px;
 }
 
-button:hover,.btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-2) }
-button:active,.btn:active{ transform:scale(.98) }
-button.danger{ background:#ef4444 }
-a.danger-link{ color:#ef4444; font-weight:800; text-decoration:none }
-
-input, textarea, select{
-  width:100%; padding:.75rem .9rem; border:2px solid #b0caed; border-radius:12px; font-size:1rem;
-  outline:none; transition:.2s;
-  background:var(--card);
-  color:var(--text);
+button:hover, .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
 }
-/* تحديث تركيز المدخلات للون الموفي */
-input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shadow:0 0 0 3px rgba(167, 139, 250, .25) }
+button:active, .btn:active {
+  transform: scale(.98);
+}
 
+button.danger { background: #ef4444; }
+a.danger-link {
+  color: #ef4444;
+  font-weight: 800;
+  text-decoration: none;
+}
 
+/* =========================================================
+   🧾 الحقول + الفورمات
+========================================================= */
+input, textarea, select {
+  width: 100%;
+  padding: .75rem .9rem;
+  border: 2px solid #b0caed;
+  border-radius: 12px;
+  font-size: 1rem;
+  outline: none;
+  background: var(--card);
+  color: var(--text);
+  transition: .2s;
+}
 
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, .25);
+}
 
+/* مجموعة الحقول */
 .fields {
   display: grid;
   gap: 20px;
   max-width: 700px;
-  margin: 0 auto; /* ✅ يوسّط المجموعة في الكرت */
+  margin: 0 auto;
 }
 
-/* كل صف (ليبل + إدخال) */
 .fields label {
   display: flex;
-  justify-content: space-between; /* ✅ الليبل على اليمين والإدخال على اليسار */
+  justify-content: space-between;
   align-items: center;
-  gap: 16px; /* ✅ مسافة متساوية بين النص والمربع */
+  gap: 16px;
   font-weight: 700;
   color: var(--text);
   text-align: right;
 }
 
-/* مربع الإدخال */
 .fields input {
-  flex: 1; /* ✅ يخلي جميع الحقول بنفس العرض تلقائيًا */
+  flex: 1;
   max-width: 480px;
   border: 1.8px solid #334155;
   border-radius: 12px;
@@ -215,19 +360,30 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   background: var(--card);
   color: var(--text);
   outline: none;
-  text-align: center; /* ✅ النص داخل المربع في المنتصف */
+  text-align: center;
   transition: border-color .2s, box-shadow .2s;
 }
 
-/* عند التركيز */
 .fields input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(167, 139, 250, .25);
 }
 
+/* ✅ متجاوبة للتابلت والجوال */
+@media (max-width: 768px) {
+  .fields label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .fields input {
+    width: 100%;
+    max-width: 100%;
+  }
+}
 
-
-
+/* =========================================================
+   🔐 صفحة تغيير كلمة المرور
+========================================================= */
 #pwdForm {
   display: grid;
   gap: 20px;
@@ -245,7 +401,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 #pwdForm label {
   font-weight: 700;
   color: var(--text);
-  min-width: 200px; /* يخلي الليبل بمساحة ثابتة */
+  min-width: 200px;
   text-align: right;
 }
 
@@ -263,168 +419,71 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 
 #pwdHint {
   display: block;
-  margin: 20px 0; /* ✅ مسافة فوق وتحت */
+  margin: 20px 0;
   color: var(--muted);
   font-size: .9rem;
   line-height: 1.8;
-  text-align: center; /* يعطي توازن لو الصفحة كلها بالوسط */
+  text-align: center;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* تخصيص للوضع الفاتح */
+/* =========================================================
+   💡 الوضع الفاتح لحقول الإدخال
+========================================================= */
 .theme-light input,
 .theme-light textarea,
 .theme-light select {
-  background:#fff;
-  color:#1f2937;
-  border-color:#d1d5db;
+  background: #fff;
+  color: #1f2937;
+  border-color: #d1d5db;
 }
 .theme-light input:focus,
 .theme-light textarea:focus,
 .theme-light select:focus {
-  /* استخدام لون الأكسنت للوضع الفاتح */
-  border-color:var(--accent); box-shadow:0 0 0 3px rgba(99, 102, 241, .25)
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, .25);
 }
-
-
 
 /* =========================================================
-   👁️ شبكة الآيقونات (الصفحة الرئيسية)
+   👤 صفحة الملف الشخصي
 ========================================================= */
-#iconsContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* ✅ أعرض شوي ومتجاوب */
-  gap: 40px; /* ✅ تباعد متناسق بين الكروت */
-  max-width: 1200px; /* ✅ ما يتجاوز عرض الصفحة */
-  margin: 32px auto 20px; /* ✅ توسيط الحاوية */
-  padding: 0 20px; /* ✅ مسافة من الجوانب عشان ما تلمس الأطراف */
-  box-sizing: border-box; /* ✅ يضمن عدم تجاوز الحدود */
+.profile-card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow-1);
+  border: 2px solid rgba(129, 140, 248, .25);
+  max-width: 600px;
+  margin: 20px auto;
 }
 
-.icon {
-  height: 240px; /* ✅ أطول من السابق */
+.profile-card h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.profile-info {
+  display: grid;
+  gap: 14px;
+}
+
+.profile-info label {
+  font-weight: 700;
+  color: var(--text);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #5dbdea, #8e97e9); /* ✅ تدرج ناعم */
-  border-radius: 22px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  text-align: center;
-  padding: 14px 18px;
-  user-select: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.icon:hover,
-.icon.active {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 26px rgba(75, 198, 232, 0.3);
+  gap: 6px;
 }
 
-.icon-emoji {
-  font-size: 2rem; /* تكبير الإيموجي */
-  line-height: 1;
-  margin-bottom: 12px;
-}
-
-.icon-label {
-  font-size: 1.1rem;
-  font-weight: 900;
-  color: #ffffff;
-}
-
-/* حالة الطوارئ - يمكن إبقاؤها أو تخصيصها */
-.icon.emergency {
-  background: linear-gradient(135deg, #ef4444, #b91c1c); /* تدرج أحمر للطوارئ */
-  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-}
-.icon.emergency:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 26px rgba(220, 38, 38, 0.5);
-}
-
-/* رسبونسف */
-@media (max-width:900px){ #iconsContainer{ grid-template-columns:repeat(2,1fr) } }
-@media (max-width:520px){
-  #iconsContainer{ grid-template-columns:1fr }
-  /* تم تكبير أحجام الكروت على الجوال أيضاً */
-  :root{ --icon-height:140px; --emoji-size:28px }
-}
-
-/* مؤشر النظر */
-#cursorDot {
-  position: fixed;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #e3e4e6; /* ❗️لون أحمر */
-  box-shadow: 0 0 8px rgba(9, 69, 137, 0.6); /* ظل أحمر */
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 9999;
-}
-
-
-/* زر إيقاف الطوارئ */
-#stopAlarm{
-  position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
-  background:#ef4444; font-weight:800; color:#fff; padding:.9rem 1.4rem; font-size:1.1rem;
-  border-radius:14px; display:none; z-index:9999; box-shadow:var(--shadow-2);
+.profile-info input[readonly] {
+  background: rgba(255,255,255,.05);
+  color: #cbd5e1;
+  cursor: not-allowed;
 }
 
 /* =========================================================
-   ⚙️ صفحة الإعدادات
-========================================================= */
-.settings-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin:12px 0 }
-.range-wrap{ display:grid; gap:8px }
-.range-wrap input[type="range"]{ width:200px }
-
-/* سويتش on/off */
-.switch{ position:relative; display:inline-flex; align-items:center; gap:10px; cursor:pointer }
-.switch input{ appearance:none; width:0; height:0; position:absolute; opacity:0 }
-.slider{
-  width:56px; height:32px; background:#334155; border-radius:999px; position:relative; transition:.25s;
-  box-shadow:inset 0 0 0 2px rgba(0,0,0,.15);
-}
-.slider::after{
-  content:""; position:absolute; top:3px; left:3px; width:26px; height:26px;
-  background:#fff; border-radius:50%; box-shadow:0 2px 6px rgba(0,0,0,.35); transition:.25s;
-}
-/* استخدام التدرج الموفي الجديد عند التفعيل */
-.switch input:checked + .slider{ background:linear-gradient(135deg,var(--primary),var(--primary-700)) }
-.switch input:checked + .slider::after{ transform:translateX(24px) }
-.switch .switch-text{ min-width:34px; text-align:center; color:var(--muted); font-weight:800 }
-
-/* سلايدر حجم النص */
-.range-wrap input[type="range"]{
-  appearance:none; height:6px; border-radius:6px; background:#22314d; outline:none;
-}
-/* استخدام التدرج الموفي الجديد للمقبض */
-.range-wrap input[type="range"]::-webkit-slider-thumb{
-  appearance:none; width:18px; height:18px; border-radius:50%;
-  background:linear-gradient(135deg,var(--primary),var(--primary-700));
-  box-shadow:0 2px 6px rgba(0,0,0,.35); cursor:pointer;
-}
-.range-wrap input[type="range"]::-moz-range-thumb{
-  width:18px; height:18px; border-radius:50%; border:0;
-  background:linear-gradient(135deg,var(--primary),var(--primary-700));
-  box-shadow:0 2px 6px rgba(0,0,0,.35); cursor:pointer;
-}
-
-/* =========================================================
-   🔐 صفحات الدخول/التسجيل
+   🔑 صفحات تسجيل الدخول / التسجيل
 ========================================================= */
 .login-page, .register-page {
   display: flex;
@@ -445,7 +504,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   text-align: center;
 }
 
-/* ✅ اللوقو داخل دائرة بيضاء */
+/* ✅ اللوقو داخل دائرة */
 .login-logo {
   background: #fff;
   border-radius: 50%;
@@ -463,7 +522,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   height: auto;
 }
 
-/* عنوان تسجيل الدخول */
+/* عنوان */
 .login-container h2 {
   margin: 20px 0 30px;
   font-size: 1.3rem;
@@ -471,21 +530,20 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   font-weight: 900;
 }
 
-/* ✅ الحقول البيضاء */
+/* الحقول البيضاء */
 .login-container input {
   border: 1.8px solid #d1d5db;
-  background: #ffffff; /* ✅ لون أبيض */
-  color: #1f2937; /* ✅ لون نص غامق */
+  background: #ffffff;
+  color: #1f2937;
   width: 100%;
   padding: .75rem .9rem;
   border-radius: 12px;
   font-size: 1rem;
-  margin-bottom: 14px; /* ✅ مسافة بين الحقول */
+  margin-bottom: 14px;
   outline: none;
   transition: all .25s ease;
 }
 
-/* ✅ تركيز الحقول */
 .login-container input:focus {
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(167, 139, 250, .25);
@@ -510,20 +568,13 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   box-shadow: var(--shadow-2);
 }
 
-.login-container button[type="submit"]:active {
-  transform: scale(.98);
-}
-
-/* ✅ نص الأسفل */
 .login-container small {
   display: block;
   margin-top: 18px;
   color: var(--muted);
 }
-
-
 /* =========================================================
-   📱 السايدبار (للجوال)
+   📱 السايدبار (القائمة الجانبية)
 ========================================================= */
 .sidebar {
   position: fixed;
@@ -531,38 +582,61 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   right: -280px;
   width: 260px;
   height: 100%;
-  background: rgba(31, 41, 55, 0.55); /* ✅ تقليل الشفافية */
+  background: rgba(31, 41, 55, 0.55);
   color: var(--text);
   box-shadow: -4px 0 18px rgba(0, 0, 0, .35);
   transition: right .3s ease;
   z-index: 1500;
   padding: 28px 20px;
   text-align: initial;
-  backdrop-filter: blur(10px); /* ✅ تأثير ضبابي */
+  backdrop-filter: blur(10px);
 }
 
-.sidebar.active{ right:0 }
-/* تحديث لون عنوان السايدبار ليتناسب مع الأكسنت الموفي */
-.sidebar h2{ font-size:1.1rem; font-weight:900; margin-bottom:24px; color:var(--accent); text-align:center }
-.sidebar nav a, .sidebar .side-btn{
-  display:flex; align-items:center; gap:12px; font-size:.98rem; font-weight:700; color:#e5e7eb;
-  text-decoration:none; padding:12px 14px; border-radius:12px; margin-bottom:12px;
-  background:transparent; border:0; width:100%; text-align:right; cursor:pointer;
+.sidebar.active {
+  right: 0;
 }
-/* تحديث لون النص عند التحويم ليتناسب مع الأكسنت الموفي */
-.sidebar nav a:hover, .sidebar .side-btn:hover{ background:#2f3a4b; color:var(--accent) }
-.sidebar nav a.danger-link{ color:#fca5a5 }
-.sidebar nav a.danger-link:hover{ background:#3f1b1b }
-.sidebar nav a span{ font-size:20px }
 
+.sidebar h2 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin-bottom: 24px;
+  color: var(--accent);
+  text-align: center;
+}
 
+.sidebar nav a, .sidebar .side-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: .98rem;
+  font-weight: 700;
+  color: #e5e7eb;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  text-align: right;
+  cursor: pointer;
+  transition: background .25s, color .25s;
+}
 
+.sidebar nav a:hover, .sidebar .side-btn:hover {
+  background: #2f3a4b;
+  color: var(--accent);
+}
 
+.sidebar nav a.danger-link { color: #fca5a5; }
+.sidebar nav a.danger-link:hover { background: #3f1b1b; }
+
+/* overlay */
 #overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25); /* تعتيم خفيف */
-  backdrop-filter: blur(4px); /* ضبابية للخلفية */
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
   display: none;
   z-index: 1400;
 }
@@ -570,100 +644,24 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   display: block;
 }
 
-
-
-
-
+/* ✅ متجاوبة على الجوال */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 240px;
+    padding: 20px 16px;
+  }
+  .sidebar nav a {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+  }
+}
 
 /* =========================================================
-   👤 صفحة الملف الشخصي
+   👁️ أزرار التحكم بالنظر (تشغيل / إيقاف)
 ========================================================= */
-.profile-card{
-  background:var(--card);
-  border-radius:18px;
-  padding:20px;
-  box-shadow:var(--shadow-1);
-  /* تحديث لون إطار البطاقة ليتناسب مع الثيم الموفي */
-  border:2px solid rgba(129, 140, 248, .25);
-  max-width:600px;
-  margin:20px auto;
-}
-
-/* تحديث لون عنوان البطاقة ليتناسب مع الأكسنت الموفي */
-.profile-card h3{
-  margin-top:0;
-  margin-bottom:16px;
-  color:var(--accent);
-  font-weight:900;
-}
-
-.profile-info{
-  display:grid;
-  gap:14px;
-}
-
-.profile-info label{
-  font-weight:700;
-  color:var(--text);
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
-
-/* استخدام لون خلفية أغمق للقراءة فقط */
-.profile-info input[readonly]{
-  background:rgba(255,255,255,.05);
-  color:#cbd5e1;
-  cursor:not-allowed;
-}
-
-#pwdForm{
-  display:grid;
-  gap:14px;
-  margin-top:10px;
-}
-
-#pwdForm input{
-  background:var(--card);
-  color:var(--text);
-}
-
-#pwdForm button{
-  justify-self:start;
-}
-
-#pwdForm small{
-  font-size:.85rem;
-}
-
-
-
-
-header .logo {
-  position: absolute;
-  inset-inline-end: 16px; /* في الجهة اليمنى بالوضع العربي */
-  top: 50%;
-  transform: translateY(-50%);
-  background: #fff;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-header .logo img {
-  width: 130px;
-  height: auto;
-  border-radius: 50%;
-}
-
-/* متابعة وايقاف التتبع*/
 .eye-control {
   position: fixed;
-  bottom: 40px; /* مسافة عن أسفل الصفحة */
+  bottom: 40px;
   padding: 30px 50px;
   border-radius: 1000px;
   font-weight: 1000;
@@ -675,26 +673,22 @@ header .logo img {
   z-index: 999;
 }
 
-/* 🟥 كرت إيقاف تتبع النظر */
 .eye-control.left {
   left: 40px;
   background: linear-gradient(135deg, #ef4444, #b91c1c);
 }
-
-/* 🟩 كرت متابعة تتبع النظر */
 .eye-control.right {
   right: 40px;
   background: linear-gradient(135deg, #10b981, #059669);
 }
 
-/* تفاعل عند التحويم */
 .eye-control:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 24px rgba(0,0,0,.35);
 }
 
-/* موبايل */
-@media (max-width:600px){
+/* 📱 للجوال */
+@media (max-width: 600px) {
   .eye-control {
     padding: 10px 18px;
     font-size: .9rem;
@@ -703,26 +697,54 @@ header .logo img {
   .eye-control.right { right: 14px; }
 }
 
+/* =========================================================
+   🔴 زر إيقاف الطوارئ
+========================================================= */
+#stopAlarm {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ef4444;
+  font-weight: 800;
+  color: #fff;
+  padding: .9rem 1.4rem;
+  font-size: 1.1rem;
+  border-radius: 14px;
+  display: none;
+  z-index: 9999;
+  box-shadow: var(--shadow-2);
+}
 
+/* =========================================================
+   👁️ مؤشر النظر (Dot)
+========================================================= */
+#cursorDot {
+  position: fixed;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #e3e4e6;
+  box-shadow: 0 0 8px rgba(9, 69, 137, 0.6);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+}
 
-
-
-
-/* حركة دخول الكارد من الأسفل */
+/* =========================================================
+   ✨ الحركات والمؤثرات البصرية
+========================================================= */
 .card {
   opacity: 0;
   transform: translateY(40px);
   animation: fadeUp 1.2s ease forwards;
 }
-
-/* حركة تدريجية للنصوص داخل الكارد */
 .card-title {
   opacity: 0;
   transform: translateY(-15px);
   animation: fadeIn 1s ease forwards;
   animation-delay: 0.3s;
 }
-
 .card p {
   opacity: 0;
   transform: translateY(10px);
@@ -730,86 +752,81 @@ header .logo img {
   animation-delay: 0.6s;
 }
 
-/* تعريف الحركات */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* تأثير بسيط عند مرور الفأرة */
-.card:hover {
-  transform: translateY(-6px);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+/* تأثير الأزرار */
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(90, 93, 240, 0.3);
 }
 
-
-   .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 18px rgba(90, 93, 240, 0.3);
-    }
-
-
-
-
-/* 🎯 جعل الهيدر واللوقو متجاوبين مع الجوال */
+/* =========================================================
+   ⚙️ إعدادات متجاوبة إضافية
+========================================================= */
+/* تحسين الهوامش والمسافات في الشاشات الصغيرة */
 @media (max-width: 768px) {
-  header {
-    height: 90px; /* تصغير ارتفاع الهيدر */
-    padding: 8px 12px;
-    flex-direction: row;
-    justify-content: space-between;
+  .page-wrap {
+    padding: 0 10px;
+    margin: 12px auto 24px;
   }
 
-  header h1 {
-    font-size: 1.4rem; /* حجم مناسب للهاتف */
+  .card {
+    padding: 14px;
   }
 
-  .menu-toggle {
-    font-size: 26px;
-    inset-inline-start: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  header .logo {
-    width: 60px;
-    height: 60px;
-    inset-inline-end: 10px;
-  }
-
-  header .logo img {
-    width: 70px;
-    height: auto;
-  }
-}
-
-/* 📱 للجوال الصغير جدًا (أقل من 480px) */
-@media (max-width: 480px) {
-  header {
-    height: 80px;
-  }
-  header h1 {
+  .card-title {
     font-size: 1.2rem;
   }
-  .menu-toggle {
-    font-size: 22px;
-  }
-  header .logo {
-    width: 50px;
-    height: 50px;
-  }
-  header .logo img {
-    width: 60px;
+
+  button, .btn {
+    font-size: .9rem;
+    padding: .6rem .8rem;
   }
 }
 
-/* 🧱 جعل الأيقونات كلها تظهر داخل الشاشة بدون سكرول */
+/* إزالة أي أكواد قديمة غير مستخدمة */
+/*
+.icon.emergency:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 26px rgba(220, 38, 38, 0.5);
+}
+(تم التعليق لأن الأكواد الخاصة بالطوارئ مكررة وستُستبدل بالدفعة 4)
+*/
+/* =========================================================
+   🧱 شبكة الأيقونات (الصفحة الرئيسية)
+========================================================= */
+
+/* 🔸 الكود الأصلي (محفوظ كمرجع)
+#iconsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 32px auto 20px;
+  padding: 0 20px;
+}
+.icon {
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #5dbdea, #8e97e9);
+  border-radius: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  padding: 14px 18px;
+}
+*/
+
+/* ✅ الإصدار الجديد — ريسبونسف + بدون scroll */
 main.page-wrap {
   display: flex;
   justify-content: center;
@@ -818,64 +835,122 @@ main.page-wrap {
   overflow: hidden; /* يمنع السكرول */
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-/* الشبكة */
+/* الشبكة الرئيسية */
 #iconsContainer {
   display: grid;
-  gap: 16px;
   width: 100%;
-  height: 100%; /* تملأ المساحة المتبقية */
-  max-width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  height: 100%;
   justify-items: center;
   align-items: center;
+  gap: 20px;
+  padding: 0 20px;
   box-sizing: border-box;
-  padding: 0 10px;
+  transition: all 0.3s ease-in-out;
 }
 
-/* الأيقونة */
+/* الأيقونة الأساسية */
 .icon {
-  height: 100px;
-  width: 100px;
-  padding: 10px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #5dbdea, #8e97e9);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: linear-gradient(135deg, #5dbdea, #8e97e9);
+  border-radius: 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  user-select: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  height: 180px;
+  width: 180px;
+  padding: 14px 18px;
 }
 
-.icon:hover {
-  transform: translateY(-5px);
+.icon:hover,
+.icon.active {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 26px rgba(75, 198, 232, 0.3);
 }
 
-/* النصوص داخل الأيقونات */
+/* الإيموجي داخل الأيقونة */
 .icon-emoji {
-  font-size: 1.6rem;
-  margin-bottom: 6px;
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 12px;
 }
 
+/* النص */
 .icon-label {
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: #fff;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #ffffff;
 }
 
-/* 📱 للجوال */
-@media (max-width: 520px) {
+/* 🔴 حالة الطوارئ */
+.icon.emergency {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* =========================================================
+   📏 التخطيطات المتجاوبة (بدون scroll)
+========================================================= */
+
+/* 🖥️ الكمبيوتر الكبير */
+@media (min-width: 1025px) {
   #iconsContainer {
-    grid-template-columns: repeat(2, 1fr); /* صفين فقط */
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
   }
 
   .icon {
-    height: 90px;
-    width: 90px;
-    padding: 8px;
+    width: 180px;
+    height: 180px;
+  }
+
+  .icon-emoji {
+    font-size: 2rem;
+  }
+
+  .icon-label {
+    font-size: 1rem;
+  }
+}
+
+/* 💻 التابلت */
+@media (min-width: 769px) and (max-width: 1024px) {
+  #iconsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+
+  .icon {
+    width: 140px;
+    height: 140px;
+  }
+
+  .icon-emoji {
+    font-size: 1.7rem;
+  }
+
+  .icon-label {
+    font-size: 0.9rem;
+  }
+}
+
+/* 📱 الجوال */
+@media (max-width: 768px) {
+  #iconsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .icon {
+    width: 110px;
+    height: 110px;
+    padding: 10px;
   }
 
   .icon-emoji {
@@ -883,6 +958,38 @@ main.page-wrap {
   }
 
   .icon-label {
+    font-size: 0.85rem;
+  }
+}
+
+/* 📱 الجوال الصغير جدًا */
+@media (max-width: 480px) {
+  #iconsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .icon {
+    width: 95px;
+    height: 95px;
+    padding: 8px;
+  }
+
+  .icon-emoji {
+    font-size: 1.1rem;
+  }
+
+  .icon-label {
     font-size: 0.8rem;
+  }
+}
+
+/* =========================================================
+   🎯 محاذاة ذكية (الأيقونات دائماً بمنتصف الشاشة)
+========================================================= */
+@media (max-height: 700px) {
+  main.page-wrap {
+    align-items: flex-start; /* في الشاشات القصيرة نرفعها شوي */
+    padding-top: 10px;
   }
 }
