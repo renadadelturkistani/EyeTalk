@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>الملف الشخصي - EyeTalk</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body class="theme-dark">
@@ -46,12 +52,12 @@
 
       <form id="profileForm" class="login-form" style="display:flex; flex-direction:column;">
         <label for="uName" style="font-weight:700; margin-bottom:6px;">اسم المساعد</label>
-        <input type="text" id="uName" placeholder="أدخل اسم المساعد"
-          style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;"/>
+        <input type="text" id="uName" placeholder="أدخل اسم المساعد "
+          style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;" />
 
         <label for="uEmail" style="font-weight:700; margin-bottom:6px;">البريد الإلكتروني</label>
         <input type="email" id="uEmail" placeholder="example@email.com"
-          style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;"/>
+          style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;" />
 
         <button type="button" id="saveProfile"
           style="background-color:#1e40af; color:#fff; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:15px; margin-top:8px;">
@@ -66,15 +72,15 @@
         <form id="pwdForm" class="login-form" style="display:flex; flex-direction:column;">
           <label for="curPwd" style="font-weight:700; margin-bottom:6px;">كلمة المرور الحالية</label>
           <input type="password" id="curPwd" placeholder="كلمة المرور الحالية" required
-            style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;"/>
+            style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;" />
 
           <label for="newPwd" style="font-weight:700; margin-bottom:6px;">كلمة المرور الجديدة</label>
           <input type="password" id="newPwd" placeholder="كلمة مرور جديدة" required
-            style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;"/>
+            style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;" />
 
           <label for="newPwd2" style="font-weight:700; margin-bottom:6px;">تأكيد كلمة المرور الجديدة</label>
           <input type="password" id="newPwd2" placeholder="أعد إدخال كلمة المرور" required
-            style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;"/>
+            style="padding:12px; border:none; border-radius:8px; background-color:#0f2e52; color:#fff; margin-bottom:14px; font-size:15px;" />
 
           <button type="submit"
             style="background-color:#1e40af; color:#fff; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; font-weight:bold; font-size:15px; margin-top:8px;">
@@ -146,31 +152,26 @@
     const emailEl = document.getElementById("uEmail");
     const msg = document.getElementById("msg");
     const saveProfile = document.getElementById("saveProfile");
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        alert("الرجاء تسجيل الدخول أولاً.");
+        window.location.href = "index.html";
+        return;
+      }
 
-    // ✅ تحميل بيانات المستخدم
-
-    // ✅ تحميل بيانات المستخدم (عرض اسم المساعد بدلاً من اسم المريض)
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    alert("الرجاء تسجيل الدخول أولاً.");
-    window.location.href = "index.html";
-    return;
-  }
-
-  try {
-    const docRef = doc(db, "patients", user.uid);
-    const snap = await getDoc(docRef);
-    if (snap.exists()) {
-      const data = snap.data();
-      nameEl.value = data.assistantName || "";
-      emailEl.value = data.assistantEmail || user.email || "";
-    }
-  } catch (e) {
-    console.error("Firestore error:", e);
-    alert("حدث خطأ أثناء تحميل البيانات.");
-  }
-});
-
+      try {
+        const docRef = doc(db, "patients", user.uid);
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          const data = snap.data();
+          nameEl.value = data.assistantName || "";
+          emailEl.value = data.assistantEmail || user.email || "";
+        }
+      } catch (e) {
+        console.error("Firestore error:", e);
+        alert("حدث خطأ أثناء تحميل البيانات.");
+      }
+    });
 
     // ✅ حفظ البيانات
     saveProfile.addEventListener("click", async () => {
@@ -224,4 +225,5 @@ onAuthStateChanged(auth, async (user) => {
     });
   </script>
 </body>
+
 </html>
