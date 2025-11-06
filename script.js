@@ -22,73 +22,6 @@ function speak(text) {
     window.speechSynthesis.speak(msg);
   } catch (e) { console.warn("Speech error:", e); }
 }
-  
-/* =========================================================
-   🔇 كتم وتشغيل الصوت بالنظر فقط + رسالة مؤقتة
-========================================================= */
-let isMuted = false, gazeHoldTime = 800, gazeTimer = null, gazeTarget = null;
-
-function showToast(msg) {
-  const el = document.createElement("div");
-  Object.assign(el.style, {
-    position: "fixed", top: "50%", left: "50%",
-    transform: "translate(-50%, -50%)",
-    background: "rgba(0,0,0,0.8)", color: "#fff",
-    padding: "10px 20px", borderRadius: "10px",
-    fontSize: "18px", zIndex: 9999, opacity: 1,
-    transition: "opacity .5s"
-  });
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(()=>{el.style.opacity=0; setTimeout(()=>el.remove(),500)},2000);
-}
-
-function muteSystem() {
-  if (isMuted) return;
-  isMuted = true;
-  speechSynthesis.cancel();
-  console.log("🔇 تم كتم الصوت");
-  showToast("🔇 تم كتم الصوت");
-}
-
-function unmuteSystem() {
-  if (!isMuted) return;
-  isMuted = false;
-  console.log("🔊 تم تشغيل الصوت");
-  showToast("🔊 تم تشغيل الصوت");
-}
-
-if (window.GazeCloudAPI) {
-  GazeCloudAPI.OnResult = GazeData => {
-    if (GazeData.state !== 0) return;
-    const el = document.elementFromPoint(GazeData.docX, GazeData.docY);
-    const t = el?.closest?.('.eye-control');
-    if (t !== gazeTarget) {
-      gazeTarget = t; clearTimeout(gazeTimer);
-      if (t) gazeTimer = setTimeout(()=>{
-        t.id==='muteButton'?muteSystem():t.id==='unmuteButton'&&unmuteSystem();
-        gazeTarget=null;
-      }, gazeHoldTime);
-    }
-  };
-}
-
-/* =========================================================
-   🗣️ النطق (Text-To-Speech) — مع تكرار 5 مرات
-========================================================= */
-function speak(text) {
-  const only = sanitizeText(text);
-  if (!only || isMuted) return;
-  speechSynthesis.cancel();
-  let n = 0;
-  (function talk() {
-    if (n++ >= 5) return;
-    const m = new SpeechSynthesisUtterance(only);
-    m.lang = "ar-SA"; m.rate = 1;
-    m.onend = ()=>setTimeout(talk,300);
-    speechSynthesis.speak(m);
-  })();
-}
 
 
 /* =========================================================
@@ -114,7 +47,14 @@ function stopEmergency() {
   pauseTracking = false;
   speak("تم إلغاء حالة الطوارئ");
 }
-
+//function showEmergencyNotification() {
+//  if (!("Notification" in window)) return;
+ // if (Notification.permission === "granted") {
+ //   new Notification("حالة طارئة", { body: "المستخدم بحاجة إلى مساعدة!" });
+ // } else {
+ //   Notification.requestPermission().then(p => { if (p === "granted") showEmergencyNotification(); });
+//  }
+//}
 function sendEmergencyEmail() {
   try {
     if (!window.emailjs) return;
@@ -151,7 +91,13 @@ function sendEmergencyEmail() {
   }
 }
 
-
+//function saveEmergencyToFirebase() {
+//  if (!db) return;
+ // try {
+ ////////   const patientName = localStorage.getItem("patientName") || "مستخدم مجهول";
+//    db.ref("emergencies").push({ patient: patientName, time: new Date().toISOString() });
+// } catch (e) { console.warn("Firebase write error:", e); }
+//}
 function triggerEmergency() {
   try { alarm.play(); } catch (_) {}
   pauseTracking = true;
@@ -229,7 +175,24 @@ if (window.GazeCloudAPI) {
   // بدء التتبع
   try { GazeCloudAPI.StartEyeTracking(); } catch (_) {}
 
+// =========================================================
+// 💤 استعادة / حفظ المعايرة (تم تعطيلها مؤقتاً)
+// =========================================================
 
+// const savedCalibration = localStorage.getItem("gazeCalibration");
+// if (savedCalibration) { 
+//   try { 
+//     GazeCloudAPI.SetCalibration(JSON.parse(savedCalibration)); 
+//   } catch (_) {} 
+// }
+
+// GazeCloudAPI.OnCalibrationComplete = data => {
+//   try { 
+//     localStorage.setItem("gazeCalibration", JSON.stringify(data)); 
+//   } catch (_) {} 
+// };
+
+}
 
 /* =========================================================
    🧭 السايدبار + تفضيلات المظهر (ثيم/حجم خط)
@@ -247,6 +210,29 @@ document.addEventListener("DOMContentLoaded", () => {
       sidebar.classList.remove('active'); overlay.classList.remove('active');
     });
   }
+
+// =========================================================
+// 😴 وضع الهدوء (إيقاف/تشغيل تتبع النظر) — تم تعطيله مؤقتاً
+// =========================================================
+
+// const btnSleep = document.getElementById("sb-sleep");
+// const btnWake  = document.getElementById("sb-wake");
+// if (btnSleep && btnWake) {
+//   btnSleep.addEventListener("click", () => {
+//     pauseTracking = true;
+//     btnSleep.style.display = "none";
+//     btnWake.style.display  = "block";
+//     sidebar?.classList.remove("active"); 
+//     overlay?.classList.remove("active");
+//   });
+//   btnWake.addEventListener("click", () => {
+//     pauseTracking = false;
+//     btnWake.style.display  = "none";
+//     btnSleep.style.display = "block";
+//     sidebar?.classList.remove("active"); 
+//     overlay?.classList.remove("active");
+//   });
+// }
 
 
   // تطبيق الثيم/الخط من التخزين (متوافق مع صفحة الإعدادات)
@@ -295,6 +281,32 @@ document.addEventListener("DOMContentLoaded", () => {
   if (range){ range.value = savedFont; range.addEventListener('input', e => applyFont(e.target.value)); }
 })();
 
+// =========================================================
+// 👥 الروابط حسب الدور (مريض/مساعد) — للسايدبار (تم تعطيله مؤقتاً)
+// =========================================================
+
+// (function buildSideLinks() {
+//   const el = document.getElementById('sideLinks');
+//   if (!el) return;
+//   const userRole = localStorage.getItem('role') || 'patient'; // 'patient' | 'assistant'
+//   const patient = [
+//     { href:'home.html', label:'الرئيسية' },
+//     { href:'exercises.html', label:'التمارين' },
+//     { href:'profile.html', label:'الملف الشخصي' },
+//     { href:'settings.html', label:'الإعدادات' },
+//   ];
+//   const assistant = [
+//     { href:'dashboard.html', label:'لوحة التحكم' },
+//     { href:'reports.html', label:'التقارير' },
+//     { href:'users.html', label:'المستخدمون' },
+//     { href:'settings.html', label:'الإعدادات' },
+//   ];
+//   (userRole === 'assistant' ? assistant : patient).forEach(l => {
+//     const a = document.createElement('a');
+//     a.href = l.href; a.textContent = l.label;
+//     el.appendChild(a);
+//   });
+// })();
 
 /* =======================
    صفحة الملف الشخصي
@@ -383,4 +395,48 @@ function startGaze() {
       console.warn("GazeCloudAPI Start error:", e);
     }
   }
-}}
+}
+// =========================================================
+// 👁️ تشغيل وإيقاف تتبع النظر (تم تعطيله مؤقتاً)
+// =========================================================
+
+// // ✅ إيقاف التتبع
+// function stopGaze() {
+//   if (gazeEnabled && window.GazeCloudAPI) {
+//     gazeEnabled = false;
+//     try {
+//       GazeCloudAPI.StopEyeTracking();
+//       speak("تم إيقاف تتبّع النظر مؤقتًا.");
+//     } catch (e) {
+//       console.warn("GazeCloudAPI Stop error:", e);
+//     }
+//   }
+// }
+
+// // ✅ التفعيل بالنظر فقط — لو المستخدم يطالع الزر 👁️ أو 🛑
+// if (window.GazeCloudAPI) {
+//   GazeCloudAPI.OnGaze = function (gazeData) {
+//     const x = gazeData.docX;
+//     const y = gazeData.docY;
+//     const element = document.elementFromPoint(x, y);
+
+//     // تحقّق إن المستخدم يطالع الزرّين
+//     if (element && (element.id === "startTracking" || element.id === "stopTracking")) {
+//       if (currentTarget !== element) {
+//         clearTimeout(gazeTimer);
+//         currentTarget = element;
+//         gazeTimer = setTimeout(() => {
+//           if (element.id === "startTracking") startGaze();
+//           if (element.id === "stopTracking") stopGaze();
+//         }, gazeHoldTime);
+//       }
+//     } else {
+//       clearTimeout(gazeTimer);
+//       currentTarget = null;
+//     }
+//   };
+// }
+
+// // ✅ دعم الضغط العادي (بالماوس)
+// if (startBtn) startBtn.addEventListener("click", startGaze);
+// if (stopBtn)  stopBtn.addEventListener("click", stopGaze);
