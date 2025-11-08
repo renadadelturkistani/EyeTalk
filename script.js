@@ -1,7 +1,6 @@
 /* =========================================================
-   🗣️ النطق (Google Translate Voice) — يدعم العربية في كل الأجهزة
+   🗣️ النطق (Text-To-Speech) — يقرأ النص فقط بدون الإيموجي
 ========================================================= */
-
 function sanitizeText(text) {
   if (!text) return "";
   let t = String(text);
@@ -13,24 +12,37 @@ function sanitizeText(text) {
   }
   return t.replace(/\s+/g, " ").trim();
 }
-
 function speak(text) {
   const onlyText = sanitizeText(text);
   if (!onlyText) return;
 
   try {
-    // 🔊 نولد رابط الصوت من Google Translate
-    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ar&client=tw-ob&q=${encodeURIComponent(onlyText)}`;
+    // نلغي أي كلام سابق
+    window.speechSynthesis.cancel();
 
-    // 🎧 نستخدم عنصر صوت لتشغيله
-    const audio = new Audio(ttsUrl);
-    audio.play().catch(err => {
-      console.warn("Audio play failed:", err);
-    });
+    let repeatCount = 0;
+    const speakMsg = () => {
+      const msg = new SpeechSynthesisUtterance(onlyText);
+      msg.lang = "ar-SA";
+
+      // بعد انتهاء النطق نعيده حتى 3 مرات
+      msg.onend = () => {
+        repeatCount++;
+        if (repeatCount < 3) {
+          // ننتظر نصف ثانية بين كل تكرار
+          setTimeout(() => window.speechSynthesis.speak(msg), 500);
+        }
+      };
+
+      window.speechSynthesis.speak(msg);
+    };
+
+    speakMsg();
   } catch (e) {
     console.warn("Speech error:", e);
   }
 }
+
 
 
 /* =========================================================
@@ -169,8 +181,10 @@ if (window.GazeCloudAPI) {
 
   // بدء التتبع
   try { GazeCloudAPI.StartEyeTracking(); } catch (_) {}
-}
 
+
+
+}
 
 /* =========================================================
    🧭 السايدبار + تفضيلات المظهر (ثيم/حجم خط)
@@ -188,6 +202,9 @@ document.addEventListener("DOMContentLoaded", () => {
       sidebar.classList.remove('active'); overlay.classList.remove('active');
     });
   }
+
+
+
 
   // تطبيق الثيم/الخط من التخزين (متوافق مع صفحة الإعدادات)
   try {
@@ -240,6 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
    صفحة الملف الشخصي
 ======================= */
 (function profilePage(){
+  // ما نشتغل إلا لو الصفحة فيها عناصر الملف الشخصي
   const nameEl = document.getElementById('uName');
   const emailEl= document.getElementById('uEmail');
   const phoneEl= document.getElementById('uPhone');
@@ -247,11 +265,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!nameEl || !emailEl || !phoneEl || !form) return;
 
+  // ---- قراءة بيانات المستخدم من التخزين المحلي (Demo)
+  // المفتاح المقترح: user_profile = { name,email,phone,password }
+  // لو عندك صفحة تسجيل، تأكد إنها تخزن بنفس المفاتيح.
   const fallbackUser = {
     name:  'مستخدم التجربة',
     email: 'demo@example.com',
     phone: '0500000000',
-    password: 'Demo1234'
+    password: 'Demo1234' // للعرض فقط - في الإنتاج لا تُخزّن هنا
   };
   const user = JSON.parse(localStorage.getItem('user_profile') || 'null') || fallbackUser;
 
@@ -259,6 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
   emailEl.value = user.email || '';
   phoneEl.value = user.phone || '';
 
+  // ---- تغيير كلمة المرور
   const curPwd = document.getElementById('curPwd');
   const newPwd = document.getElementById('newPwd');
   const newPwd2= document.getElementById('newPwd2');
@@ -272,6 +294,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validPassword(pwd){
+    // 8+، رقم، حرف كبير
     return /[A-Z]/.test(pwd) && /\d/.test(pwd) && pwd.length >= 8;
   }
 
@@ -296,6 +319,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // نحفظ التغيير محليًا (Demo)
     user.password = newPwd.value;
     localStorage.setItem('user_profile', JSON.stringify(user));
     showMsg('تم تحديث كلمة المرور بنجاح', true);
@@ -303,3 +327,17 @@ document.addEventListener("DOMContentLoaded", () => {
     form.reset();
   });
 })();
+
+
+// ✅ تشغيل التتبع
+function startGaze() {
+  if (!gazeEnabled && window.GazeCloudAPI) {
+    gazeEnabled = true;
+    try {
+      GazeCloudAPI.StartEyeTracking();
+      speak("تم تفعيل تتبّع النظر. يمكنك الآن التفاعل بالنظر إلى الأيقونات.");
+    } catch (e) {
+      console.warn("GazeCloudAPI Start error:", e);
+    }
+  }
+}
