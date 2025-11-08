@@ -859,4 +859,46 @@ body.theme-dark {
   color: #fff;
 }
 
+/* =========================================================
+   🧮 توزيع الأيقونات لتظهر كلها داخل الشاشة بدون سكرول
+========================================================= */
+body, html {
+  height: 100%;
+  overflow: hidden; /* يمنع أي تمرير */
+}
+
+#iconsContainer {
+  display: grid;
+  place-items: center;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  height: calc(100vh - var(--header-h)); /* ارتفاع الشاشة بدون الهيدر */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-auto-rows: 1fr;
+  gap: 24px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* الأيقونات تتناسب مع حجم الشاشة */
+.icon {
+  width: 100%;
+  height: 100%;
+  max-width: 220px;
+  max-height: 200px;
+}
+
+/* للشاشات الصغيرة (الجوال) */
+@media (max-width: 768px) {
+  #iconsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+  }
+  .icon {
+    max-width: 160px;
+    max-height: 160px;
+  }
+}
+
 
