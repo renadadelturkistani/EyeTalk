@@ -341,3 +341,22 @@ function startGaze() {
     }
   }
 }
+
+
+
+// ✅ زر تفعيل الصوت بعد فتح الصفحة
+document.getElementById("enableVoiceBtn").addEventListener("click", () => {
+  const testVoice = new SpeechSynthesisUtterance("تم تفعيل الصوت بنجاح");
+  testVoice.lang = "ar-SA";
+  window.speechSynthesis.speak(testVoice);
+
+  // تحميل الأصوات مسبقاً لأجهزة Apple
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.resume();
+
+  // إخفاء الزر بعد التفعيل
+  document.getElementById("enableVoiceBtn").style.display = "none";
+
+  alert("✅ تم تفعيل ميزة النطق، يمكنك الآن استخدام النظام بالنظر.");
+});
+
