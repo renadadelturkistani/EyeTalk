@@ -1,46 +1,16 @@
 function speak(text) {
-  const onlyText = sanitizeText(text);
-  if (!onlyText) return;
+  if (!text) return;
 
-  try {
-    // إلغاء أي نطق سابق
-    window.speechSynthesis.cancel();
+  // إزالة الإيموجي والعلامات غير النصية
+  const cleanedText = text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
 
-    let repeatCount = 0;
-    const speakMsg = () => {
-      const msg = new SpeechSynthesisUtterance(onlyText);
-      msg.lang = "ar-SA";
-
-      msg.onend = () => {
-        repeatCount++;
-        if (repeatCount < 3) {
-          setTimeout(() => window.speechSynthesis.speak(msg), 500);
-        }
-      };
-
-      window.speechSynthesis.speak(msg);
-    };
-
-    speakMsg();
-
-    // ✅ التحقق بعد ثانيتين — إذا Safari ما نطق (iPad/iPhone)
-    setTimeout(() => {
-      if (!window.speechSynthesis.speaking && window.responsiveVoice) {
-        console.warn("Fallback to ResponsiveVoice (Arabic Male)");
-        responsiveVoice.speak(onlyText, "Arabic Male");
-      }
-    }, 2000);
-
-  } catch (e) {
-    console.warn("Speech error:", e);
-    // خطة بديلة مباشرة إذا حدث خطأ
-    if (window.responsiveVoice) {
-      responsiveVoice.speak(onlyText, "Arabic Male");
-    }
+  // نتحقق إن المكتبة جاهزة
+  if (typeof responsiveVoice !== "undefined") {
+    responsiveVoice.speak(cleanedText, "Arabic Female", {rate: 0.9});
+  } else {
+    console.warn("ResponsiveVoice library not loaded yet!");
   }
 }
-
-
 
 /* =========================================================
    🚨 الطوارئ — صوت + إشعار + إيميل + حفظ في Firebase
@@ -365,6 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.style.display = "none";
   });
 });
+
 
 
 
