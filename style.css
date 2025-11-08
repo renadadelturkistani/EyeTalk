@@ -1035,3 +1035,86 @@ body.theme-dark {
   }
 }
 
+
+/* 📱 الجوال (صفين × 3 كروت) */
+@media (max-width: 600px) {
+  #iconsContainer {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: repeat(2, auto) !important;
+
+    /* ✅ مسافة صغيرة جدًا بين الكروت */
+    row-gap: 4px !important;     
+    column-gap: 4px !important;  
+
+    justify-items: center;
+    align-items: center;
+    padding: 0 8px !important;  /* 👈 زيدنا البادنق شوي */
+  }
+
+  /* 🔹 كروت كبيرة ومتوازنة */
+  .icon {
+    height: 165px !important;
+    width: 100% !important;
+    max-width: 165px !important;
+    border-radius: 16px !important;
+    padding: 14px !important; /* 👈 زيدنا البادنق شوي زيادة عن قبل */
+    background: linear-gradient(135deg, #5dbdea, #8e97e9) !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .icon:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(75, 198, 232, 0.3);
+  }
+
+  /* ✅ نرجع لون كرت الطوارئ الأحمر */
+  .icon.emergency {
+    background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
+    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.4) !important;
+  }
+
+  .icon.emergency:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.5) !important;
+  }
+
+  /* 🎯 الأيقونة والنص */
+  .icon-emoji {
+    font-size: 2rem !important;
+    margin-bottom: 8px !important;
+  }
+
+  .icon-label {
+    font-size: 1.1rem !important;
+  }
+
+  /* 🔸 الهيدر */
+  :root {
+    --header-h: 90px;
+    --header-title-size: 22px;
+  }
+
+  header {
+    height: var(--header-h) !important;
+    padding: 0 8px !important;
+  }
+
+  header h1 {
+    font-size: var(--header-title-size) !important;
+  }
+
+  header .logo {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  header .logo img {
+    width: 80px !important;
+  }
+
+  .menu-toggle {
+    font-size: 24px !important;
+  }
+}
