@@ -377,6 +377,34 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 }
 
 
+
+/* 🎯 مؤشر النظر مع دائرة التقدم */
+#cursorDot {
+  position: fixed;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #e3e4e6;
+  box-shadow: 0 0 8px rgba(9, 69, 137, 0.6);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.2s ease-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* زر إيقاف الطوارئ */
 #stopAlarm{
   position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
@@ -713,6 +741,12 @@ header .logo img {
   opacity: 0;
   transform: translateY(40px);
   animation: fadeUp 1.2s ease forwards;
+ width: 80%; /* 🔹 عدل النسبة حسب ما تحب: جرّب 65% أو 60% */
+  max-width: 750px; /* 🔹 يحدد أقصى عرض */
+    margin-left: auto;
+  margin-right: auto;
+
+
 }
 
 /* حركة تدريجية للنصوص داخل الكارد */
@@ -754,6 +788,75 @@ header .logo img {
       box-shadow: 0 6px 18px rgba(90, 93, 240, 0.3);
     }
 
+/* the eye in the register and log in */
+.input-box {
+  position: relative;
+}
 
+
+#togglePassword {
+  position: absolute;
+  left: 15px;
+
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 20px;
+  color: #555;
+}
+
+
+
+
+
+
+.password-wrapper input {
+  flex: 1;
+}
+
+.password-wrapper .toggle-password:hover {
+  color: var(--accent);
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .toggle-password {
+  position: absolute;
+  left: 10px; /* 👈 يسار */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 18px;
+}
+
+
+
+
+.input-box {
+  position: relative;
+}
+
+.input-box i {
+  position: absolute;
+  left: 10px; /* 👈 يحط العين في اليسار */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #aaa;
+}
+.input-box input {
+  padding-left: 35px; /* يبعد النص عن العين */
+}
+.input-box i {
+  color: #000; /* 👈 يخلي الأيقونة سوداء */
+}
+
+body.theme-dark {
+  background-color: #0f2e52;
+  color: #fff;
+}
 
 

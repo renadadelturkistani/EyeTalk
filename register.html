@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>إنشاء حساب - EyeTalk</title>
 
+
+
+
   <!-- الخط -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
 
@@ -19,6 +22,10 @@
       console.log("✅ EmailJS جاهز للعمل");
     })();
   </script>
+<!-- library icon -->
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+
 </head>
 <body>
 
@@ -34,11 +41,24 @@
         <input type="text" id="fullName" placeholder="اسم المريض" required />
         <input type="text" id="assistantName" placeholder="اسم المساعد" required />
         <input type="email" id="assistantEmail" placeholder="بريد المساعد" required />
-
+<!--    
         <div class="password-wrapper">
           <input type="password" id="regPassword" placeholder="كلمة المرور" required />
           <span class="toggle-pwd" id="toggleRegPwd">👁</span>
-        </div>
+        </div>     -->
+
+        <div class="input-box">
+  <input type="password" id="regPassword" placeholder="كلمة المرور" required>
+  <i class='bx bx-hide' id="toggleRegPwd"></i>
+</div>
+
+<div class="input-box">
+  <input type="password" id="regConfirmPassword" placeholder="تأكيد كلمة المرور" required>
+  <i class='bx bx-hide' id="toggleConfirmPwd"></i>
+</div>
+
+
+
 
         <button type="submit">إنشاء الحساب</button>
       </form>
@@ -119,7 +139,7 @@
     });
   </script>
 
-  <!-- زر إظهار/إخفاء كلمة المرور -->
+  <!-- زر إظهار/إخفاء كلمة المرور 
   <script>
     const toggle = document.getElementById("toggleRegPwd");
     const passwordInput = document.getElementById("regPassword");
@@ -130,7 +150,33 @@
       toggle.classList.toggle("fa-eye");
       toggle.classList.toggle("fa-eye-slash");
     });
-  </script>
+  </script>  -->
+
+
+
+
+<script>
+const toggles = [
+  { btn: "toggleRegPwd", field: "regPassword" },
+  { btn: "toggleConfirmPwd", field: "regConfirmPassword" }
+];
+
+toggles.forEach(({ btn, field }) => {
+  const toggle = document.getElementById(btn);
+  const input = document.getElementById(field);
+  if (toggle && input) {
+    toggle.addEventListener("click", () => {
+      const type = input.getAttribute("type") === "password" ? "text" : "password";
+      input.setAttribute("type", type);
+      toggle.classList.toggle("bx-show");
+      toggle.classList.toggle("bx-hide");
+    });
+  }
+});
+</script>
+
+
+
 
 </body>
 </html>
