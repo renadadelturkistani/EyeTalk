@@ -1,3 +1,13 @@
+document.getElementById("enableVoiceBtn").addEventListener("touchend", () => {
+  const u = new SpeechSynthesisUtterance("تم تفعيل الصوت");
+  u.lang = "ar-SA";
+  speechSynthesis.speak(u);
+
+  // لا تستخدم alert هنا أبداً! ولا أي شيء بعد النطق
+  document.getElementById("enableVoiceBtn").style.display = "none";
+});
+
+
 /* =========================================================
    🗣️ النطق (Text-To-Speech) — يقرأ النص فقط بدون الإيموجي
 ========================================================= */
@@ -344,35 +354,7 @@ function startGaze() {
 
 
 
-// ✅ تفعيل الصوت لأجهزة Apple (iPad/iPhone)
-document.addEventListener("DOMContentLoaded", () => {
-  const enableBtn = document.getElementById("enableVoiceBtn");
 
-  // 📱 استخدم touchend عشان Safari يعتبره تفاعل فعلي
-  enableBtn.addEventListener("touchend", () => {
-    const utterance = new SpeechSynthesisUtterance("تم تفعيل الصوت بنجاح");
-    utterance.lang = "ar-SA";
-    window.speechSynthesis.speak(utterance);
 
-    // 🧠 تحميل الأصوات مسبقاً (Safari يحتاجها)
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.resume();
-
-    alert("✅ تم تفعيل ميزة النطق، يمكنك الآن استخدام النظام بالنظر.");
-    enableBtn.style.display = "none"; // إخفاء الزر بعد التفعيل
-  });
-
-  // 💻 دعم الماوس أو الكيبورد في أجهزة غير iOS
-  enableBtn.addEventListener("click", () => {
-    const utterance = new SpeechSynthesisUtterance("Voice has been activated");
-    utterance.lang = "en-US";
-    window.speechSynthesis.speak(utterance);
-    window.speechSynthesis.getVoices();
-    window.speechSynthesis.resume();
-
-    alert("✅ Voice activation complete. You can now use gaze control.");
-    enableBtn.style.display = "none";
-  });
-});
 
 
