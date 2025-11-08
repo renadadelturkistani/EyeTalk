@@ -973,8 +973,7 @@ body.theme-dark {
     grid-template-rows: repeat(2, auto) !important;   /* ✅ صفين تحت بعض */
 
     /* ✅ مسافة صغيرة جدًا بين الكروت (نص إصبع تقريبًا) */
-    row-gap: 4px !important;      /* المسافة العمودية بين الصفوف */
-    column-gap: 4px !important;   /* المسافة الأفقية بين الأعمدة */
+  /* المسافة الأفقية بين الأعمدة */
 
     justify-items: center;
     align-items: center;
@@ -983,9 +982,9 @@ body.theme-dark {
 
   /* 🔹 تكبير حجم الكروت */
   .icon {
-    height: 135px !important;   /* كان 110px */
+    height: 145px !important;   /* كان 110px */
     width: 100% !important;
-    max-width: 150px !important; /* كان 120px */
+    max-width: 200px !important; /* كان 120px */
     border-radius: 16px !important;
     padding: 8px !important;
   }
@@ -1027,3 +1026,4 @@ body.theme-dark {
     font-size: 24px !important;
   }
 }
+
