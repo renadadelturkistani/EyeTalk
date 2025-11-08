@@ -858,100 +858,39 @@ body.theme-dark {
   background-color: #0f2e52;
   color: #fff;
 }
+
+/* =========================================================
+   📱⚙️ الرسبونسف النهائي (جوال - تابلت - لابتوب - شاشات كبيرة)
+========================================================= */
+
 /* شاشة كبيرة (ديسكتوب 4k أو شاشات عريضة) */
 @media (min-width: 1600px) {
   #iconsContainer {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
   }
 }
 
 /* لابتوب عادي */
 @media (min-width: 1024px) and (max-width: 1599px) {
   #iconsContainer {
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
   }
 }
 
 /* تابلت (آيباد مثلاً) */
 @media (min-width: 600px) and (max-width: 1023px) {
   #iconsContainer {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
-}
-
-/* 📱 جوال: 3 صفوف × 2 كروت */
-@media (max-width: 600px) {
-  #iconsContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* ✅ كرتين في كل صف */
-    grid-template-rows: repeat(3, auto);   /* ✅ 3 صفوف تحت بعض */
-
-    /* ✅ تحكم أدق في المسافات */
-    row-gap: 4px;      /* 👈 أقل مسافة ممكنة بين الصفوف */
-    column-gap: 8px;   /* 👈 مسافة متوسطة بين الأعمدة */
-
-    justify-items: center;
-    align-items: center;
-
-    height: 100vh;       /* يغطي الشاشة بدون سكرول */
-    padding: 0 8px;      /* مسافة خفيفة من الجوانب */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    gap: 20px !important;
   }
 
-  /* 🎯 تكبير حجم النص والإيموجي شوية لتناسب الجوال */
-  .icon {
-    height: 110px;
-    max-width: 140px;
-    border-radius: 14px;
-    padding: 8px;
-  }
-
-  .icon-emoji {
-    font-size: 1.4rem;
-    margin-bottom: 4px;
-  }
-
-  .icon-label {
-    font-size: 0.9rem;
-  }
-
-  /* 📱 تعديل الهيدر للجوال */
-  :root {
-    --header-h: 100px;          /* 🔹 يقلل ارتفاع الهيدر */
-    --header-title-size: 24px;  /* 🔹 يصغّر حجم العنوان */
-  }
-
-  header {
-    height: var(--header-h);
-    padding: 0 10px;
-  }
-
-  header h1 {
-    font-size: var(--header-title-size);
-  }
-
-  header .logo {
-    width: 70px;
-    height: 70px;
-  }
-
-  header .logo img {
-    width: 80px;
-  }
-
-  .menu-toggle {
-    font-size: 26px;
-  }
-}
-
-/* 🧾 للتابلت (مثلاً آيباد) */
-@media (min-width: 601px) and (max-width: 1024px) {
   :root {
     --header-h: 120px;
     --header-title-size: 30px;
   }
 
   header {
-    height: var(--header-h);
+    height: var(--header-h) !important;
   }
 
   header .logo {
@@ -963,3 +902,65 @@ body.theme-dark {
     width: 100px;
   }
 }
+
+/* 📱 الجوال (صفين × 3 كروت) */
+@media (max-width: 600px) {
+  #iconsContainer {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* ✅ 3 كروت بالصف */
+    grid-template-rows: repeat(2, auto) !important;   /* ✅ صفين تحت بعض */
+    row-gap: 4px !important;      /* 👈 أقل مسافة ممكنة بين الصفوف */
+    column-gap: 6px !important;   /* 👈 مسافة خفيفة بين الأعمدة */
+    justify-items: center;
+    align-items: center;
+    padding: 0 6px !important;
+  }
+
+  /* حجم الكروت */
+  .icon {
+    height: 110px !important;
+    width: 100% !important;
+    max-width: 120px !important;
+    border-radius: 14px !important;
+    padding: 6px !important;
+  }
+
+  .icon-emoji {
+    font-size: 1.4rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .icon-label {
+    font-size: 0.9rem !important;
+  }
+
+  /* تعديل الهيدر للجوال */
+  :root {
+    --header-h: 90px;
+    --header-title-size: 22px;
+  }
+
+  header {
+    height: var(--header-h) !important;
+    padding: 0 8px !important;
+  }
+
+  header h1 {
+    font-size: var(--header-title-size) !important;
+  }
+
+  header .logo {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  header .logo img {
+    width: 80px !important;
+  }
+
+  .menu-toggle {
+    font-size: 24px !important;
+  }
+}
+
+
