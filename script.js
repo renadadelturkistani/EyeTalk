@@ -1,14 +1,20 @@
 function speak(text) {
   if (!text) return;
 
-  // إزالة الإيموجي والعلامات غير النصية
+  // إزالة الرموز والإيموجي
   const cleanedText = text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
 
-  // نتحقق إن المكتبة جاهزة
-  if (typeof responsiveVoice !== "undefined") {
-    responsiveVoice.speak(cleanedText, "Arabic Female", {rate: 0.9});
+  // تأكدي أن المكتبة جاهزة
+  if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
+    console.log("Speaking:", cleanedText);
+    responsiveVoice.speak(cleanedText, "Arabic Male", {
+      rate: 0.9,
+      pitch: 1,
+      volume: 1
+    });
   } else {
-    console.warn("ResponsiveVoice library not loaded yet!");
+    console.warn("ResponsiveVoice not ready!");
+    alert("⚠️ خاصية النطق غير جاهزة حاليًا، أعد المحاولة بعد لحظات.");
   }
 }
 
@@ -335,6 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.style.display = "none";
   });
 });
+
 
 
 
