@@ -311,11 +311,10 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   margin: 32px auto 20px; /* ✅ توسيط الحاوية */
   padding: 0 20px; /* ✅ مسافة من الجوانب عشان ما تلمس الأطراف */
   box-sizing: border-box; /* ✅ يضمن عدم تجاوز الحدود */
-    transform: scale(0.9); transform-origin: top center;
 }
 
 .icon {
-  height: 200px; /* ✅ أطول من السابق */
+  height: 240px; /* ✅ أطول من السابق */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -392,6 +391,18 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   z-index: 9999;
   transition: transform 0.2s ease-out;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* زر إيقاف الطوارئ */
@@ -847,7 +858,6 @@ body.theme-dark {
   background-color: #0f2e52;
   color: #fff;
 }
-
 /* شاشة كبيرة (ديسكتوب 4k أو شاشات عريضة) */
 @media (min-width: 1600px) {
   #iconsContainer {
@@ -875,4 +885,6 @@ body.theme-dark {
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 }
+
+
 
