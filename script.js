@@ -344,19 +344,35 @@ function startGaze() {
 
 
 
-// ✅ زر تفعيل الصوت بعد فتح الصفحة
-document.getElementById("enableVoiceBtn").addEventListener("click", () => {
-  const testVoice = new SpeechSynthesisUtterance("تم تفعيل الصوت بنجاح");
-  testVoice.lang = "ar-SA";
-  window.speechSynthesis.speak(testVoice);
+// ✅ تفعيل الصوت لأجهزة Apple (iPad/iPhone)
+document.addEventListener("DOMContentLoaded", () => {
+  const enableBtn = document.getElementById("enableVoiceBtn");
 
-  // تحميل الأصوات مسبقاً لأجهزة Apple
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.resume();
+  // 📱 استخدم touchend عشان Safari يعتبره تفاعل فعلي
+  enableBtn.addEventListener("touchend", () => {
+    const utterance = new SpeechSynthesisUtterance("تم تفعيل الصوت بنجاح");
+    utterance.lang = "ar-SA";
+    window.speechSynthesis.speak(utterance);
 
-  // إخفاء الزر بعد التفعيل
-  document.getElementById("enableVoiceBtn").style.display = "none";
+    // 🧠 تحميل الأصوات مسبقاً (Safari يحتاجها)
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.resume();
 
-  alert("✅ تم تفعيل ميزة النطق، يمكنك الآن استخدام النظام بالنظر.");
+    alert("✅ تم تفعيل ميزة النطق، يمكنك الآن استخدام النظام بالنظر.");
+    enableBtn.style.display = "none"; // إخفاء الزر بعد التفعيل
+  });
+
+  // 💻 دعم الماوس أو الكيبورد في أجهزة غير iOS
+  enableBtn.addEventListener("click", () => {
+    const utterance = new SpeechSynthesisUtterance("Voice has been activated");
+    utterance.lang = "en-US";
+    window.speechSynthesis.speak(utterance);
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.resume();
+
+    alert("✅ Voice activation complete. You can now use gaze control.");
+    enableBtn.style.display = "none";
+  });
 });
+
 
