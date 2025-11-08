@@ -878,6 +878,8 @@ body.theme-dark {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
+
+/* 📱 جوال: 3 صفوف × 2 كروت */
 @media (max-width: 600px) {
   #iconsContainer {
     display: grid;
@@ -886,7 +888,7 @@ body.theme-dark {
 
     /* ✅ تحكم أدق في المسافات */
     row-gap: 4px;      /* 👈 أقل مسافة ممكنة بين الصفوف */
-    column-gap: 8px;  /* 👈 مسافة متوسطة بين الأعمدة */
+    column-gap: 8px;   /* 👈 مسافة متوسطة بين الأعمدة */
 
     justify-items: center;
     align-items: center;
@@ -895,14 +897,69 @@ body.theme-dark {
     padding: 0 8px;      /* مسافة خفيفة من الجوانب */
   }
 
-   /* 📱 للجوال */
-@media (max-width: 600px) {
+  /* 🎯 تكبير حجم النص والإيموجي شوية لتناسب الجوال */
+  .icon {
+    height: 110px;
+    max-width: 140px;
+    border-radius: 14px;
+    padding: 8px;
+  }
+
+  .icon-emoji {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+
+  .icon-label {
+    font-size: 0.9rem;
+  }
+
+  /* 📱 تعديل الهيدر للجوال */
   :root {
     --header-h: 100px;          /* 🔹 يقلل ارتفاع الهيدر */
     --header-title-size: 24px;  /* 🔹 يصغّر حجم العنوان */
   }
 
+  header {
+    height: var(--header-h);
+    padding: 0 10px;
+  }
 
+  header h1 {
+    font-size: var(--header-title-size);
+  }
 
+  header .logo {
+    width: 70px;
+    height: 70px;
+  }
 
+  header .logo img {
+    width: 80px;
+  }
 
+  .menu-toggle {
+    font-size: 26px;
+  }
+}
+
+/* 🧾 للتابلت (مثلاً آيباد) */
+@media (min-width: 601px) and (max-width: 1024px) {
+  :root {
+    --header-h: 120px;
+    --header-title-size: 30px;
+  }
+
+  header {
+    height: var(--header-h);
+  }
+
+  header .logo {
+    width: 85px;
+    height: 85px;
+  }
+
+  header .logo img {
+    width: 100px;
+  }
+}
