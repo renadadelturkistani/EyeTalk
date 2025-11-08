@@ -1,22 +1,37 @@
+/* =========================================================
+   🗣️ النطق (Google Translate Voice) — يدعم العربية في كل الأجهزة
+========================================================= */
+
+function sanitizeText(text) {
+  if (!text) return "";
+  let t = String(text);
+  t = t.replace(/<[^>]*>/g, ""); // إزالة HTML
+  try {
+    t = t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "");
+  } catch (_) {
+    t = t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "");
+  }
+  return t.replace(/\s+/g, " ").trim();
+}
+
 function speak(text) {
-  if (!text) return;
+  const onlyText = sanitizeText(text);
+  if (!onlyText) return;
 
-  // إزالة الرموز والإيموجي
-  const cleanedText = text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "").trim();
+  try {
+    // 🔊 نولد رابط الصوت من Google Translate
+    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ar&client=tw-ob&q=${encodeURIComponent(onlyText)}`;
 
-  // تأكدي أن المكتبة جاهزة
-  if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
-    console.log("Speaking:", cleanedText);
-    responsiveVoice.speak(cleanedText, "Arabic Male", {
-      rate: 0.9,
-      pitch: 1,
-      volume: 1
+    // 🎧 نستخدم عنصر صوت لتشغيله
+    const audio = new Audio(ttsUrl);
+    audio.play().catch(err => {
+      console.warn("Audio play failed:", err);
     });
-  } else {
-    console.warn("ResponsiveVoice not ready!");
-    alert("⚠️ خاصية النطق غير جاهزة حاليًا، أعد المحاولة بعد لحظات.");
+  } catch (e) {
+    console.warn("Speech error:", e);
   }
 }
+
 
 /* =========================================================
    🚨 الطوارئ — صوت + إشعار + إيميل + حفظ في Firebase
@@ -154,10 +169,8 @@ if (window.GazeCloudAPI) {
 
   // بدء التتبع
   try { GazeCloudAPI.StartEyeTracking(); } catch (_) {}
-
-
-
 }
+
 
 /* =========================================================
    🧭 السايدبار + تفضيلات المظهر (ثيم/حجم خط)
@@ -175,9 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sidebar.classList.remove('active'); overlay.classList.remove('active');
     });
   }
-
-
-
 
   // تطبيق الثيم/الخط من التخزين (متوافق مع صفحة الإعدادات)
   try {
@@ -230,7 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
    صفحة الملف الشخصي
 ======================= */
 (function profilePage(){
-  // ما نشتغل إلا لو الصفحة فيها عناصر الملف الشخصي
   const nameEl = document.getElementById('uName');
   const emailEl= document.getElementById('uEmail');
   const phoneEl= document.getElementById('uPhone');
@@ -238,14 +247,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!nameEl || !emailEl || !phoneEl || !form) return;
 
-  // ---- قراءة بيانات المستخدم من التخزين المحلي (Demo)
-  // المفتاح المقترح: user_profile = { name,email,phone,password }
-  // لو عندك صفحة تسجيل، تأكد إنها تخزن بنفس المفاتيح.
   const fallbackUser = {
     name:  'مستخدم التجربة',
     email: 'demo@example.com',
     phone: '0500000000',
-    password: 'Demo1234' // للعرض فقط - في الإنتاج لا تُخزّن هنا
+    password: 'Demo1234'
   };
   const user = JSON.parse(localStorage.getItem('user_profile') || 'null') || fallbackUser;
 
@@ -253,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
   emailEl.value = user.email || '';
   phoneEl.value = user.phone || '';
 
-  // ---- تغيير كلمة المرور
   const curPwd = document.getElementById('curPwd');
   const newPwd = document.getElementById('newPwd');
   const newPwd2= document.getElementById('newPwd2');
@@ -267,7 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validPassword(pwd){
-    // 8+، رقم، حرف كبير
     return /[A-Z]/.test(pwd) && /\d/.test(pwd) && pwd.length >= 8;
   }
 
@@ -292,7 +296,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // نحفظ التغيير محليًا (Demo)
     user.password = newPwd.value;
     localStorage.setItem('user_profile', JSON.stringify(user));
     showMsg('تم تحديث كلمة المرور بنجاح', true);
@@ -300,54 +303,3 @@ document.addEventListener("DOMContentLoaded", () => {
     form.reset();
   });
 })();
-
-
-// ✅ تشغيل التتبع
-function startGaze() {
-  if (!gazeEnabled && window.GazeCloudAPI) {
-    gazeEnabled = true;
-    try {
-      GazeCloudAPI.StartEyeTracking();
-      speak("تم تفعيل تتبّع النظر. يمكنك الآن التفاعل بالنظر إلى الأيقونات.");
-    } catch (e) {
-      console.warn("GazeCloudAPI Start error:", e);
-    }
-  }
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("enableVoiceBtn");
-
-  btn.addEventListener("touchend", () => {
-    // تشغيل صوت صامت صغير لكسر المنع الصوتي في Safari
-    const audio = new Audio("silent.mp3");
-    audio.play().then(() => {
-      // بعد ما Safari يسمع صوت، نفعّل النطق
-      const u = new SpeechSynthesisUtterance("تم تفعيل الصوت بنجاح");
-      u.lang = "ar-SA";
-      window.speechSynthesis.speak(u);
-      btn.style.display = "none";
-    }).catch(err => {
-      console.error("Audio activation failed:", err);
-    });
-  });
-
-  // لأجهزة غير iOS
-  btn.addEventListener("click", () => {
-    const u = new SpeechSynthesisUtterance("Voice has been activated");
-    u.lang = "en-US";
-    window.speechSynthesis.speak(u);
-    btn.style.display = "none";
-  });
-});
-
-
-
-
-
-
-
-
-
-
