@@ -971,35 +971,42 @@ body.theme-dark {
     grid-template-columns: repeat(3, 1fr) !important;
     grid-template-rows: repeat(2, auto) !important;
 
-    row-gap: 3px !important;      /* المسافة بين الصفوف */
-    column-gap: 3px !important;   /* المسافة بين الأعمدة */
+    /* ✅ مسافة صغيرة جدًا بين الكروت */
+    row-gap: 4px !important;     
+    column-gap: 4px !important;  
 
     justify-items: center;
     align-items: center;
-    padding: 0 2px !important; /* تقليل المسافة من الأطراف */
+    padding: 0 6px !important;  /* 👈 خفيفة من الجوانب */
   }
 
-  /* 🔹 تكبير الكروت وتقليل الـpadding الداخلي */
+  /* 🔹 كروت كبيرة ومتوازنة */
   .icon {
     height: 165px !important;
     width: 100% !important;
     max-width: 165px !important;
     border-radius: 16px !important;
-    padding: 4px !important; /* 👈 تم تقليل الـpadding */
+    padding: 8px !important; /* 👈 زدناها سنتين عن السابق */
     background: linear-gradient(135deg, #5dbdea, #8e97e9) !important;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .icon:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(75, 198, 232, 0.3);
   }
 
   .icon-emoji {
-    font-size: 2.1rem !important;
-    margin-bottom: 4px !important;
+    font-size: 2rem !important;
+    margin-bottom: 6px !important;
   }
 
   .icon-label {
-    font-size: 1.05rem !important;
+    font-size: 1rem !important;
   }
 
-  /* 🔸 الهيدر كما هو */
+  /* 🔸 الهيدر */
   :root {
     --header-h: 90px;
     --header-title-size: 22px;
