@@ -973,32 +973,35 @@ body.theme-dark {
     grid-template-rows: repeat(2, auto) !important;   /* ✅ صفين تحت بعض */
 
     /* ✅ مسافة صغيرة جدًا بين الكروت (نص إصبع تقريبًا) */
-  /* المسافة الأفقية بين الأعمدة */
+    row-gap: 4px !important;      /* المسافة بين الصفوف */
+    column-gap: 4px !important;   /* المسافة بين الأعمدة */
 
     justify-items: center;
     align-items: center;
-    padding: 0 4px !important;    /* مسافة خفيفة من حواف الشاشة */
+    padding: 0 4px !important;    /* مسافة بسيطة من الجوانب */
   }
 
-  /* 🔹 تكبير حجم الكروت */
+  /* 🔹 تكبير حجم الكروت فعلياً */
   .icon {
-    height: 145px !important;   /* كان 110px */
+    height: 160px !important;    /* 🔸 كبر الارتفاع */
     width: 100% !important;
-    max-width: 200px !important; /* كان 120px */
-    border-radius: 16px !important;
-    padding: 8px !important;
+    max-width: 160px !important; /* 🔸 كبر العرض */
+    border-radius: 18px !important;
+    padding: 10px !important;
+    background: linear-gradient(135deg, #5dbdea, #8e97e9) !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
   }
 
   .icon-emoji {
-    font-size: 1.8rem !important; /* كان 1.4rem */
-    margin-bottom: 6px !important;
+    font-size: 2rem !important; /* 🔸 كبر الإيموجي */
+    margin-bottom: 8px !important;
   }
 
   .icon-label {
-    font-size: 1rem !important; /* كان 0.9rem */
+    font-size: 1.1rem !important; /* 🔸 كبر النص */
   }
 
-  /* 🔸 الهيدر يظل كما هو */
+  /* 🎯 الهيدر يظل كما هو */
   :root {
     --header-h: 90px;
     --header-title-size: 22px;
@@ -1026,4 +1029,3 @@ body.theme-dark {
     font-size: 24px !important;
   }
 }
-
