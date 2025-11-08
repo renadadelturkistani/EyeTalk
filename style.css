@@ -964,3 +964,66 @@ body.theme-dark {
 }
 
 
+
+/* 📱 الجوال (صفين × 3 كروت) */
+@media (max-width: 600px) {
+  #iconsContainer {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* ✅ 3 كروت بالصف */
+    grid-template-rows: repeat(2, auto) !important;   /* ✅ صفين تحت بعض */
+
+    /* ✅ مسافة صغيرة جدًا بين الكروت (نص إصبع تقريبًا) */
+    row-gap: 4px !important;      /* المسافة العمودية بين الصفوف */
+    column-gap: 4px !important;   /* المسافة الأفقية بين الأعمدة */
+
+    justify-items: center;
+    align-items: center;
+    padding: 0 4px !important;    /* مسافة خفيفة من حواف الشاشة */
+  }
+
+  /* 🔹 تكبير حجم الكروت */
+  .icon {
+    height: 135px !important;   /* كان 110px */
+    width: 100% !important;
+    max-width: 150px !important; /* كان 120px */
+    border-radius: 16px !important;
+    padding: 8px !important;
+  }
+
+  .icon-emoji {
+    font-size: 1.8rem !important; /* كان 1.4rem */
+    margin-bottom: 6px !important;
+  }
+
+  .icon-label {
+    font-size: 1rem !important; /* كان 0.9rem */
+  }
+
+  /* 🔸 الهيدر يظل كما هو */
+  :root {
+    --header-h: 90px;
+    --header-title-size: 22px;
+  }
+
+  header {
+    height: var(--header-h) !important;
+    padding: 0 8px !important;
+  }
+
+  header h1 {
+    font-size: var(--header-title-size) !important;
+  }
+
+  header .logo {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  header .logo img {
+    width: 80px !important;
+  }
+
+  .menu-toggle {
+    font-size: 24px !important;
+  }
+}
