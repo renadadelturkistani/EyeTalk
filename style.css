@@ -964,44 +964,42 @@ body.theme-dark {
 }
 
 
-
 /* 📱 الجوال (صفين × 3 كروت) */
 @media (max-width: 600px) {
   #iconsContainer {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important; /* ✅ 3 كروت بالصف */
-    grid-template-rows: repeat(2, auto) !important;   /* ✅ صفين تحت بعض */
+    grid-template-columns: repeat(3, 1fr) !important;
+    grid-template-rows: repeat(2, auto) !important;
 
-    /* ✅ مسافة صغيرة جدًا بين الكروت (نص إصبع تقريبًا) */
-    row-gap: 4px !important;      /* المسافة بين الصفوف */
-    column-gap: 4px !important;   /* المسافة بين الأعمدة */
+    row-gap: 3px !important;      /* المسافة بين الصفوف */
+    column-gap: 3px !important;   /* المسافة بين الأعمدة */
 
     justify-items: center;
     align-items: center;
-    padding: 0 4px !important;    /* مسافة بسيطة من الجوانب */
+    padding: 0 2px !important; /* تقليل المسافة من الأطراف */
   }
 
-  /* 🔹 تكبير حجم الكروت فعلياً */
+  /* 🔹 تكبير الكروت وتقليل الـpadding الداخلي */
   .icon {
-    height: 160px !important;    /* 🔸 كبر الارتفاع */
+    height: 165px !important;
     width: 100% !important;
-    max-width: 160px !important; /* 🔸 كبر العرض */
-    border-radius: 18px !important;
-    padding: 10px !important;
+    max-width: 165px !important;
+    border-radius: 16px !important;
+    padding: 4px !important; /* 👈 تم تقليل الـpadding */
     background: linear-gradient(135deg, #5dbdea, #8e97e9) !important;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
   }
 
   .icon-emoji {
-    font-size: 2rem !important; /* 🔸 كبر الإيموجي */
-    margin-bottom: 8px !important;
+    font-size: 2.1rem !important;
+    margin-bottom: 4px !important;
   }
 
   .icon-label {
-    font-size: 1.1rem !important; /* 🔸 كبر النص */
+    font-size: 1.05rem !important;
   }
 
-  /* 🎯 الهيدر يظل كما هو */
+  /* 🔸 الهيدر كما هو */
   :root {
     --header-h: 90px;
     --header-title-size: 22px;
