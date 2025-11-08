@@ -986,7 +986,7 @@ body.theme-dark {
     width: 100% !important;
     max-width: 165px !important;
     border-radius: 16px !important;
-    padding: 8px !important; /* 👈 زدناها سنتين عن السابق */
+    padding: 10px !important; /* 👈 زدناها سنتين عن السابق */
     background: linear-gradient(135deg, #5dbdea, #8e97e9) !important;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -1034,3 +1034,4 @@ body.theme-dark {
     font-size: 24px !important;
   }
 }
+
