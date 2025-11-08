@@ -1,25 +1,9 @@
-
-
-/* =========================================================
-   🗣️ النطق (Text-To-Speech) — يقرأ النص فقط بدون الإيموجي
-========================================================= */
-function sanitizeText(text) {
-  if (!text) return "";
-  let t = String(text);
-  t = t.replace(/<[^>]*>/g, ""); // إزالة HTML
-  try {
-    t = t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "");
-  } catch (_) {
-    t = t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "");
-  }
-  return t.replace(/\s+/g, " ").trim();
-}
 function speak(text) {
   const onlyText = sanitizeText(text);
   if (!onlyText) return;
 
   try {
-    // نلغي أي كلام سابق
+    // إلغاء أي نطق سابق
     window.speechSynthesis.cancel();
 
     let repeatCount = 0;
@@ -27,11 +11,9 @@ function speak(text) {
       const msg = new SpeechSynthesisUtterance(onlyText);
       msg.lang = "ar-SA";
 
-      // بعد انتهاء النطق نعيده حتى 3 مرات
       msg.onend = () => {
         repeatCount++;
         if (repeatCount < 3) {
-          // ننتظر نصف ثانية بين كل تكرار
           setTimeout(() => window.speechSynthesis.speak(msg), 500);
         }
       };
@@ -40,8 +22,21 @@ function speak(text) {
     };
 
     speakMsg();
+
+    // ✅ التحقق بعد ثانيتين — إذا Safari ما نطق (iPad/iPhone)
+    setTimeout(() => {
+      if (!window.speechSynthesis.speaking && window.responsiveVoice) {
+        console.warn("Fallback to ResponsiveVoice (Arabic Male)");
+        responsiveVoice.speak(onlyText, "Arabic Male");
+      }
+    }, 2000);
+
   } catch (e) {
     console.warn("Speech error:", e);
+    // خطة بديلة مباشرة إذا حدث خطأ
+    if (window.responsiveVoice) {
+      responsiveVoice.speak(onlyText, "Arabic Male");
+    }
   }
 }
 
@@ -370,6 +365,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.style.display = "none";
   });
 });
+
 
 
 
