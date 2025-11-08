@@ -880,11 +880,12 @@ body.theme-dark {
 }
 
 /* جوال */
-@media (max-width: 599px) {
+@media (max-width: 400px) {
   #iconsContainer {
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 }
+
 
 
 
