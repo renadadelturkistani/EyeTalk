@@ -31,9 +31,9 @@
   --header-title-color:#ffffff;
 
   /* شبكة الأيقونات (تم تكبيرها) */
-  --icon-height:160px;
+  --icon-height:240px; /* ✅ جعلته 240px كالقيمة الأصلية في .icon */
   --icon-font:1.1rem;
-  --emoji-size:32px;
+  --emoji-size:2rem; /* ✅ جعلته 2rem كالقيمة الأصلية في .icon-emoji */
   --icon-gap:10px;
   --grid-gap:26px;
 }
@@ -80,9 +80,7 @@
   font-family: 'Cairo', sans-serif !important;
   box-sizing:border-box;
 }
-/* ✅ استخدام وحدات مرنة لحجم الخط الأساسي في الشاشات الصغيرة */
 html{ font-size: var(--base-font); }
-
 body{
   margin:0;
   background:var(--bg); color:var(--text); direction:rtl; text-align:center; line-height:1.7;
@@ -103,7 +101,7 @@ header{
 
 header h1 {
   margin: 0;
-  font-weight: 800; /* ✅ جعل العنوان بولد */
+  font-weight: 800;
   line-height: 1;
   color: var(--header-title-color);
   font-size: var(--header-title-size);
@@ -114,11 +112,12 @@ header h1 {
   inset-inline-start: 16px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 32px; /* ✅ تم تكبير الحجم */
+  font-size: 32px;
   cursor: pointer;
   font-weight: 900;
   color: #fff;
 }
+
 
 /* زر رجوع للرئيسية */
 .back-fab{
@@ -136,10 +135,12 @@ header h1 {
 ========================================================= */
 
 .page-wrap {
-  max-width: 1200px; /* ✅ زيادة الحد الأقصى للعرض ليتجاوب مع الشاشات الكبيرة */
+  /* ✅ استخدام max-width مرن يتجاوب */
+  max-width: 1200px; 
+  width: 95%; /* ✅ استخدام عرض نسبي */
   margin: 24px auto 48px;
   padding: 0 16px;
-  text-align: center; /* ✅ تم التوسيط */
+  text-align: center;
 }
 
 
@@ -147,7 +148,10 @@ header h1 {
 .card{
   background:var(--card); border-radius:18px; padding:18px 16px; box-shadow:var(--shadow-1);
   /* تحديث لون إطار البطاقة ليتناسب مع الثيم الموفي */
-  border:2px solid rgba(187, 193, 244, 0.25); margin:14px auto; /* ✅ جعل الهامش أفقيًا تلقائيًا للتوسيط */
+  border:2px solid rgba(187, 193, 244, 0.25); 
+  margin:14px auto; /* ✅ توسيط الكارد */
+  width: 100%; /* ✅ جعل الكارد دائماً بعرض 100% من حاويته */
+  max-width: 750px; /* ✅ الحد الأقصى الثابت */
 }
 /* تحديث ألوان العناوين والأبطال */
 .card-title{ margin:0 0 8px; color:var(--accent); font-weight:900 }
@@ -164,7 +168,7 @@ button, .btn {
   font-weight: 800;
   cursor: pointer;
   transition: transform .2s ease, box-shadow .2s ease;
-  margin: 0 6px; /* ✅ مسافة 6px يمين ويسار */
+  margin: 0 6px;
 }
 
 button:hover,.btn:hover{ transform:translateY(-2px); box-shadow:var(--shadow-2) }
@@ -182,19 +186,21 @@ input, textarea, select{
 input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shadow:0 0 0 3px rgba(167, 139, 250, .25) }
 
 
+
+
 .fields {
   display: grid;
   gap: 20px;
   max-width: 700px;
-  margin: 0 auto; /* ✅ يوسّط المجموعة في الكرت */
+  margin: 0 auto;
 }
 
 /* كل صف (ليبل + إدخال) */
 .fields label {
   display: flex;
-  justify-content: space-between; /* ✅ الليبل على اليمين والإدخال على اليسار */
+  justify-content: space-between;
   align-items: center;
-  gap: 16px; /* ✅ مسافة متساوية بين النص والمربع */
+  gap: 16px;
   font-weight: 700;
   color: var(--text);
   text-align: right;
@@ -202,8 +208,8 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 
 /* مربع الإدخال */
 .fields input {
-  flex: 1; /* ✅ يخلي جميع الحقول بنفس العرض تلقائيًا */
-  max-width: 480px;
+  flex: 1; 
+  max-width: 480px; /* ✅ سيتم تعديله أدناه للتجاوب */
   border: 1.8px solid #334155;
   border-radius: 12px;
   font-size: 1rem;
@@ -211,7 +217,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   background: var(--card);
   color: var(--text);
   outline: none;
-  text-align: center; /* ✅ النص داخل المربع في المنتصف */
+  text-align: center;
   transition: border-color .2s, box-shadow .2s;
 }
 
@@ -221,19 +227,17 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   box-shadow: 0 0 0 3px rgba(167, 139, 250, .25);
 }
 
-
-/* ✅ ريسبونسف حقول الفورم في الشاشات الصغيرة */
-@media (max-width: 600px) {
+/* ✅ تطبيق التجاوب على حقول الإدخال */
+@media (max-width: 768px) { /* نقطة توقف متوسطة */
   .fields label {
-    flex-direction: column; /* ✅ يخلي الليبل فوق الإدخال في الجوال */
-    align-items: flex-end; /* ✅ محاذاة النص لليمين */
-    text-align: right;
+    flex-direction: column; /* جعل الليبل فوق الإدخال */
+    align-items: flex-end;
+    gap: 8px;
   }
   .fields input {
-    max-width: 100%; /* ✅ استخدام عرض الشاشة بالكامل */
+    max-width: 100%; /* استخدام كامل العرض المتاح */
   }
 }
-
 
 
 #pwdForm {
@@ -253,13 +257,13 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 #pwdForm label {
   font-weight: 700;
   color: var(--text);
-  min-width: 200px; /* يخلي الليبل بمساحة ثابتة */
+  min-width: 200px; /* سيتم تعديله أدناه للتجاوب */
   text-align: right;
 }
 
 #pwdForm input {
   flex: 1;
-  max-width: 480px;
+  max-width: 480px; /* سيتم تعديله أدناه للتجاوب */
   border-radius: 12px;
   padding: .75rem .9rem;
   font-size: 1rem;
@@ -271,28 +275,27 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 
 #pwdHint {
   display: block;
-  margin: 20px 0; /* ✅ مسافة فوق وتحت */
+  margin: 20px 0;
   color: var(--muted);
   font-size: .9rem;
   line-height: 1.8;
-  text-align: center; /* يعطي توازن لو الصفحة كلها بالوسط */
+  text-align: center;
 }
 
-/* ✅ ريسبونسف حقول كلمة المرور في الشاشات الصغيرة */
-@media (max-width: 600px) {
+/* ✅ تطبيق التجاوب على حقول كلمة المرور */
+@media (max-width: 768px) { /* نقطة توقف متوسطة */
   #pwdForm .field {
-    flex-direction: column; /* ✅ يخلي الليبل فوق الإدخال في الجوال */
-    align-items: flex-end; /* ✅ محاذاة النص لليمين */
-    text-align: right;
+    flex-direction: column; /* جعل الليبل فوق الإدخال */
+    align-items: flex-end;
+    gap: 8px;
   }
   #pwdForm label {
-    min-width: 100%;
+    min-width: 100%; /* الليبل يأخذ عرض السطر بالكامل */
   }
   #pwdForm input {
-    max-width: 100%; /* ✅ استخدام عرض الشاشة بالكامل */
+    max-width: 100%; /* استخدام كامل العرض المتاح */
   }
 }
-
 
 
 /* تخصيص للوضع الفاتح */
@@ -316,23 +319,24 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
    👁️ شبكة الآيقونات (الصفحة الرئيسية)
 ========================================================= */
 #iconsContainer {
-  /* ✅ تحسين نظام الشبكة ليكون أكثر مرونة */
+  /* ✅ استخدام نظام الشبكة المرن المشابه لـ Bootstrap/CSS Grid */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* ✅ أصغر حجم للكارد 200px ومتجاوب */
-  gap: 30px; /* ✅ تباعد متناسق بين الكروت */
-  max-width: 1200px; /* ✅ ما يتجاوز عرض الصفحة */
-  margin: 32px auto 20px; /* ✅ توسيط الحاوية */
-  padding: 0 20px; /* ✅ مسافة من الجوانب عشان ما تلمس الأطراف */
-  box-sizing: border-box; /* ✅ يضمن عدم تجاوز الحدود */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* ✅ يتجاوب أوتوماتيكيًا */
+  gap: 40px; 
+  max-width: 1200px; /* ✅ الحد الأقصى للعرض */
+  margin: 32px auto 20px; 
+  padding: 0 20px;
+  box-sizing: border-box; 
 }
 
 .icon {
-  height: var(--icon-height); /* ✅ الارتفاع متغير في الجذر */
+  /* ✅ استخدام المتغير الأصلي لارتفاع متجاوب */
+  height: var(--icon-height); 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #5dbdea, #8e97e9); /* ✅ تدرج ناعم */
+  background: linear-gradient(135deg, #5dbdea, #8e97e9);
   border-radius: 22px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   text-align: center;
@@ -347,20 +351,21 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 }
 
 .icon-emoji {
-  font-size: var(--emoji-size); /* تكبير الإيموجي */
+  /* ✅ استخدام المتغير الأصلي لحجم متجاوب */
+  font-size: var(--emoji-size); 
   line-height: 1;
   margin-bottom: 12px;
 }
 
 .icon-label {
-  font-size: var(--icon-font);
+  font-size: 1.1rem;
   font-weight: 900;
   color: #ffffff;
 }
 
 /* حالة الطوارئ - يمكن إبقاؤها أو تخصيصها */
 .icon.emergency {
-  background: linear-gradient(135deg, #ef4444, #b91c1c); /* تدرج أحمر للطوارئ */
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
   box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
 }
 .icon.emergency:hover {
@@ -368,41 +373,26 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   box-shadow: 0 12px 26px rgba(220, 38, 38, 0.5);
 }
 
-/* رسبونسف (تحسين) */
-@media (max-width: 992px){ 
-  #iconsContainer{ grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); } /* ✅ تقليل الحد الأدنى للعرض */
+/* ✅ تعديل استعلامات الوسائط لـ Bootstrap-like */
+@media (max-width: 992px){ /* نقطة توقف شاشة كبيرة/متوسطة (md/lg) */
+  #iconsContainer{ grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; } 
 }
-@media (max-width: 600px){
-  #iconsContainer{ 
-    grid-template-columns:1fr; /* ✅ عمود واحد في الجوال */
-    padding: 0 10px; /* ✅ تقليل المسافة الجانبية */
-  }
+@media (max-width: 768px){ /* نقطة توقف شاشة متوسطة/صغيرة (sm/md) */
+  #iconsContainer{ grid-template-columns: repeat(2, 1fr); gap: 20px; } 
+  :root{ --icon-height:180px; } /* زيادة ارتفاع الكرت في الأجهزة اللوحية */
+}
+@media (max-width: 576px){ /* نقطة توقف شاشة صغيرة جداً (xs/sm) */
+  #iconsContainer{ grid-template-columns:1fr; gap: 15px; padding: 0 10px; }
   :root{ 
-    --icon-height:120px; 
-    --emoji-size:24px;
-    --header-h:120px; /* ✅ تصغير الهيدر في الجوال */
-    --header-title-size:28px; /* ✅ تصغير عنوان الهيدر في الجوال */
-  }
-  .icon-label {
-    font-size: 1rem;
+    --icon-height:140px; 
+    --emoji-size:1.8rem;
+    --header-h:120px; 
+    --header-title-size:28px;
   }
 }
 
-/* مؤشر النظر */
-#cursorDot {
-  position: fixed;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  background: #e3e4e6; /* ❗️لون أحمر */
-  box-shadow: 0 0 8px rgba(9, 69, 137, 0.6); /* ظل أحمر */
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 9999;
-}
 
-
-/* 🎯 مؤشر النظر مع دائرة التقدم */
+/* مؤشر النظر (لا يحتاج تعديل تجاوبي لأنه ثابت) */
 #cursorDot {
   position: fixed;
   width: 25px;
@@ -417,9 +407,10 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 }
 
 
-/* زر إيقاف الطوارئ */
+/* زر إيقاف الطوارئ (تم تحسينه للتجاوب) */
 #stopAlarm{
-  position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
+  position:fixed; bottom:20px; /* ✅ تقليل المسافة في الأسفل */
+  left:50%; transform:translateX(-50%);
   background:#ef4444; font-weight:800; color:#fff; padding:.9rem 1.4rem; font-size:1.1rem;
   border-radius:14px; display:none; z-index:9999; box-shadow:var(--shadow-2);
 }
@@ -433,13 +424,27 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   align-items:center; 
   gap:12px; 
   margin:12px 0;
-  /* ✅ لضمان التجاوب في الجوال */
-  flex-wrap: wrap; 
 }
 .range-wrap{ display:grid; gap:8px }
 .range-wrap input[type="range"]{ width:200px }
 
-/* سويتش on/off */
+/* ✅ تطبيق التجاوب على صف الإعدادات */
+@media (max-width: 600px) {
+  .settings-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .range-wrap {
+    width: 100%;
+  }
+  .range-wrap input[type="range"]{ 
+    width: 100%; /* جعل السلايدر بعرض 100% */
+  }
+}
+
+
+/* سويتش on/off (لا يحتاج تعديل مقاس كبير) */
 .switch{ position:relative; display:inline-flex; align-items:center; gap:10px; cursor:pointer }
 .switch input{ appearance:none; width:0; height:0; position:absolute; opacity:0 }
 .slider{
@@ -455,7 +460,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 .switch input:checked + .slider::after{ transform:translateX(24px) }
 .switch .switch-text{ min-width:34px; text-align:center; color:var(--muted); font-weight:800 }
 
-/* سلايدر حجم النص */
+/* سلايدر حجم النص (تم التعديل أعلاه) */
 .range-wrap input[type="range"]{
   appearance:none; height:6px; border-radius:6px; background:#22314d; outline:none;
 }
@@ -472,7 +477,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 }
 
 /* =========================================================
-   🔐 صفحات الدخول/التسجيل
+   🔐 صفحات الدخول/التسجيل (تم تحسين التجاوب)
 ========================================================= */
 .login-page, .register-page {
   display: flex;
@@ -480,14 +485,14 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   align-items: center;
   height: 100vh;
   background: linear-gradient(135deg, var(--primary), var(--primary-700));
-  padding: 20px; /* ✅ إضافة مسافة داخلية للهواتف */
+  padding: 20px; /* ✅ إضافة مسافة في الجوال */
 }
 
 .login-container {
   background: var(--card);
   border-radius: 20px;
   padding: 30px;
-  width: 100%;
+  width: 100%; /* ✅ استخدام عرض 100% */
   max-width: 420px;
   color: var(--text);
   box-shadow: 0 8px 26px rgba(0, 0, 0, .35);
@@ -525,7 +530,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   border: 1.8px solid #d1d5db;
   background: #ffffff; /* ✅ لون أبيض */
   color: #1f2937; /* ✅ لون نص غامق */
-  width: 100%;
+  width: 100%; /* ✅ استخدام عرض 100% */
   padding: .75rem .9rem;
   border-radius: 12px;
   font-size: 1rem;
@@ -572,24 +577,32 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 
 
 /* =========================================================
-   📱 السايدبار (للجوال)
+   📱 السايدبار (للجوال) (تم تحسين التجاوب)
 ========================================================= */
 .sidebar {
   position: fixed;
   top: 0;
-  /* ✅ تعديل العرض ليصبح متجاوباً ويأخذ مساحة أقل في الجوالات الصغيرة */
-  right: -75%; 
-  width: 75%; /* ✅ عرض نسبي */
-  max-width: 280px; /* ✅ الحد الأقصى للعرض */
+  right: -280px;
+  width: 260px; /* ✅ سيتم تعديله أدناه للتجاوب */
   height: 100%;
-  background: rgba(31, 41, 55, 0.55); /* ✅ تقليل الشفافية */
+  background: rgba(31, 41, 55, 0.55);
   color: var(--text);
   box-shadow: -4px 0 18px rgba(0, 0, 0, .35);
   transition: right .3s ease;
   z-index: 1500;
   padding: 28px 20px;
   text-align: initial;
-  backdrop-filter: blur(10px); /* ✅ تأثير ضبابي */
+  backdrop-filter: blur(10px);
+}
+
+/* ✅ التجاوب على السايدبار */
+@media (max-width: 600px) {
+  .sidebar {
+    width: 75%; /* عرض 75% من الشاشة في الجوال */
+    max-width: 280px; /* لا يتجاوز 280 بكسل */
+    right: -75%;
+  }
+  .sidebar.active{ right:0 }
 }
 
 .sidebar.active{ right:0 }
@@ -610,8 +623,8 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 #overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.25); /* تعتيم خفيف */
-  backdrop-filter: blur(4px); /* ضبابية للخلفية */
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(4px);
   display: none;
   z-index: 1400;
 }
@@ -621,7 +634,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 
 
 /* =========================================================
-   👤 صفحة الملف الشخصي
+   👤 صفحة الملف الشخصي (تم تحسين التجاوب)
 ========================================================= */
 .profile-card{
   background:var(--card);
@@ -632,6 +645,7 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
   border:2px solid rgba(129, 140, 248, .25);
   max-width:600px;
   margin:20px auto;
+  width: 95%; /* ✅ استخدام عرض 95% في الجوال */
 }
 
 /* تحديث لون عنوان البطاقة ليتناسب مع الأكسنت الموفي */
@@ -684,13 +698,13 @@ input:focus, textarea:focus, select:focus{ border-color:var(--accent); box-shado
 
 header .logo {
   position: absolute;
-  inset-inline-end: 16px; /* في الجهة اليمنى بالوضع العربي */
+  inset-inline-end: 16px;
   top: 50%;
   transform: translateY(-50%);
   background: #fff;
   border-radius: 50%;
-  width: 100px;
-  height: 100px;
+  width: 100px; /* ✅ سيتم تعديله أدناه للتجاوب */
+  height: 100px; /* ✅ سيتم تعديله أدناه للتجاوب */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -703,11 +717,11 @@ header .logo img {
   border-radius: 50%;
 }
 
-/* ✅ ريسبونسف لوقو الهيدر */
+/* ✅ تصغير اللوجو في الهيدر للجوال */
 @media (max-width: 600px) {
   header .logo {
-    width: 70px; /* ✅ تصغير اللوقو في الجوال */
-    height: 70px;
+    width: 70px; 
+    height: 70px; 
     inset-inline-end: 10px;
   }
   header .logo img {
@@ -716,10 +730,10 @@ header .logo img {
 }
 
 
-/* متابعة وايقاف التتبع*/
+/* متابعة وايقاف التتبع (تم تحسين التجاوب) */
 .eye-control {
   position: fixed;
-  bottom: 40px; /* مسافة عن أسفل الصفحة */
+  bottom: 40px; 
   padding: 30px 50px;
   border-radius: 1000px;
   font-weight: 1000;
@@ -749,39 +763,31 @@ header .logo img {
   box-shadow: 0 10px 24px rgba(0,0,0,.35);
 }
 
-/* موبايل (تحسين) */
-@media (max-width: 600px){
+/* موبايل (تحسين التجاوب) */
+@media (max-width:600px){
   .eye-control {
     padding: 10px 18px;
     font-size: .9rem;
-    bottom: 20px; /* ✅ تقليل المسافة من الأسفل */
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%); /* ✅ توسيط الأزرار في الجوال */
-    width: calc(50% - 20px); /* ✅ عرض نصفي تقريباً */
-    max-width: 180px;
+    bottom: 20px; /* تقليل المسافة من الأسفل */
+    width: calc(50% - 20px); /* تقسيم العرض إلى نصفين تقريباً */
   }
   .eye-control.left { 
     left: 10px; 
-    transform: none; 
-    width: calc(50% - 15px);
+    right: auto;
   }
   .eye-control.right { 
     right: 10px; 
-    transform: none; 
-    width: calc(50% - 15px);
+    left: auto;
   }
-  /* ✅ إخفاء الأزرار في الجوال وتجميعها في وضع مختلف عند الحاجة */
-  /* يمكن دمج الزرين في زر واحد في المنتصف أو وضعهما بهذا الشكل */
-  /* تم تركها كأزرار منفصلة كما في الأصل */
 }
+
 
 /* حركة دخول الكارد من الأسفل */
 .card {
   opacity: 0;
   transform: translateY(40px);
   animation: fadeUp 1.2s ease forwards;
-  width: 90%; /* ✅ زيادة عرض الكارد ليتناسب مع الجوال */
+  width: 90%; /* ✅ استخدام عرض 90% ليتجاوب في الجوال */
   max-width: 750px; 
   margin-left: auto;
   margin-right: auto;
@@ -842,10 +848,6 @@ header .logo img {
   font-size: 20px;
   color: #555;
 }
-
-
-
-
 
 
 .password-wrapper input {
