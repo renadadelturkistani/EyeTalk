@@ -878,28 +878,23 @@ body.theme-dark {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
-
 @media (max-width: 600px) {
   #iconsContainer {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* ✅ 3 كروت في كل صف */
-    grid-template-rows: repeat(3, auto);   /* ✅ صفين تحت بعض */
+    grid-template-columns: repeat(2, 1fr); /* ✅ كرتين في كل صف */
+    grid-template-rows: repeat(3, auto);   /* ✅ 3 صفوف تحت بعض */
 
-    /* ✅ تحكم دقيق في المسافات */
-    row-gap: 6px;     /* المسافة بين الصفوف (فوق/تحت) */
-    column-gap: 22px;  /* المسافة بين الأعمدة (يمين/يسار) */
+    /* ✅ تحكم أدق في المسافات */
+    row-gap: 4px;      /* 👈 أقل مسافة ممكنة بين الصفوف */
+    column-gap: 14px;  /* 👈 مسافة متوسطة بين الأعمدة */
 
     justify-items: center;
     align-items: center;
 
     height: 100vh;       /* يغطي الشاشة بدون سكرول */
     overflow: hidden;    /* يمنع السكرول */
-    padding: 0 10px;     /* مسافة بسيطة من الجوانب */
+    padding: 0 8px;      /* مسافة خفيفة من الجوانب */
   }
-
-
-
-
 
 
 
