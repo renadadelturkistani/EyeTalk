@@ -886,7 +886,7 @@ body.theme-dark {
     grid-template-rows: repeat(2, auto);   /* ✅ صفين تحت بعض */
 
     /* ✅ تحكم دقيق في المسافات */
-    row-gap: 8px;     /* المسافة بين الصفوف (فوق/تحت) */
+    row-gap: 6px;     /* المسافة بين الصفوف (فوق/تحت) */
     column-gap: 22px;  /* المسافة بين الأعمدة (يمين/يسار) */
 
     justify-items: center;
@@ -896,6 +896,7 @@ body.theme-dark {
     overflow: hidden;    /* يمنع السكرول */
     padding: 0 10px;     /* مسافة بسيطة من الجوانب */
   }
+
 
 
 
