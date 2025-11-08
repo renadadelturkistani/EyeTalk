@@ -1,11 +1,3 @@
-document.getElementById("enableVoiceBtn").addEventListener("touchend", () => {
-  const u = new SpeechSynthesisUtterance("تم تفعيل الصوت");
-  u.lang = "ar-SA";
-  speechSynthesis.speak(u);
-
-  // لا تستخدم alert هنا أبداً! ولا أي شيء بعد النطق
-  document.getElementById("enableVoiceBtn").style.display = "none";
-});
 
 
 /* =========================================================
@@ -351,6 +343,33 @@ function startGaze() {
     }
   }
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("enableVoiceBtn");
+
+  btn.addEventListener("touchend", () => {
+    // تشغيل صوت صامت صغير لكسر المنع الصوتي في Safari
+    const audio = new Audio("silent.mp3");
+    audio.play().then(() => {
+      // بعد ما Safari يسمع صوت، نفعّل النطق
+      const u = new SpeechSynthesisUtterance("تم تفعيل الصوت بنجاح");
+      u.lang = "ar-SA";
+      window.speechSynthesis.speak(u);
+      btn.style.display = "none";
+    }).catch(err => {
+      console.error("Audio activation failed:", err);
+    });
+  });
+
+  // لأجهزة غير iOS
+  btn.addEventListener("click", () => {
+    const u = new SpeechSynthesisUtterance("Voice has been activated");
+    u.lang = "en-US";
+    window.speechSynthesis.speak(u);
+    btn.style.display = "none";
+  });
+});
 
 
 
