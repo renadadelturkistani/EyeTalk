@@ -858,9 +858,166 @@ body.theme-dark {
   background-color: #0f2e52;
   color: #fff;
 }
+/* =========================================================
+   🎨 الثيم العام
+========================================================= */
+:root {
+  --bg: #294b68;
+  --card: #243f56;
+  --text: #e5e7eb;
+  --accent: #5dbdea;
+  --header-h: 150px;
+  --header-title-size: 36px;
+}
+
+/* الأساس */
+body {
+  margin: 0;
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  direction: rtl;
+  text-align: center;
+}
+
+/* الهيدر */
+header {
+  background: linear-gradient(90deg, #9fc5d8, #196b8f);
+  height: var(--header-h);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 3px 12px rgba(0,0,0,.25);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+header h1 {
+  font-size: var(--header-title-size);
+  margin: 0;
+  font-weight: 900;
+}
+.menu-toggle {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 32px;
+  cursor: pointer;
+  color: #fff;
+}
+header .logo {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+header .logo img {
+  width: 100px;
+}
 
 /* =========================================================
-   📱⚙️ الرسبونسف النهائي (جوال - تابلت - لابتوب - شاشات كبيرة)
+   👁️ الصفحة الرئيسية (الكروت)
+========================================================= */
+#iconsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 0 20px;
+}
+.icon {
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #5dbdea, #8e97e9);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.icon:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+}
+.icon-emoji {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
+}
+.icon-label {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+.icon.emergency {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+.icon.emergency:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 26px rgba(239, 68, 68, 0.5);
+}
+
+/* =========================================================
+   🧩 صفحة تعديل الأيقونات (Editor)
+========================================================= */
+#editor {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  justify-items: center;
+  align-items: start;
+  margin-top: 20px;
+}
+#editor .card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  color: #fff;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+#editor .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+#editor .icon-emoji {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+#editor .icon-label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: var(--accent);
+}
+#editor input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #0f2e52;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+}
+#editor input:focus {
+  background: #123b66;
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+/* =========================================================
+   📱⚙️ الرسبونسف النهائي
 ========================================================= */
 
 /* شاشة كبيرة (ديسكتوب 4k أو شاشات عريضة) */
@@ -868,12 +1025,19 @@ body.theme-dark {
   #iconsContainer {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
   }
+  #editor {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-/* لابتوب عادي */
+/* لابتوب */
 @media (min-width: 1024px) and (max-width: 1599px) {
   #iconsContainer {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+  }
+  #editor {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
   }
 }
 
@@ -883,104 +1047,64 @@ body.theme-dark {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
     gap: 20px !important;
   }
-
+  #editor {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
   :root {
     --header-h: 120px;
     --header-title-size: 30px;
   }
-
-  header {
-    height: var(--header-h) !important;
-  }
-
-  header .logo {
-    width: 85px;
-    height: 85px;
-  }
-
-  header .logo img {
-    width: 100px;
-  }
+  header { height: var(--header-h) !important; }
+  header .logo { width: 85px; height: 85px; }
+  header .logo img { width: 100px; }
 }
+
 /* 📱 الجوال (صفين × 3 كروت) */
 @media (max-width: 600px) {
   #iconsContainer {
     display: grid !important;
     grid-template-columns: repeat(3, 1fr) !important;
     grid-template-rows: repeat(2, auto) !important;
-
-    /* ✅ مسافة صغيرة جدًا بين الكروت */
     row-gap: 4px !important;     
     column-gap: 4px !important;  
-
     justify-items: center;
     align-items: center;
-    padding: 0 8px !important;  /* 👈 زيدنا البادنق شوي */
+    padding: 0 8px !important;
   }
-
-  /* 🔹 كروت كبيرة ومتوازنة */
   .icon {
     height: 165px !important;
     width: 100% !important;
     max-width: 165px !important;
     border-radius: 16px !important;
-    padding: 14px !important; /* 👈 زيدنا البادنق شوي زيادة عن قبل */
-    background: linear-gradient(135deg, #5dbdea, #8e97e9) !important;
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    padding: 14px !important;
   }
+  .icon-emoji { font-size: 2rem !important; }
+  .icon-label { font-size: 1.1rem !important; }
 
-  .icon:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(75, 198, 232, 0.3);
+  /* 🔹 كروت التعديل */
+  #editor {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 10px;
   }
-
-  /* ✅ نرجع لون كرت الطوارئ الأحمر */
-  .icon.emergency {
-    background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
-    box-shadow: 0 6px 14px rgba(239, 68, 68, 0.4) !important;
+  #editor .card {
+    padding: 14px;
   }
+  #editor .icon-emoji { font-size: 1.6rem; }
+  #editor .icon-label { font-size: 1rem; }
+  #editor input { font-size: 0.9rem; padding: 8px; }
 
-  .icon.emergency:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 20px rgba(239, 68, 68, 0.5) !important;
-  }
-
-  /* 🎯 الأيقونة والنص */
-  .icon-emoji {
-    font-size: 2rem !important;
-    margin-bottom: 8px !important;
-  }
-
-  .icon-label {
-    font-size: 1.1rem !important;
-  }
-
-  /* 🔸 الهيدر */
   :root {
     --header-h: 90px;
     --header-title-size: 22px;
   }
-
   header {
     height: var(--header-h) !important;
     padding: 0 8px !important;
   }
-
-  header h1 {
-    font-size: var(--header-title-size) !important;
-  }
-
-  header .logo {
-    width: 70px !important;
-    height: 70px !important;
-  }
-
-  header .logo img {
-    width: 80px !important;
-  }
-
-  .menu-toggle {
-    font-size: 24px !important;
-  }
+  header h1 { font-size: var(--header-title-size) !important; }
+  header .logo { width: 70px !important; height: 70px !important; }
+  header .logo img { width: 80px !important; }
+  .menu-toggle { font-size: 24px !important; }
 }
