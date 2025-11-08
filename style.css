@@ -948,41 +948,77 @@ body.theme-dark {
     box-shadow: 0 10px 20px rgba(239, 68, 68, 0.5) !important;
   }
 
-  /* 🎯 الأيقونة والنص */
-  .icon-emoji {
-    font-size: 2rem !important;
-    margin-bottom: 8px !important;
-  }
+/* =========================================================
+📱 تحسين عرض الجوالات الصغيرة جدًا (مثل iPhone SE)
+========================================================= */
+@media (max-width: 430px) {
 
-  .icon-label {
-    font-size: 1.1rem !important;
-  }
-
-  /* 🔸 الهيدر */
-  :root {
-    --header-h: 90px;
-    --header-title-size: 22px;
+  body {
+    overflow-x: hidden; /* ✅ يمنع التمرير الجانبي */
   }
 
   header {
-    height: var(--header-h) !important;
-    padding: 0 8px !important;
+    flex-direction: column; /* ✅ يجعل اللوقو والعنوان فوق بعض */
+    text-align: center;
+    padding: 10px 0 !important;
   }
 
   header h1 {
-    font-size: var(--header-title-size) !important;
+    font-size: 1.1rem !important; /* ✅ يقلل العنوان */
   }
 
   header .logo {
-    width: 70px !important;
-    height: 70px !important;
+    width: 65px !important;
+    height: 65px !important;
+    margin-bottom: 6px;
   }
 
   header .logo img {
-    width: 80px !important;
+    width: 70px !important;
   }
 
-  .menu-toggle {
-    font-size: 24px !important;
+  #iconsContainer {
+    grid-template-columns: repeat(2, 1fr) !important; /* ✅ صفين × عمودين */
+    gap: 6px !important;
+    padding: 0 6px !important;
+  }
+
+  .icon {
+    max-width: 150px !important;
+    height: 150px !important;
+    padding: 10px !important;
+  }
+
+  .icon-emoji {
+    font-size: 1.8rem !important;
+  }
+
+  .icon-label {
+    font-size: 1rem !important;
+  }
+
+  .page-wrap {
+    width: 100%;
+    padding: 0 8px;
+  }
+
+  .card {
+    width: 100% !important;
+    max-width: 95% !important;
+    margin: 10px auto !important;
+  }
+
+  button,
+  .btn {
+    width: 100% !important;
+    margin: 6px 0 !important;
+    font-size: 0.9rem !important;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 0.9rem !important;
+    padding: 0.6rem 0.8rem !important;
   }
 }
