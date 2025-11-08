@@ -879,12 +879,41 @@ body.theme-dark {
   }
 }
 
-/* جوال */
-@media (max-width: 400px) {
+/* 📱 جوال: صفين أفقيين (3 كروت في كل صف) */
+@media (max-width: 600px) {
   #iconsContainer {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* ✅ 3 كروت في كل صف */
+    grid-template-rows: repeat(2, auto);   /* ✅ صفين تحت بعض */
+    gap: 14px; /* ✅ مسافة متناسقة بين الكروت */
+    justify-items: center;
+    align-items: center;
+    height: 100vh; /* ✅ خليه يغطي الشاشة بدون سكرول */
+    overflow: hidden; /* ✅ يمنع السكرول */
+    padding: 0 8px;
+  }
+
+  /* ✅ صغّر حجم الكروت */
+  .icon {
+    height: 120px; /* بدل 240px */
+    width: 100%; 
+    max-width: 110px; /* ✅ عرض الكرت أصغر عشان يدخل 3 بالصف */
+    border-radius: 16px;
+    padding: 8px;
+  }
+
+  /* ✅ صغّر الإيموجي والنص */
+  .icon-emoji {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+  }
+
+  .icon-label {
+    font-size: 0.85rem;
   }
 }
+
+
 
 
 
