@@ -882,8 +882,8 @@ body.theme-dark {
 @media (max-width: 600px) {
   #iconsContainer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* ✅ 3 كروت في كل صف */
-    grid-template-rows: repeat(2, auto);   /* ✅ صفين تحت بعض */
+    grid-template-columns: repeat(2, 1fr); /* ✅ 3 كروت في كل صف */
+    grid-template-rows: repeat(3, auto);   /* ✅ صفين تحت بعض */
 
     /* ✅ تحكم دقيق في المسافات */
     row-gap: 6px;     /* المسافة بين الصفوف (فوق/تحت) */
@@ -896,6 +896,7 @@ body.theme-dark {
     overflow: hidden;    /* يمنع السكرول */
     padding: 0 10px;     /* مسافة بسيطة من الجوانب */
   }
+
 
 
 
