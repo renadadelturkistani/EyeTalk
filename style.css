@@ -1022,3 +1022,36 @@ body.theme-dark {
     padding: 0.6rem 0.8rem !important;
   }
 }
+/* ✅ شبكة الأيقونات */
+#editor {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--grid-gap, 1rem);
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--grid-gap, 1rem);
+}
+
+/* شكل الكروت داخل الشبكة */
+#editor > div {
+  background: #0f2e52;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+#editor > div:hover {
+  transform: scale(1.03);
+}
+
+/* 📱 للجوال */
+@media (max-width: 600px) {
+  #editor {
+    grid-template-columns: repeat(2, 1fr); /* عمودين */
+    grid-auto-rows: 1fr; /* صفوف متساوية الارتفاع */
+    gap: 0.8rem;
+    padding: 0.8rem;
+  }
+}
+
