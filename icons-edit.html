@@ -6,9 +6,20 @@
   <title>تعديل الأيقونات - EyeTalk</title>
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* 📱 تعديل خاص للجوال فقط */
+    @media (max-width: 600px) {
+      #editor {
+        grid-template-columns: repeat(2, 1fr) !important; /* عمودين */
+        grid-auto-rows: 1fr; /* يخلي الصفوف متساوية الارتفاع */
+      }
+    }
+  </style>
 </head>
 
 <body>
+
 
   <header>
     <span class="menu-toggle" aria-label="فتح القائمة">☰</span>
@@ -161,4 +172,5 @@
 
 
 </html>
+
 
