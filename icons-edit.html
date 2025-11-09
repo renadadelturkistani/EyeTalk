@@ -4,150 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تعديل الأيقونات - EyeTalk</title>
+  <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --grid-gap: 1rem;
-    }
-
-    body {
-      font-family: 'Cairo', sans-serif;
-      margin: 0;
-      background-color: #0f172a;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #1e293b;
-      padding: 12px 16px;
-      border-bottom: 2px solid #334155;
-    }
-
-    .app-title {
-      font-weight: 900;
-      font-size: 1.3rem;
-    }
-
-    .logo img {
-      height: 40px;
-    }
-
-    .page-wrap {
-      padding: 20px;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background: #1e293b;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    .card-title {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: .5rem;
-    }
-
-    .muted {
-      color: #94a3b8;
-      font-size: .9rem;
-      margin-bottom: 1rem;
-    }
-
-    /* ✅ شبكة الأيقونات */
-    #editor {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--grid-gap);
-      box-sizing: border-box;
-      max-width: 100%;
-      width: 100%;
-      margin: 0 auto;
-      padding: var(--grid-gap);
-    }
-
-    /* شكل الكروت داخل الشبكة */
-    #editor > div {
-      background: #0f2e52;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.2s;
-    }
-
-    #editor > div:hover {
-      transform: scale(1.03);
-    }
-
-    /* 🎯 تصميم الجوال */
-    @media (max-width: 600px) {
-      #editor {
-        grid-template-columns: repeat(2, 1fr); /* عمودين */
-        grid-auto-rows: 1fr;
-        gap: 0.7rem;
-        padding: 0.7rem;
-      }
-
-      body {
-        font-size: 15px;
-      }
-
-      .card {
-        padding: 1rem;
-      }
-
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-      }
-
-      .logo img {
-        height: 32px;
-      }
-
-      .app-title {
-        font-size: 1.1rem;
-      }
-    }
-
-    /* أزرار التحكم */
-    button {
-      padding: 10px 16px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
-    }
-
-    button:hover {
-      opacity: 0.85;
-    }
-
-    .danger {
-      background-color: #b91c1c;
-      color: #fff;
-    }
-
-    #addIcon {
-      background-color: #15803d;
-      color: #fff;
-    }
-
-    #resetIcons {
-      background-color: #f59e0b;
-      color: #000;
-    }
-  </style>
 </head>
 
 <body>
@@ -160,6 +18,7 @@
     </div>
   </header>
 
+  <!-- ✅ الشريط الجانبي -->
   <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
     <h2>القائمة</h2>
     <nav>
@@ -181,19 +40,25 @@
       <h2 class="card-title">قائمة الأيقونات</h2>
       <p class="muted">يمكنك تخصيص الأيقونات والنصوص، وسيتم حفظ التغييرات وتحديث الشاشة الرئيسية تلقائيًا</p>
 
-      <!-- ✅ الشبكة -->
-      <div id="editor"></div>
+<div id="editor"></div>
 
       <!-- ✅ أزرار التحكم -->
-      <div style="margin-top:20px; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap;">
-        <button id="addIcon">➕ إضافة أيقونة</button>
-        <button id="resetIcons" class="danger">↩️ الوضع الافتراضي</button>
-        <button id="saveChanges" style="background-color:#1e40af; color:#fff;">
-          💾 حفظ التغييرات
-        </button>
-      </div>
-    </section>
-  </main>
+<div style="
+  margin-top:20px; 
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  gap:12px; 
+  flex-wrap:wrap;
+">
+  <button id="addIcon">➕ إضافة أيقونة</button>
+  <button id="resetIcons" class="danger">↩️ الوضع الافتراضي</button>
+  <button id="saveChanges" 
+    style="background-color:#1e40af; color:#fff; border:none; padding:10px 16px; border-radius:6px; font-weight:bold; cursor:pointer;">
+    💾 حفظ التغييرات
+  </button>
+</div>
+
 
   <!-- Firebase + EmailJS -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -203,7 +68,7 @@
   <script>
     const editor = document.getElementById('editor');
     const defaults = [
-      { emoji: "🚨", label: "حالة طارئة", fixed: true },
+      { emoji: "🚨", label: "حالة طارئة", fixed: true }, // 🔒 غير قابلة للحذف
       { emoji: "💧",  label: "أريد الماء" },
       { emoji: "🍽️", label: "أريد الطعام" },
       { emoji: "💊",  label: "أريد الدواء" },
@@ -225,6 +90,7 @@
         c.style.padding = '20px';
         c.style.borderRadius = '12px';
 
+        // 🔹 بناء محتوى الأيقونة
         c.innerHTML = `
           <div class="icon-emoji" style="font-size:40px; margin:0 auto">${it.emoji}</div>
           <div class="icon-label" style="margin:.4rem 0 0; font-weight:bold">${it.label}</div>
@@ -247,6 +113,7 @@
       });
     }
 
+    // 🔹 تحديث فوري عند تعديل النص أو الإيموجي
     editor.addEventListener('input', (e) => {
       const i = +e.target.dataset.i, k = e.target.dataset.k;
       if (Number.isNaN(i) || !k) return;
@@ -255,17 +122,19 @@
       save(list);
     });
 
+    // 🔹 منع حذف أيقونة الطوارئ
     editor.addEventListener('click', (e) => {
       if (e.target.dataset.act === 'del') {
         const i = +e.target.dataset.i;
         const list = load();
-        if (list[i].fixed) return;
+        if (list[i].fixed) return; // 🚫 ممنوع حذف الطوارئ
         list.splice(i, 1);
         save(list);
         render();
       }
     });
 
+    // 🔹 إضافة أيقونة جديدة
     document.getElementById('addIcon').onclick = () => {
       const l = load();
       l.push({ emoji: "🙂", label: "نص جديد" });
@@ -273,16 +142,22 @@
       render();
     };
 
+    // 🔹 إعادة الوضع الافتراضي
     document.getElementById('resetIcons').onclick = () => {
       save(defaults);
       render();
     };
 
+    // 🔹 زر حفظ التغييرات
     document.getElementById('saveChanges').onclick = () => {
       alert("✅ تم حفظ التغييرات بنجاح!");
     };
 
     render();
   </script>
+
+  <script src="script.js"></script>
 </body>
+
+
 </html>
