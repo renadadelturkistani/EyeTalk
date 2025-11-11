@@ -5,28 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>إنشاء حساب - EyeTalk</title>
 
-
-
-
-  <!-- الخط -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
-
-  <!-- ملف التنسيق -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     (function () {
-      emailjs.init("DX_7hfu4mvcCyCf9B"); // ✅ المفتاح العام الصحيح من الكود الأول
-      console.log("✅ EmailJS جاهز للعمل");
+      emailjs.init("DX_7hfu4mvcCyCf9B");
+      console.log("EmailJS جاهز");
     })();
   </script>
-<!-- library icon -->
-<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-
 </head>
+
 <body>
 
   <div class="login-page" id="registerPage">
@@ -41,26 +31,20 @@
         <input type="text" id="fullName" placeholder="اسم المريض" required />
         <input type="text" id="assistantName" placeholder="اسم المساعد" required />
         <input type="email" id="assistantEmail" placeholder="بريد المساعد" required />
-<!--    
-        <div class="password-wrapper">
-          <input type="password" id="regPassword" placeholder="كلمة المرور" required />
-          <span class="toggle-pwd" id="toggleRegPwd">👁</span>
-        </div>     -->
 
         <div class="input-box">
-  <input type="password" id="regPassword" placeholder="كلمة المرور" required>
-  <i class='bx bx-hide' id="toggleRegPwd"></i>
-</div>
+          <input type="password" id="regPassword" placeholder="كلمة المرور" required>
+          <i class='bx bx-hide' id="toggleRegPwd"></i>
+        </div>
 
-<div class="input-box">
-  <input type="password" id="regConfirmPassword" placeholder="تأكيد كلمة المرور" required>
-  <i class='bx bx-hide' id="toggleConfirmPwd"></i>
-</div>
-
-
-
+        <div class="input-box">
+          <input type="password" id="regConfirmPassword" placeholder="تأكيد كلمة المرور" required>
+          <i class='bx bx-hide' id="toggleConfirmPwd"></i>
+        </div>
 
         <button type="submit">إنشاء الحساب</button>
+
+        <div id="registerMsg" style="margin-top:10px; font-weight:700; text-align:center;"></div>
       </form>
 
       <p class="register-text">
@@ -69,7 +53,6 @@
     </div>
   </div>
 
-  <!-- Firebase & تسجيل الحساب -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
@@ -95,12 +78,20 @@
       const assistantName  = document.getElementById("assistantName").value.trim();
       const assistantEmail = document.getElementById("assistantEmail").value.trim();
       const password       = document.getElementById("regPassword").value;
+      const confirm        = document.getElementById("regConfirmPassword").value;
+      const msgBox         = document.getElementById("registerMsg");
+
+      msgBox.textContent = "";
+
+      if (password !== confirm) {
+        msgBox.style.color = "#dc3545";
+        msgBox.textContent = "كلمة المرور غير متطابقة";
+        return;
+      }
 
       try {
-        // ✅ إنشاء الحساب في Firebase
         const { user } = await createUserWithEmailAndPassword(auth, assistantEmail, password);
 
-        // ✅ حفظ بيانات المستخدم في Firestore
         await setDoc(doc(db, "patients", user.uid), {
           fullName,
           assistantName,
@@ -108,7 +99,6 @@
           createdAt: serverTimestamp()
         });
 
-        // ✅ إرسال رسالة الترحيب عبر EmailJS (من الكود الأول)
         try {
           const params = {
             assistant_name: assistantName,
@@ -117,66 +107,49 @@
           };
 
           await emailjs.send("service_efegnl1", "template_8vngicw", params);
-          console.log("✅ تم إرسال رسالة الترحيب بنجاح");
         } catch (err) {
-          console.warn("⚠️ فشل إرسال الترحيب:", err);
+          console.warn("فشل إرسال الترحيب:", err);
         }
 
-        // ✅ تسجيل الدخول مباشرة بعد التسجيل
         await signInWithEmailAndPassword(auth, assistantEmail, password);
 
-        // ✅ حفظ البيانات محلياً
         localStorage.setItem("patientName", fullName);
         localStorage.setItem("assistantName", assistantName);
         localStorage.setItem("assistantEmail", assistantEmail);
 
-        // ✅ تحويل المستخدم للصفحة الرئيسية
-        alert("تم إنشاء الحساب وإرسال رسالة الترحيب بنجاح!");
-        window.location.href = "index.html";
+        msgBox.style.color = "#1cb94b";
+        msgBox.textContent = "تم إنشاءالحساب";
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+
       } catch (error) {
-        alert("حدث خطأ: " + (error?.message || error));
+        msgBox.style.color = "#dc3545";
+        msgBox.textContent = "حدث خطأ: " + (error?.message || error);
       }
     });
   </script>
 
-  <!-- زر إظهار/إخفاء كلمة المرور 
   <script>
-    const toggle = document.getElementById("toggleRegPwd");
-    const passwordInput = document.getElementById("regPassword");
+    const toggles = [
+      { btn: "toggleRegPwd", field: "regPassword" },
+      { btn: "toggleConfirmPwd", field: "regConfirmPassword" }
+    ];
 
-    toggle.addEventListener("click", () => {
-      const isVisible = passwordInput.type === "text";
-      passwordInput.type = isVisible ? "password" : "text";
-      toggle.classList.toggle("fa-eye");
-      toggle.classList.toggle("fa-eye-slash");
+    toggles.forEach(({ btn, field }) => {
+      const toggle = document.getElementById(btn);
+      const input = document.getElementById(field);
+      if (toggle && input) {
+        toggle.addEventListener("click", () => {
+          const type = input.getAttribute("type") === "password" ? "text" : "password";
+          input.setAttribute("type", type);
+          toggle.classList.toggle("bx-show");
+          toggle.classList.toggle("bx-hide");
+        });
+      }
     });
-  </script>  -->
-
-
-
-
-<script>
-const toggles = [
-  { btn: "toggleRegPwd", field: "regPassword" },
-  { btn: "toggleConfirmPwd", field: "regConfirmPassword" }
-];
-
-toggles.forEach(({ btn, field }) => {
-  const toggle = document.getElementById(btn);
-  const input = document.getElementById(field);
-  if (toggle && input) {
-    toggle.addEventListener("click", () => {
-      const type = input.getAttribute("type") === "password" ? "text" : "password";
-      input.setAttribute("type", type);
-      toggle.classList.toggle("bx-show");
-      toggle.classList.toggle("bx-hide");
-    });
-  }
-});
-</script>
-
-
-
+  </script>
 
 </body>
 </html>
