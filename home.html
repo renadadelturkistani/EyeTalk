@@ -11,6 +11,9 @@
 
   <!-- ✅ مكتبة تتبع النظر -->
   <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
+
+  <!-- ✅ مكتبة النطق -->
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"></script>
 </head>
 
 <body class="theme-dark">
@@ -74,12 +77,64 @@
   <!-- ✅ زر الطوارئ -->
   <button id="stopAlarm" type="button">إيقاف الطوارئ</button>
 
-  <!-- ✅ سكربتات المشروع -->
+  <!-- ✅ كود تفعيل النطق داخل الصفحة -->
+  <script>
+  /* =========================================================
+     🔊 نظام النطق والترحيب في صفحة الهوم
+     يعمل بمكتبة ResponsiveVoice أو SpeechSynthesis
+  ========================================================= */
+
+  function speak(text) {
+    if (!text) return;
+
+    const clean = text.replace(/<[^>]*>/g, "").trim();
+
+    // نحاول نستخدم مكتبة responsiveVoice
+    if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
+      responsiveVoice.speak(clean, "Arabic Female");
+    } else {
+      // fallback للنظام في حال المكتبة ما اشتغلت (زي هواوي)
+      const msg = new SpeechSynthesisUtterance(clean);
+      msg.lang = "ar-SA";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(msg);
+    }
+  }
+
+  // 🎧 عند تحميل الصفحة
+  window.addEventListener("load", () => {
+    const activateBtn = document.getElementById("activateSound");
+
+    if (!activateBtn) return;
+
+    // إذا سبق وتم التفعيل
+    if (localStorage.getItem("soundActivated") === "true") {
+      activateBtn.style.display = "none";
+      return;
+    }
+
+    // لما المستخدم يضغط الزر
+    activateBtn.addEventListener("click", () => {
+      if (!localStorage.getItem("welcomePlayed")) {
+        speak("مرحبًا بك في تطبيق آي توك. يمكنك التعبير عن احتياجك بنظرة");
+        localStorage.setItem("welcomePlayed", "true");
+      }
+
+      // نخفي الزر بعد ثانية ونفعل النظام
+      setTimeout(() => {
+        activateBtn.style.display = "none";
+        localStorage.setItem("soundActivated", "true");
+      }, 1500);
+    });
+  });
+  </script>
+
+  <!-- ✅ مكتبات المشروع -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-  <!-- ✅ سكربت المشروع الرئيسي (يشمل النطق والترحيب) -->
+  <!-- ✅ سكربت المشروع -->
   <script src="script.js"></script>
 
 </body>
