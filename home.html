@@ -5,29 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>الرئيسية - EyeTalk</title>
 
-  
-
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
   <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
-
 </head>
 
 <body class="theme-dark">
 
-  <!-- الهيدر -->
   <header>
     <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
     <h1 class="app-title">الصفحة الرئيسية</h1>
-
-    <!-- ✅ اللوقو -->
-    <div class="logo">
-      <img src="logo.png" alt="شعار الموقع" />
-    </div>
+    <div class="logo"><img src="logo.png" alt="شعار الموقع" /></div>
   </header>
 
-  <!-- ✅ الشريط الجانبي -->
-  <aside id="sidebar" class="sidebar" aria-label="الشريط الجانبي">
+  <aside id="sidebar" class="sidebar">
     <h2>القائمة</h2>
     <nav>
       <a href="home.html">الرئيسية</a>
@@ -37,33 +28,26 @@
       <a href="about.html">عن التطبيق</a>
       <a href="contact.html">تواصل</a>
     </nav>
-
     <hr style="opacity:.15;margin:14px 0">
     <a class="danger-link" href="logout.html">تسجيل خروج</a>
   </aside>
 
   <div id="overlay"></div>
 
-  <!-- ✅ المحتوى الرئيسي -->
   <main class="page-wrap">
-<h2 class="hero"> عبر عن احتياجك بنظرة</h2>
-
-    <!-- شبكة الأيقونات -->
+    <h2 class="hero">عبر عن احتياجك بنظرة</h2>
     <section id="iconsContainer"></section>
+
+    <!-- ✅ زر تفعيل الصوت -->
+    <div style="text-align:center; margin:20px;">
+      <button id="enableVoiceBtn" style="padding:10px 25px; font-size:18px;">
+         تفعيل الصوت
+      </button>
+    </div>
   </main>
-<div style="text-align:center; margin:20px;">
-  <button id="enableVoiceBtn" style="padding:10px 25px; font-size:18px;">
-    🔊 تفعيل الصوت
-  </button>
-</div>
-  <!-- ✅ مؤشر النظر -->
+
   <div id="cursorDot"></div>
-
-  <!-- ✅ زر الطوارئ -->
   <button id="stopAlarm" type="button">إيقاف الطوارئ</button>
-
-
-
 
   <!-- ✅ مكتبات -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
