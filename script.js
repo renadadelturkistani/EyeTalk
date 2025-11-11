@@ -1,15 +1,13 @@
-<!-- ✅ مكتبة النطق (ResponsiveVoice) -->
-<script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"></script>
+// ✅ مكتبة النطق
+document.write('<script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"><\/script>');
 
-<script>
 /* =========================================================
    🗣️ نطق ذكي — يستخدم ResponsiveVoice أو SpeechSynthesis
 ========================================================= */
-
 function sanitizeText(text) {
   if (!text) return "";
   let t = String(text);
-  t = t.replace(/<[^>]*>/g, ""); // إزالة HTML
+  t = t.replace(/<[^>]*>/g, "");
   try {
     t = t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "");
   } catch (_) {
@@ -35,7 +33,6 @@ function processQueue() {
   isSpeaking = true;
   const currentText = speakQueue.shift();
 
-  // ✅ لو المكتبة موجودة وتشتغل — نستخدمها
   if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
     responsiveVoice.speak(currentText, "Arabic Female", {
       onend: () => {
@@ -44,7 +41,6 @@ function processQueue() {
       }
     });
   } else {
-    // ⚙️ خطة بديلة — نستخدم speechSynthesis
     const msg = new SpeechSynthesisUtterance(currentText);
     msg.lang = "ar-SA";
     msg.onend = () => {
@@ -59,8 +55,25 @@ function processQueue() {
     window.speechSynthesis.speak(msg);
   }
 }
-</script>
 
+/* =========================================================
+   🔊 زر تفعيل الصوت والترحيب مرة واحدة فقط
+========================================================= */
+window.addEventListener("load", () => {
+  const btn = document.getElementById("enableVoiceBtn");
+  if (!btn) return;
+
+  if (localStorage.getItem("voiceEnabled") === "true") {
+    btn.style.display = "none";
+    return;
+  }
+
+  btn.addEventListener("click", () => {
+    speak("مرحبًا بك في تطبيق آي توك. يمكنك التعبير عن احتياجك بنظرة");
+    btn.style.display = "none";
+    localStorage.setItem("voiceEnabled", "true");
+  });
+});
 
 
 
@@ -360,6 +373,7 @@ function startGaze() {
     }
   }
 }
+
 
 
 
