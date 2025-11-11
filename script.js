@@ -1,9 +1,10 @@
-/* =========================================================
-   🗣️ النطق (Text-To-Speech) — يقرأ النصوص بالترتيب بدون دمج
-========================================================= */
+<!-- ✅ مكتبة النطق (ResponsiveVoice) -->
+<script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"></script>
 
-let speakQueue = []; // قائمة انتظار النطق
-let isSpeaking = false; // هل فيه شيء يُنطق الآن؟
+<script>
+/* =========================================================
+   🗣️ نطق ذكي — يستخدم ResponsiveVoice أو SpeechSynthesis
+========================================================= */
 
 function sanitizeText(text) {
   if (!text) return "";
@@ -17,41 +18,48 @@ function sanitizeText(text) {
   return t.replace(/\s+/g, " ").trim();
 }
 
-function speak(text) {
-  const onlyText = sanitizeText(text);
-  if (!onlyText) return;
+let speakQueue = [];
+let isSpeaking = false;
 
-  // أضيف النص للطابور
-  speakQueue.push(onlyText);
+function speak(text) {
+  const cleanText = sanitizeText(text);
+  if (!cleanText) return;
+
+  speakQueue.push(cleanText);
   processQueue();
 }
 
 function processQueue() {
-  // إذا في نطق شغال أو الطابور فاضي نوقف
   if (isSpeaking || speakQueue.length === 0) return;
 
   isSpeaking = true;
-  const currentText = speakQueue.shift(); // نطلع أول نص من الطابور
-  const msg = new SpeechSynthesisUtterance(currentText);
-  msg.lang = "ar-SA";
+  const currentText = speakQueue.shift();
 
-  msg.onend = () => {
-    isSpeaking = false;
-    // بعد ما يخلص، نبدأ التالي (لو فيه)
-    if (speakQueue.length > 0) {
-      setTimeout(processQueue, 300); // ننتظر شوي بين الجمل
-    }
-  };
-
-  msg.onerror = () => {
-    isSpeaking = false;
-    console.warn("Speech synthesis error");
-  };
-
-  // نلغي أي نطق سابق ونبدأ الجديد فقط
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(msg);
+  // ✅ لو المكتبة موجودة وتشتغل — نستخدمها
+  if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
+    responsiveVoice.speak(currentText, "Arabic Female", {
+      onend: () => {
+        isSpeaking = false;
+        if (speakQueue.length > 0) setTimeout(processQueue, 300);
+      }
+    });
+  } else {
+    // ⚙️ خطة بديلة — نستخدم speechSynthesis
+    const msg = new SpeechSynthesisUtterance(currentText);
+    msg.lang = "ar-SA";
+    msg.onend = () => {
+      isSpeaking = false;
+      if (speakQueue.length > 0) setTimeout(processQueue, 300);
+    };
+    msg.onerror = () => {
+      isSpeaking = false;
+      console.warn("Speech synthesis error");
+    };
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(msg);
+  }
 }
+</script>
 
 
 
@@ -351,4 +359,5 @@ function startGaze() {
     }
   }
 }
+
 
