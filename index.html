@@ -5,23 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>تسجيل دخول المساعد - EyeTalk</title>
   <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- i added this one k k k k k k k 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
-<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
- integrity="sha512-8l1FQeQvP3h3rLQDfQ9L+5AQ/BHXJr3cl9yibZqAw4ehpU8y3t93JHGiGjR3SyQlm5uIk3JYwXmsx9r5r3hZdg=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 </head>
+
 <body>
 
   <div class="login-page" id="loginPage">
@@ -34,124 +21,125 @@
 
       <form id="loginForm">
         <input type="email" id="assistantEmail" placeholder="بريد المساعد" required />
-   <!-- <input type="password" id="password" placeholder="كلمة المرور" required /> -->
-            
-      
-   <div class="input-box">
-            <input type="password" id="password" placeholder="Password" required>
-            <i class='bx bx-hide' id="togglePassword"></i>
-          </div>    
-         
-
-
-
+        <div class="input-box">
+          <input type="password" id="password" placeholder="كلمة المرور" required>
+          <i class='bx bx-hide' id="togglePassword"></i>
+        </div>
         <button type="submit">تسجيل الدخول</button>
       </form>
 
-      <div id="debug" style="margin-top:10px; color:#1cb94b; font-weight:700;"></div>
-
+      <div id="debug" style="margin-top:10px; font-weight:700; text-align:center;"></div>
       <p class="register-text">ليس لديك حساب؟ <a href="register.html">إنشاء حساب</a></p>
     </div>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    fetchSignInMethodsForEmail 
+  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCBGtwVSod4bZ13hH7ZJLAOW0xPbKmzJEw",
-      authDomain: "eyetalk-96125.firebaseapp.com",
-      projectId: "eyetalk-96125",
-      storageBucket: "eyetalk-96125.appspot.com",
-      messagingSenderId: "663319806538",
-      appId: "1:663319806538:web:e93e47829d0cb4eba4dcb3"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyCBGtwVSod4bZ13hH7ZJLAOW0xPbKmzJEw",
+    authDomain: "eyetalk-96125.firebaseapp.com",
+    projectId: "eyetalk-96125",
+    storageBucket: "eyetalk-96125.appspot.com",
+    messagingSenderId: "663319806538",
+    appId: "1:663319806538:web:e93e47829d0cb4eba4dcb3"
+  };
 
-    const app  = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db   = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    const debug = (msg)=> {
-      console.log(msg);
-      const el = document.getElementById('debug');
-      if (el) el.textContent = typeof msg === 'string' ? msg : (msg?.message || JSON.stringify(msg));
-    };
+  const debug = (msg, color = "#1cb94b") => {
+    const el = document.getElementById("debug");
+    if (el) {
+      el.style.color = color;
+      el.textContent = msg;
+    }
+    console.log(msg);
+  };
 
-    document.getElementById("loginForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      const email    = document.getElementById("assistantEmail").value.trim();
-      const password = document.getElementById("password").value;
+    let email = document.getElementById("assistantEmail").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+
+    try {
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      debug("تم تسجيل الدخول بنجاح", "#1cb94b");
+
+      let patientName = "المريض";
+      let assistantName = "المساعد";
+      let assistantEmail = email;
 
       try {
-        // 1) تسجيل الدخول بحساب المساعد
-        const { user } = await signInWithEmailAndPassword(auth, email, password);
-        debug(" تم تسجيل الدخول: " + user.uid);
-
-        // 2) محاولة جلب الوثيقة من Firestore
-        let patientName   = "المريض";
-        let assistantName = "المساعد";
-        let assistantEmail= email;
-
-        try {
-          const ref  = doc(db, "patients", user.uid);
-          const snap = await getDoc(ref);
-          if (snap.exists()) {
-            const data = snap.data();
-            patientName    = data.fullName       || patientName;
-            assistantName  = data.assistantName  || assistantName;
-            assistantEmail = data.assistantEmail || assistantEmail;
-            debug(" تم تسجيل الدخول بنجاح");
-          } else {
-            debug(" لم يتم العثور على حساب مرتبط بهذا المستخدم لم يتم العثور على حساب مرتبط بهذا المستخدم وثيقة للمستخدم في Firestore — لم يتم العثور على حساب مرتبط بهذا المستخدم بالافتراضي");
-          }
-        } catch (fireErr) {
-          debug(" حدث خطأ أثناء تسجيل الدخول  " + (fireErr?.message || fireErr));
+        const ref = doc(db, "patients", user.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          const data = snap.data();
+          patientName = data.fullName || patientName;
+          assistantName = data.assistantName || assistantName;
+          assistantEmail = data.assistantEmail || assistantEmail;
         }
-
-        // 3) تخزين محليًا ثم التحويل دائمًا
-        localStorage.setItem("patientName",   patientName);
-        localStorage.setItem("assistantName", assistantName);
-        localStorage.setItem("assistantEmail",assistantEmail);
-
-        window.location.href = "home.html";
-
-      } catch (error) {
-        debug(" فشل تسجيل الدخول: " + (error?.message || error));
-        alert("فشل تسجيل الدخول: " + (error?.message || error));
+      } catch {
+        debug("حدث خطأ أثناء جلب البيانات.", "#dc3545");
       }
-    });
-  </script>
 
+      localStorage.setItem("patientName", patientName);
+      localStorage.setItem("assistantName", assistantName);
+      localStorage.setItem("assistantEmail", assistantEmail);
 
+      setTimeout(() => window.location.href = "home.html", 1200);
 
+    } catch (error) {
+      let message = "";
 
+      if (error.code === "auth/invalid-email") {
+        message = "صيغة البريد الإلكتروني غير صحيحة.";
+      } 
+      else if (error.code === "auth/invalid-login-credentials") {
+        try {
+          // تحقق من وجود البريد بعد تنظيفه
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+          if (methods.length === 0) {
+            message = "البريد الإلكتروني غير مسجل.";
+          } else {
+            message = "كلمة المرور غير صحيحة.";
+          }
+        } catch {
+          message = "بيانات تسجيل الدخول غير صحيحة.";
+        }
+      } 
+      else if (error.code === "auth/too-many-requests") {
+        message = "عدد محاولات تسجيل الدخول كبير جدًا. حاول لاحقًا.";
+      } 
+      else {
+        message = "حدث خطأ غير متوقع.";
+      }
 
-
-
-
-
-
-
-
-
-<script>
- const togglePassword = document.getElementById("togglePassword");
-const password = document.getElementById("password");
-
-if (togglePassword && password) {
-  togglePassword.addEventListener("click", () => {
-    const type = password.getAttribute("type") === "password" ? "text" : "password";
-    password.setAttribute("type", type);
-    togglePassword.classList.toggle("bx-show");
-    togglePassword.classList.toggle("bx-hide");
+      debug(message, "#dc3545");
+    }
   });
-}
-
-
-
 </script>
+
+  <script>
+    const togglePassword = document.getElementById("togglePassword");
+    const password = document.getElementById("password");
+    if (togglePassword && password) {
+      togglePassword.addEventListener("click", () => {
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        togglePassword.classList.toggle("bx-show");
+        togglePassword.classList.toggle("bx-hide");
+      });
+    }
+  </script>
 
 </body>
 </html>
