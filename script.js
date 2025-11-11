@@ -1,13 +1,11 @@
-// ✅ مكتبة النطق
-document.write('<script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"><\/script>');
 
 /* =========================================================
-   🗣️ نطق ذكي — يستخدم ResponsiveVoice أو SpeechSynthesis
+   🗣️ النطق (Text-To-Speech) — يقرأ النص فقط بدون الإيموجي
 ========================================================= */
 function sanitizeText(text) {
   if (!text) return "";
   let t = String(text);
-  t = t.replace(/<[^>]*>/g, "");
+  t = t.replace(/<[^>]*>/g, ""); // إزالة HTML
   try {
     t = t.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, "");
   } catch (_) {
@@ -15,65 +13,37 @@ function sanitizeText(text) {
   }
   return t.replace(/\s+/g, " ").trim();
 }
-
-let speakQueue = [];
-let isSpeaking = false;
-
 function speak(text) {
-  const cleanText = sanitizeText(text);
-  if (!cleanText) return;
+  const onlyText = sanitizeText(text);
+  if (!onlyText) return;
 
-  speakQueue.push(cleanText);
-  processQueue();
-}
-
-function processQueue() {
-  if (isSpeaking || speakQueue.length === 0) return;
-
-  isSpeaking = true;
-  const currentText = speakQueue.shift();
-
-  if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
-    responsiveVoice.speak(currentText, "Arabic Female", {
-      onend: () => {
-        isSpeaking = false;
-        if (speakQueue.length > 0) setTimeout(processQueue, 300);
-      }
-    });
-  } else {
-    const msg = new SpeechSynthesisUtterance(currentText);
-    msg.lang = "ar-SA";
-    msg.onend = () => {
-      isSpeaking = false;
-      if (speakQueue.length > 0) setTimeout(processQueue, 300);
-    };
-    msg.onerror = () => {
-      isSpeaking = false;
-      console.warn("Speech synthesis error");
-    };
+  try {
+    // نلغي أي كلام سابق
     window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(msg);
+
+    let repeatCount = 0;
+    const speakMsg = () => {
+      const msg = new SpeechSynthesisUtterance(onlyText);
+      msg.lang = "ar-SA";
+
+      // بعد انتهاء النطق نعيده حتى 3 مرات
+      msg.onend = () => {
+        repeatCount++;
+        if (repeatCount < 3) {
+          // ننتظر نصف ثانية بين كل تكرار
+          setTimeout(() => window.speechSynthesis.speak(msg), 500);
+        }
+      };
+
+      window.speechSynthesis.speak(msg);
+    };
+
+    speakMsg();
+  } catch (e) {
+    console.warn("Speech error:", e);
   }
 }
 
-/* =========================================================
-   🔊 زر تفعيل الصوت والترحيب مرة واحدة فقط
-========================================================= */
-window.addEventListener("load", () => {
-  const btn = document.getElementById("enableVoiceBtn");
-  if (!btn) return;
-
-  if (localStorage.getItem("voiceEnabled") === "true") {
-    btn.style.display = "none";
-    return;
-  }
-
-  btn.addEventListener("click", () => {
-    speak("مرحبًا بك في تطبيق آي توك. يمكنك التعبير عن احتياجك بنظرة");
-    btn.style.display = "none";
-    localStorage.setItem("voiceEnabled", "true");
-  });
-});
 
 
 
@@ -373,6 +343,7 @@ function startGaze() {
     }
   }
 }
+
 
 
 
