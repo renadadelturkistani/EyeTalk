@@ -1024,8 +1024,39 @@ body.theme-dark {
 }
 
 
-@supports (height: 100dvh) {
-  .page-wrap {
-    min-height: 100dvh;
-  }
+   /* ✅ حل مشكلة الخط الأبيض بأسفل الصفحة في الجوالات */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--bg); /* نفس الخلفية العامة */
+  overflow-x: hidden;
+}
 
+body {
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+/* ✅ في الأجهزة الحديثة (iPhone, Huawei, Samsung الحديثة) */
+@supports (height: 100dvh) {
+  body {
+    min-height: 100dvh;
+    background-color: var(--bg);
+  }
+}
+
+/* ✅ تأكيد أن الحاوية تمتد بطول الشاشة */
+.page-wrap {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-bottom: 30px; /* يعطي مساحة خفيفة تحت الأيقونات */
+}
+
+/* ✅ تأكيد أن ما في أي تباعد إضافي */
+main, #iconsContainer {
+  background: var(--bg);
+}
