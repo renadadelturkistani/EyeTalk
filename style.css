@@ -1024,3 +1024,8 @@ body.theme-dark {
 }
 
 
+@supports (height: 100dvh) {
+  .page-wrap {
+    min-height: 100dvh;
+  }
+
