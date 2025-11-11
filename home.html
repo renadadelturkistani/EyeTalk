@@ -5,20 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>الرئيسية - EyeTalk</title>
 
-  <!-- ✅ الخطوط والتصميم -->
+  
+
   <link rel="stylesheet" href="style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-
-  <!-- ✅ مكتبة تتبع النظر -->
   <script src="https://api.gazerecorder.com/GazeCloudAPI.js"></script>
 
-  <!-- ✅ مكتبة النطق -->
-  <script src="https://code.responsivevoice.org/responsivevoice.js?key=YOUR_KEY"></script>
 </head>
 
 <body class="theme-dark">
 
-  <!-- ✅ الهيدر -->
+  <!-- الهيدر -->
   <header>
     <span class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</span>
     <h1 class="app-title">الصفحة الرئيسية</h1>
@@ -49,92 +46,31 @@
 
   <!-- ✅ المحتوى الرئيسي -->
   <main class="page-wrap">
-    <h2 class="hero">عبر عن احتياجك بنظرة</h2>
+<h2 class="hero"> عبر عن احتياجك بنظرة</h2>
 
     <!-- شبكة الأيقونات -->
     <section id="iconsContainer"></section>
-
-    <!-- ✅ زر تفعيل الصوت -->
-    <div style="text-align:center; margin-top:30px;">
-      <button id="activateSound" style="
-        background:#00c2ff;
-        color:#fff;
-        border:none;
-        padding:12px 25px;
-        border-radius:12px;
-        font-size:18px;
-        cursor:pointer;
-        transition:0.3s;
-      ">
-        تفعيل النطق
-      </button>
-    </div>
   </main>
-
+<div style="text-align:center; margin:20px;">
+  <button id="enableVoiceBtn" style="padding:10px 25px; font-size:18px;">
+    🔊 تفعيل الصوت
+  </button>
+</div>
   <!-- ✅ مؤشر النظر -->
   <div id="cursorDot"></div>
 
   <!-- ✅ زر الطوارئ -->
   <button id="stopAlarm" type="button">إيقاف الطوارئ</button>
 
-  <!-- ✅ كود تفعيل النطق داخل الصفحة -->
-  <script>
-  /* =========================================================
-     🔊 نظام النطق والترحيب في صفحة الهوم
-     يعمل بمكتبة ResponsiveVoice أو SpeechSynthesis
-  ========================================================= */
 
-  function speak(text) {
-    if (!text) return;
 
-    const clean = text.replace(/<[^>]*>/g, "").trim();
 
-    // نحاول نستخدم مكتبة responsiveVoice
-    if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
-      responsiveVoice.speak(clean, "Arabic Female");
-    } else {
-      // fallback للنظام في حال المكتبة ما اشتغلت (زي هواوي)
-      const msg = new SpeechSynthesisUtterance(clean);
-      msg.lang = "ar-SA";
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(msg);
-    }
-  }
-
-  // 🎧 عند تحميل الصفحة
-  window.addEventListener("load", () => {
-    const activateBtn = document.getElementById("activateSound");
-
-    if (!activateBtn) return;
-
-    // إذا سبق وتم التفعيل
-    if (localStorage.getItem("soundActivated") === "true") {
-      activateBtn.style.display = "none";
-      return;
-    }
-
-    // لما المستخدم يضغط الزر
-    activateBtn.addEventListener("click", () => {
-      if (!localStorage.getItem("welcomePlayed")) {
-        speak("مرحبًا بك في تطبيق آي توك. يمكنك التعبير عن احتياجك بنظرة");
-        localStorage.setItem("welcomePlayed", "true");
-      }
-
-      // نخفي الزر بعد ثانية ونفعل النظام
-      setTimeout(() => {
-        activateBtn.style.display = "none";
-        localStorage.setItem("soundActivated", "true");
-      }, 1500);
-    });
-  });
-  </script>
-
-  <!-- ✅ مكتبات المشروع -->
+  <!-- ✅ مكتبات -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-  <!-- ✅ سكربت المشروع -->
+  <!-- ✅ سكربت -->
   <script src="script.js"></script>
 
 </body>
