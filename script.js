@@ -63,57 +63,6 @@ function processQueue() {
 
 
 
-/* =========================================================
-   🔊 نظام تفعيل النطق والترحيب في صفحة الهوم
-   يعمل مع مكتبة ResponsiveVoice أو SpeechSynthesis
-========================================================= */
-
-function speak(text) {
-  if (!text) return;
-
-  const clean = text.replace(/<[^>]*>/g, "").trim();
-
-  // نحاول نستخدم مكتبة responsiveVoice إذا متوفرة
-  if (typeof responsiveVoice !== "undefined" && responsiveVoice.voiceSupport()) {
-    responsiveVoice.speak(clean, "Arabic Female");
-  } else {
-    // fallback للنظام في حال المكتبة ما اشتغلت (زي هواوي)
-    const msg = new SpeechSynthesisUtterance(clean);
-    msg.lang = "ar-SA";
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(msg);
-  }
-}
-
-// 🎧 عند تحميل الصفحة
-window.addEventListener("load", () => {
-  const activateBtn = document.getElementById("activateSound");
-
-  if (!activateBtn) return; // لو الزر مو موجود (صفحة ثانية) نتجاهل
-
-  // إذا سبق وتم التفعيل
-  if (localStorage.getItem("soundActivated") === "true") {
-    activateBtn.style.display = "none";
-    return;
-  }
-
-  // لما المستخدم يضغط الزر أول مرة
-  activateBtn.addEventListener("click", () => {
-    // نقول الترحيب مرة وحدة فقط
-    if (!localStorage.getItem("welcomePlayed")) {
-      speak("مرحبًا بك في تطبيق آي توك. يمكنك التعبير عن احتياجك بنظرة");
-      localStorage.setItem("welcomePlayed", "true");
-    }
-
-    // نخفي الزر بعد ثانية ونفعل النظام الصوتي
-    setTimeout(() => {
-      activateBtn.style.display = "none";
-      localStorage.setItem("soundActivated", "true");
-    }, 1500);
-  });
-});
-
-
 
 /* =========================================================
    🚨 الطوارئ — صوت + إشعار + إيميل + حفظ في Firebase
@@ -411,6 +360,7 @@ function startGaze() {
     }
   }
 }
+
 
 
 
