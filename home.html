@@ -54,39 +54,28 @@
   </main>
 
 
-<!-- ✅ شاشة ترحيب شفافة لتفعيل الصوت -->
-<div id="startScreen"
-  style="
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.75);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    font-family: 'Cairo', sans-serif;
-    text-align: center;
-  ">
-  <h2 style="margin-bottom: 10px; font-size: 26px;">مرحبًا بك في تطبيق <span style='color:#00c2ff'>EyeTalk</span></h2>
-  <p style="margin-bottom: 25px; font-size: 18px;">اضغطي الزر أدناه لتفعيل النطق وتشغيل النظام الصوتي 👇</p>
-  <button id="activateSound"
-    style="
-      background: #00c2ff;
-      color: #fff;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 12px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    ">
-    🔊 تفعيل النطق
+<div id="startScreen" style="
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.8);
+  color:#fff;display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  font-family:'Cairo',sans-serif;
+  text-align:center;">
+  <p>لتفعيل الصوت اضغطي الزر</p>
+  <button id="activateSound" style="
+    background:#00c2ff;
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    font-size:16px;">
+    تفعيل الصوت
   </button>
 </div>
-  
+
 
 
   <!-- ✅ مؤشر النظر -->
@@ -97,26 +86,53 @@
 
 
 
+
+<!-- ✅ سكربت الترحيب الخاص -->
 <script>
-  // 🗣️ عند الضغط على الزر
-  document.getElementById("activateSound").addEventListener("click", () => {
-    // تشغيل رسالة ترحيبية بالصوت
-    speak("مرحبًا بك في تطبيق آي توك. يمكنك التعبير عن احتياجك بنظرة 👁️");
+/* =========================================================
+   🔊 ترحيب خاص يُنطق مرة واحدة فقط (بدون تكرار)
+========================================================= */
 
-    // إخفاء شاشة البداية بعد الضغط
-    document.getElementById("startScreen").style.display = "none";
+// دالة نطق مبسطة بدون تكرار
+function speakOnce(text) {
+  if (!text) return;
 
-    // حفظ حالة التفعيل في التخزين المحلي حتى ما تطلع الشاشة مرة ثانية
+  try {
+    window.speechSynthesis.cancel(); // نلغي أي صوت سابق
+    const msg = new SpeechSynthesisUtterance(text);
+    msg.lang = "ar-SA";
+    window.speechSynthesis.speak(msg);
+  } catch (e) {
+    console.warn("Speech error:", e);
+  }
+}
+
+// عند تحميل الصفحة
+window.addEventListener("load", () => {
+  const startScreen = document.getElementById("startScreen");
+  const activateBtn = document.getElementById("activateSound");
+
+  // لو الصوت مفعّل من قبل، ما نعرض شاشة الترحيب
+  if (localStorage.getItem("soundActivated") === "true") {
+    startScreen.style.display = "none";
+    return;
+  }
+
+  // عند الضغط على زر التفعيل لأول مرة
+  activateBtn.addEventListener("click", () => {
+    // نطق الترحيب مرة واحدة فقط أول مرة
+    if (!localStorage.getItem("welcomePlayed")) {
+      speakOnce("مرحبًا بك  ");
+      localStorage.setItem("welcomePlayed", "true");
+    }
+
+    // نخفي الشاشة ونفعل النظام
+    startScreen.style.display = "none";
     localStorage.setItem("soundActivated", "true");
   });
-
-  // 🧠 لما تفتح الصفحة، نتحقق إذا تم التفعيل سابقًا
-  window.addEventListener("load", () => {
-    if (localStorage.getItem("soundActivated") === "true") {
-      document.getElementById("startScreen").style.display = "none";
-    }
-  });
+});
 </script>
+
 
   <!-- ✅ مكتبات -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -129,6 +145,7 @@
 
 </body>
 </html>
+
 
 
 
