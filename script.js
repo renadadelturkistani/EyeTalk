@@ -1,7 +1,12 @@
 
 /* =========================================================
-   🗣️ النطق (Text-To-Speech) — يقرأ النص فقط بدون الإيموجي
+   🗣️ النطق (Text-To-Speech) — بدون تداخل وبـ 3 تكرارات
 ========================================================= */
+
+let isSpeaking = false;      // هل النظام ينطق الآن؟
+let speakQueue = [];         // طابور الجمل
+
+// 🧹 دالة تنظيف النص
 function sanitizeText(text) {
   if (!text) return "";
   let t = String(text);
@@ -13,38 +18,51 @@ function sanitizeText(text) {
   }
   return t.replace(/\s+/g, " ").trim();
 }
+
+// 🗣️ دالة النطق الآمنة
 function speak(text) {
   const onlyText = sanitizeText(text);
   if (!onlyText) return;
 
-  try {
-    // نلغي أي كلام سابق
-    window.speechSynthesis.cancel();
-
-    let repeatCount = 0;
-    const speakMsg = () => {
-      const msg = new SpeechSynthesisUtterance(onlyText);
-      msg.lang = "ar-SA";
-
-      // بعد انتهاء النطق نعيده حتى 3 مرات
-      msg.onend = () => {
-        repeatCount++;
-        if (repeatCount < 3) {
-          // ننتظر نصف ثانية بين كل تكرار
-          setTimeout(() => window.speechSynthesis.speak(msg), 500);
-        }
-      };
-
-      window.speechSynthesis.speak(msg);
-    };
-
-    speakMsg();
-  } catch (e) {
-    console.warn("Speech error:", e);
-  }
+  // أضف النص للطابور
+  speakQueue.push(onlyText);
+  processQueue();
 }
 
+// ⚙️ إدارة الطابور
+function processQueue() {
+  if (isSpeaking || speakQueue.length === 0) return;
 
+  isSpeaking = true;
+  const currentText = speakQueue.shift(); // أول جملة في الطابور
+  let repeatCount = 0;
+
+  const msg = new SpeechSynthesisUtterance(currentText);
+  msg.lang = "ar-SA";
+
+  msg.onend = () => {
+    repeatCount++;
+    if (repeatCount < 3) {
+      // نكرر الجملة نفسها 3 مرات
+      setTimeout(() => window.speechSynthesis.speak(msg), 400);
+    } else {
+      // بعد انتهاء الثلاث مرات نرجع الجاهزية
+      isSpeaking = false;
+      if (speakQueue.length > 0) {
+        setTimeout(processQueue, 300);
+      }
+    }
+  };
+
+  msg.onerror = () => {
+    console.warn("Speech error");
+    isSpeaking = false;
+  };
+
+  // نبدأ النطق
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(msg);
+}
 
 
 /* =========================================================
@@ -343,6 +361,7 @@ function startGaze() {
     }
   }
 }
+
 
 
 
