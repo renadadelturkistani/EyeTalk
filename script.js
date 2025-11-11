@@ -1,6 +1,10 @@
 /* =========================================================
-   🗣️ النطق (Text-To-Speech) — يقرأ النص فقط بدون الإيموجي
+   🗣️ النطق (Text-To-Speech) — يقرأ النصوص بالترتيب بدون دمج
 ========================================================= */
+
+let speakQueue = []; // قائمة انتظار النطق
+let isSpeaking = false; // هل فيه شيء يُنطق الآن؟
+
 function sanitizeText(text) {
   if (!text) return "";
   let t = String(text);
@@ -12,35 +16,41 @@ function sanitizeText(text) {
   }
   return t.replace(/\s+/g, " ").trim();
 }
+
 function speak(text) {
   const onlyText = sanitizeText(text);
   if (!onlyText) return;
 
-  try {
-    // نلغي أي كلام سابق
-    window.speechSynthesis.cancel();
+  // أضيف النص للطابور
+  speakQueue.push(onlyText);
+  processQueue();
+}
 
-    let repeatCount = 0;
-    const speakMsg = () => {
-      const msg = new SpeechSynthesisUtterance(onlyText);
-      msg.lang = "ar-SA";
+function processQueue() {
+  // إذا في نطق شغال أو الطابور فاضي نوقف
+  if (isSpeaking || speakQueue.length === 0) return;
 
-      // بعد انتهاء النطق نعيده حتى 3 مرات
-      msg.onend = () => {
-        repeatCount++;
-        if (repeatCount < 3) {
-          // ننتظر نصف ثانية بين كل تكرار
-          setTimeout(() => window.speechSynthesis.speak(msg), 500);
-        }
-      };
+  isSpeaking = true;
+  const currentText = speakQueue.shift(); // نطلع أول نص من الطابور
+  const msg = new SpeechSynthesisUtterance(currentText);
+  msg.lang = "ar-SA";
 
-      window.speechSynthesis.speak(msg);
-    };
+  msg.onend = () => {
+    isSpeaking = false;
+    // بعد ما يخلص، نبدأ التالي (لو فيه)
+    if (speakQueue.length > 0) {
+      setTimeout(processQueue, 300); // ننتظر شوي بين الجمل
+    }
+  };
 
-    speakMsg();
-  } catch (e) {
-    console.warn("Speech error:", e);
-  }
+  msg.onerror = () => {
+    isSpeaking = false;
+    console.warn("Speech synthesis error");
+  };
+
+  // نلغي أي نطق سابق ونبدأ الجديد فقط
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(msg);
 }
 
 
@@ -341,3 +351,4 @@ function startGaze() {
     }
   }
 }
+
